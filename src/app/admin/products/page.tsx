@@ -24,7 +24,7 @@ interface ProductRow {
   kitType: string;
   season: string;
   sizes: string[];
-  isNew: boolean;
+  isNewArrival: boolean;
   isFeatured: boolean;
   isActive: boolean;
   createdAt: string;
@@ -233,7 +233,7 @@ export default function AdminProductsPage() {
                     </span>
                   </div>
                   <div className="flex gap-1 mt-1">
-                    {product.isNew && (
+                    {product.isNewArrival && (
                       <span className="text-[9px] px-1 bg-amber-400/10 text-amber-400">
                         NEW
                       </span>

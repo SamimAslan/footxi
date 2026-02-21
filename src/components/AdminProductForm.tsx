@@ -40,7 +40,7 @@ interface ProductFormData {
   backImage: string;
   sizes: string[];
   badges: ProductBadge[];
-  isNew: boolean;
+  isNewArrival: boolean;
   isFeatured: boolean;
   isActive: boolean;
 }
@@ -81,7 +81,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
       backImage: "",
       sizes: ["S", "M", "L", "XL", "XXL"],
       badges: [],
-      isNew: false,
+      isNewArrival: false,
       isFeatured: false,
       isActive: true,
     }
@@ -732,14 +732,14 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
 
             <label className="flex items-center gap-3 cursor-pointer group">
               <div
-                onClick={() => update({ isNew: !form.isNew })}
+                onClick={() => update({ isNewArrival: !form.isNewArrival })}
                 className={`w-10 h-6 rounded-full relative transition-colors ${
-                  form.isNew ? "bg-amber-500" : "bg-zinc-700"
+                  form.isNewArrival ? "bg-amber-500" : "bg-zinc-700"
                 }`}
               >
                 <div
                   className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${
-                    form.isNew ? "translate-x-[18px]" : "translate-x-0.5"
+                    form.isNewArrival ? "translate-x-[18px]" : "translate-x-0.5"
                   }`}
                 />
               </div>

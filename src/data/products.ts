@@ -17,7 +17,7 @@ export interface Product {
   backImage?: string;
   sizes?: string[];
   badges: Badge[];
-  isNew?: boolean;
+  isNewArrival?: boolean;
   isFeatured?: boolean;
   isActive?: boolean;
 }
@@ -165,7 +165,7 @@ function generateProducts(): Product[] {
           kitType,
           image: `/kits/${teamSlug(team)}-${type}.jpg`,
           badges: getBadgesForTeam(team, league.name),
-          isNew: (id % 3 === 0),
+          isNewArrival: (id % 3 === 0),
           isFeatured: featuredTeams.includes(team) && type === "home" && kitType === "fans",
         });
       }

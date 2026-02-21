@@ -71,7 +71,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Tags */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          {product.isNew && (
+          {product.isNewArrival && (
             <span className="px-2 py-0.5 text-[9px] font-bold bg-amber-400 text-black tracking-wider">
               NEW
             </span>

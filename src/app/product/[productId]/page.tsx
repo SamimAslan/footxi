@@ -185,7 +185,7 @@ export default function ProductPage() {
                     RETRO
                   </span>
                 )}
-                {product.isNew && (
+                {product.isNewArrival && (
                   <span className="px-3 py-1 text-xs font-semibold bg-amber-400 text-black rounded-full">
                     NEW
                   </span>

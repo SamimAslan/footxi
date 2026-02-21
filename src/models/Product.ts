@@ -18,7 +18,7 @@ export interface IProduct extends Document {
   backImage: string;
   sizes: string[];
   badges: IProductBadge[];
-  isNew: boolean;
+  isNewArrival: boolean;
   isFeatured: boolean;
   isActive: boolean;
   createdAt: Date;
@@ -57,7 +57,7 @@ const ProductSchema = new Schema<IProduct>(
       default: ["S", "M", "L", "XL", "XXL"],
     },
     badges: { type: [ProductBadgeSchema], default: [] },
-    isNew: { type: Boolean, default: false },
+    isNewArrival: { type: Boolean, default: false },
     isFeatured: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
   },

@@ -33,7 +33,7 @@ export async function POST() {
       image: p.image,
       sizes: ["S", "M", "L", "XL", "XXL"],
       badges: p.badges,
-      isNew: p.isNew || false,
+      isNewArrival: p.isNewArrival || false,
       isFeatured: p.isFeatured || false,
       isActive: true,
     }));
