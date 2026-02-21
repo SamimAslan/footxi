@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -12,6 +12,14 @@ import {
   Trash2,
 } from "lucide-react";
 import ConfirmModal from "@/components/ConfirmModal";
+
+export default function AdminOrdersPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 text-amber-400 animate-spin" /></div>}>
+      <AdminOrdersContent />
+    </Suspense>
+  );
+}
 
 interface OrderRow {
   _id: string;
@@ -44,7 +52,7 @@ const statusColors: Record<string, string> = {
   cancelled: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
 };
 
-export default function AdminOrdersPage() {
+function AdminOrdersContent() {
   const searchParams = useSearchParams();
   const initialStatus = searchParams.get("status") || "all";
 

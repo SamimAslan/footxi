@@ -3,10 +3,18 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, Package, ArrowRight } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useCartStore } from "@/store/cart";
 
 export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <SuccessContent />
+    </Suspense>
+  );
+}
+
+function SuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
   const clearCart = useCartStore((s) => s.clearCart);
