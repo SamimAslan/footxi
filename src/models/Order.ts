@@ -50,6 +50,8 @@ export interface IOrder extends Document {
   stripeSessionId: string;
   stripePaymentIntentId: string;
   status: OrderStatus;
+  paymentCurrency: string;
+  exchangeRate: number;
   adminNote: string;
   createdAt: Date;
   updatedAt: Date;
