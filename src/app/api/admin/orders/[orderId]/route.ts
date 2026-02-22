@@ -100,10 +100,28 @@ export async function PATCH(
         return NextResponse.json({ error: "Order not found" }, { status: 404 });
       }
 
-      if (existingOrder.stripePaymentIntentId) {
+      let paymentIntentId = existingOrder.stripePaymentIntentId;
+
+      // Fallback: if paymentIntentId missing, retrieve it from the Stripe session
+      if (!paymentIntentId && existingOrder.stripeSessionId) {
+        try {
+          const stripeSession = await stripe.checkout.sessions.retrieve(
+            existingOrder.stripeSessionId
+          );
+          if (stripeSession.payment_intent) {
+            paymentIntentId = stripeSession.payment_intent as string;
+            // Save it for future reference
+            await Order.findByIdAndUpdate(orderId, { stripePaymentIntentId: paymentIntentId });
+          }
+        } catch (sessionErr) {
+          console.error("Failed to retrieve Stripe session:", sessionErr);
+        }
+      }
+
+      if (paymentIntentId) {
         try {
           await stripe.refunds.create({
-            payment_intent: existingOrder.stripePaymentIntentId,
+            payment_intent: paymentIntentId,
           });
         } catch (refundErr) {
           console.error("Stripe refund failed:", refundErr);
@@ -112,6 +130,12 @@ export async function PATCH(
             { status: 500 }
           );
         }
+      } else {
+        console.error("No payment intent found for order:", orderId);
+        return NextResponse.json(
+          { error: "No payment information found. Please refund manually in Stripe Dashboard." },
+          { status: 500 }
+        );
       }
     }
 

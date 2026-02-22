@@ -30,10 +30,17 @@ export async function POST(req: NextRequest) {
     try {
       await connectDB();
 
-      await Order.findByIdAndUpdate(session.metadata?.orderId, {
-        status: "paid",
-        stripePaymentIntentId: session.payment_intent as string,
-      });
+      const paymentIntentId = session.payment_intent as string;
+      const orderId = session.metadata?.orderId;
+
+      console.log(`Webhook: checkout.session.completed for order ${orderId}, payment_intent: ${paymentIntentId}`);
+
+      if (orderId) {
+        await Order.findByIdAndUpdate(orderId, {
+          status: "paid",
+          stripePaymentIntentId: paymentIntentId || "",
+        });
+      }
     } catch (err) {
       console.error("Error updating order:", err);
       return NextResponse.json(
