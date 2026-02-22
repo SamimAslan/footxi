@@ -94,18 +94,16 @@ export default function CartPage() {
               >
                 <div className="flex gap-4">
                   {/* Mini image */}
-                  <div className="w-20 h-20 flex-shrink-0 bg-zinc-800 rounded-lg flex items-center justify-center">
-                    <svg
-                      viewBox="0 0 120 150"
-                      className="w-12 h-14 opacity-60"
-                    >
-                      <path
-                        d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z"
-                        className="fill-zinc-700"
-                        stroke="rgba(255,255,255,0.05)"
-                        strokeWidth="1"
-                      />
-                    </svg>
+                  <div className="w-20 h-20 flex-shrink-0 bg-zinc-800 rounded-lg overflow-hidden">
+                    {item.product.image && item.product.image.startsWith("http") ? (
+                      <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <svg viewBox="0 0 120 150" className="w-12 h-14 opacity-60">
+                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-zinc-700" />
+                        </svg>
+                      </div>
+                    )}
                   </div>
 
                   {/* Info */}

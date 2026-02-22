@@ -212,7 +212,7 @@ export default function CheckoutPage() {
                     setAddress({ ...address, fullName: e.target.value })
                   }
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
-                  placeholder="John Doe"
+                  placeholder="Jean Dupont"
                 />
               </div>
 
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                     setAddress({ ...address, address: e.target.value })
                   }
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
-                  placeholder="123 Main St, Apt 4"
+                  placeholder="12 Rue de la Paix, Apt 3"
                 />
               </div>
 
@@ -242,7 +242,7 @@ export default function CheckoutPage() {
                     setAddress({ ...address, city: e.target.value })
                   }
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
-                  placeholder="Istanbul"
+                  placeholder="Paris"
                 />
               </div>
 
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
                     setAddress({ ...address, country: e.target.value })
                   }
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
-                  placeholder="Turkey"
+                  placeholder="France"
                 />
               </div>
 
@@ -272,7 +272,7 @@ export default function CheckoutPage() {
                     setAddress({ ...address, zip: e.target.value })
                   }
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
-                  placeholder="34000"
+                  placeholder="75001"
                 />
               </div>
 
@@ -287,7 +287,7 @@ export default function CheckoutPage() {
                     setAddress({ ...address, phone: e.target.value })
                   }
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
-                  placeholder="+90 555 123 4567"
+                  placeholder="+33 6 12 34 56 78"
                 />
               </div>
             </div>
@@ -341,16 +341,16 @@ export default function CheckoutPage() {
                     key={i}
                     className="flex items-start gap-3 pb-4 border-b border-white/5 last:border-0"
                   >
-                    <div className="w-10 h-10 flex-shrink-0 bg-zinc-800 flex items-center justify-center">
-                      <svg
-                        viewBox="0 0 120 150"
-                        className="w-6 h-7 opacity-40"
-                      >
-                        <path
-                          d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z"
-                          className="fill-zinc-700"
-                        />
-                      </svg>
+                    <div className="w-10 h-10 flex-shrink-0 bg-zinc-800 rounded overflow-hidden">
+                      {item.product.image && item.product.image.startsWith("http") ? (
+                        <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <svg viewBox="0 0 120 150" className="w-6 h-7 opacity-40">
+                            <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-zinc-700" />
+                          </svg>
+                        </div>
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-white truncate">

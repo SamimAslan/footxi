@@ -42,7 +42,7 @@ export const PRICING = {
   retro: 33,
   customNameNumber: 5,
   cargo: {
-    standard: { price: 5, days: "15-30" },
+    standard: { price: 0, days: "15-30" },
     express: { price: 20, days: "7-15" },
   },
   additionalItem: 3,
