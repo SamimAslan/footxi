@@ -1,124 +1,139 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { leagues } from "@/data/products";
 
-const leagueAccents: Record<string, string> = {
-  "la-liga": "group-hover:border-red-500/30",
-  "premier-league": "group-hover:border-purple-500/30",
-  "serie-a": "group-hover:border-blue-500/30",
-  "bundesliga": "group-hover:border-red-600/30",
-  "ligue-1": "group-hover:border-blue-400/30",
-  "super-lig": "group-hover:border-red-500/30",
-  "primeira-liga": "group-hover:border-green-500/30",
-  "eredivisie": "group-hover:border-orange-500/30",
-};
-
-const leagueNumbers: Record<string, string> = {
-  "la-liga": "01",
-  "premier-league": "02",
-  "serie-a": "03",
-  "bundesliga": "04",
-  "ligue-1": "05",
-  "super-lig": "06",
-  "primeira-liga": "07",
-  "eredivisie": "08",
+const leagueColors: Record<string, { bg: string; text: string }> = {
+  "la-liga": { bg: "group-hover:bg-red-500/[0.03]", text: "text-red-400/60" },
+  "premier-league": {
+    bg: "group-hover:bg-purple-500/[0.03]",
+    text: "text-purple-400/60",
+  },
+  "serie-a": {
+    bg: "group-hover:bg-blue-500/[0.03]",
+    text: "text-blue-400/60",
+  },
+  bundesliga: {
+    bg: "group-hover:bg-red-600/[0.03]",
+    text: "text-red-400/60",
+  },
+  "ligue-1": {
+    bg: "group-hover:bg-blue-400/[0.03]",
+    text: "text-blue-400/60",
+  },
+  "super-lig": {
+    bg: "group-hover:bg-red-500/[0.03]",
+    text: "text-red-400/60",
+  },
+  "primeira-liga": {
+    bg: "group-hover:bg-green-500/[0.03]",
+    text: "text-green-400/60",
+  },
+  eredivisie: {
+    bg: "group-hover:bg-orange-500/[0.03]",
+    text: "text-orange-400/60",
+  },
 };
 
 export default function LeagueSection() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Top gradient from marquee */}
-      <div className="h-24 bg-gradient-to-b from-zinc-950 via-zinc-950 to-zinc-950" />
-
-      <div className="py-24 bg-zinc-950 relative">
-      {/* Background text */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-white/[0.01] whitespace-nowrap select-none pointer-events-none">
-        LEAGUES
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-14">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-12 bg-amber-400" />
-            <span className="text-[10px] font-semibold tracking-[0.3em] text-amber-400 uppercase">
-              Explore
-            </span>
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
-            BROWSE BY
-            <br />
-            <span className="text-zinc-600">LEAGUE</span>
-          </h2>
+    <section id="leagues" className="relative overflow-hidden bg-[#0D0F14]">
+      <div className="py-28 sm:py-36 relative">
+        {/* Giant background text */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[18vw] font-display font-bold text-white/[0.015] whitespace-nowrap select-none pointer-events-none tracking-[-0.04em]">
+          LEAGUES
         </div>
 
-        {/* League list - editorial style */}
-        <div className="space-y-0">
-          {leagues.map((league, i) => (
-            <Link
-              key={league.slug}
-              href={`/league/${league.slug}`}
-              className={`group flex items-center justify-between py-6 sm:py-8 border-b border-white/[0.04] hover:border-amber-400/20 transition-all duration-300 ${
-                i === 0 ? "border-t" : ""
-              }`}
-            >
-              <div className="flex items-center gap-6 sm:gap-10">
-                {/* Number */}
-                <span className="text-xs font-mono text-zinc-700 hidden sm:block w-8">
-                  {leagueNumbers[league.slug]}
-                </span>
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          {/* Header */}
+          <div className="mb-20">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-14 bg-gold" />
+              <span className="text-[11px] font-semibold tracking-[0.3em] text-gold uppercase">
+                Explore
+              </span>
+            </div>
+            <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-[#F3F4F6] tracking-[-0.03em] leading-[0.9]">
+              Browse by
+              <br />
+              <span className="text-[#9CA3AF]/40">League</span>
+            </h2>
+          </div>
 
-                {/* League name */}
-                <div>
-                  <h3 className="text-xl sm:text-3xl font-black text-zinc-400 group-hover:text-white transition-colors duration-300 tracking-tight">
-                    {league.name.toUpperCase()}
-                  </h3>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="text-xs text-zinc-700">
-                      {league.country}
-                    </span>
-                    <span className="text-zinc-800">&bull;</span>
-                    <span className="text-xs text-zinc-700">
-                      {league.teams.length} teams
+          {/* League rows */}
+          <div className="space-y-0">
+            {leagues.map((league, i) => {
+              const colors = leagueColors[league.slug] || {
+                bg: "group-hover:bg-white/[0.01]",
+                text: "text-white/30",
+              };
+
+              return (
+                <Link
+                  key={league.slug}
+                  href={`/league/${league.slug}`}
+                  className={`group relative flex items-center justify-between py-7 sm:py-9 border-b border-white/[0.04] hover:border-gold/[0.15] transition-all duration-500 ${
+                    i === 0 ? "border-t" : ""
+                  } ${colors.bg}`}
+                >
+                  {/* Background league name */}
+                  <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none select-none">
+                    <span
+                      className={`font-display text-[5vw] sm:text-[4vw] font-bold ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity duration-700 tracking-[-0.02em]`}
+                    >
+                      {league.name.toUpperCase()}
                     </span>
                   </div>
-                </div>
-              </div>
 
-              {/* Right side */}
-              <div className="flex items-center gap-4">
-                {/* Team names peek */}
-                <div className="hidden lg:flex items-center gap-2">
-                  {league.teams.slice(0, 3).map((team) => (
-                    <span
-                      key={team}
-                      className="px-2.5 py-1 text-[10px] bg-white/[0.02] text-zinc-600 group-hover:text-zinc-400 group-hover:bg-white/[0.04] transition-all"
-                    >
-                      {team}
+                  <div className="flex items-center gap-8 sm:gap-12 relative z-10">
+                    {/* Number */}
+                    <span className="text-[11px] font-mono text-[#9CA3AF]/30 hidden sm:block w-6 tabular-nums">
+                      {String(i + 1).padStart(2, "0")}
                     </span>
-                  ))}
-                  {league.teams.length > 3 && (
-                    <span className="text-[10px] text-zinc-700">
-                      +{league.teams.length - 3}
-                    </span>
-                  )}
-                </div>
 
-                {/* Arrow */}
-                <div className={`w-10 h-10 border border-white/[0.06] ${leagueAccents[league.slug]} flex items-center justify-center group-hover:bg-amber-400/5 transition-all duration-300`}>
-                  <ArrowUpRight className="w-4 h-4 text-zinc-700 group-hover:text-amber-400 transition-colors duration-300" />
-                </div>
-              </div>
-            </Link>
-          ))}
+                    {/* League info */}
+                    <div>
+                      <h3 className="font-display text-2xl sm:text-4xl font-bold text-[#9CA3AF] group-hover:text-[#F3F4F6] transition-colors duration-500 tracking-[-0.02em]">
+                        {league.name.toUpperCase()}
+                      </h3>
+                      <div className="flex items-center gap-3 mt-1.5">
+                        <span className="text-[11px] text-[#9CA3AF]/50 tracking-wide">
+                          {league.country}
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-white/[0.1]" />
+                        <span className="text-[11px] text-[#9CA3AF]/50 tracking-wide">
+                          {league.teams.length} teams
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right */}
+                  <div className="flex items-center gap-5 relative z-10">
+                    {/* Team peek */}
+                    <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0">
+                      {league.teams.slice(0, 3).map((team) => (
+                        <span
+                          key={team}
+                          className="px-3 py-1 text-[10px] bg-white/[0.03] text-[#9CA3AF] border border-white/[0.04] tracking-wide"
+                        >
+                          {team}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="w-10 h-10 border border-white/[0.06] flex items-center justify-center group-hover:border-gold/20 group-hover:bg-gold/[0.04] transition-all duration-500">
+                      <ArrowRight className="w-4 h-4 text-[#9CA3AF]/40 group-hover:text-gold group-hover:translate-x-0.5 transition-all duration-500" />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
-      </div>
-
-      {/* Bottom gradient transition into Featured Kits */}
-      <div className="h-32 bg-gradient-to-b from-zinc-950 via-zinc-950/80 to-black" />
     </section>
   );
 }

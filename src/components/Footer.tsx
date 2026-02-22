@@ -8,46 +8,46 @@ import { useCurrency } from "@/context/CurrencyContext";
 export default function Footer() {
   const { formatPrice } = useCurrency();
   return (
-    <footer className="bg-zinc-950 border-t border-white/5">
+    <footer className="bg-[#0A0C10] border-t border-white/[0.04]">
       {/* Trust Bar */}
-      <div className="border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="border-b border-white/[0.04]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
-                <Truck className="w-5 h-5 text-amber-400" />
+              <div className="w-10 h-10 flex items-center justify-center border border-white/[0.06] bg-white/[0.02]">
+                <Truck className="w-[18px] h-[18px] text-gold" />
               </div>
               <div>
-                <p className="text-sm font-medium text-white">
+                <p className="text-[13px] font-medium text-[#F3F4F6]">
                   Worldwide Shipping
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-[11px] text-[#9CA3AF]/60">
                   Express & Standard delivery
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
-                <Shield className="w-5 h-5 text-amber-400" />
+              <div className="w-10 h-10 flex items-center justify-center border border-white/[0.06] bg-white/[0.02]">
+                <Shield className="w-[18px] h-[18px] text-gold" />
               </div>
               <div>
-                <p className="text-sm font-medium text-white">
+                <p className="text-[13px] font-medium text-[#F3F4F6]">
                   Quality Guaranteed
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-[11px] text-[#9CA3AF]/60">
                   Premium quality kits
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
-                <CreditCard className="w-5 h-5 text-amber-400" />
+              <div className="w-10 h-10 flex items-center justify-center border border-white/[0.06] bg-white/[0.02]">
+                <CreditCard className="w-[18px] h-[18px] text-gold" />
               </div>
               <div>
-                <p className="text-sm font-medium text-white">
+                <p className="text-[13px] font-medium text-[#F3F4F6]">
                   Secure Payment
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-[11px] text-[#9CA3AF]/60">
                   Safe & encrypted checkout
                 </p>
               </div>
@@ -57,22 +57,22 @@ export default function Footer() {
       </div>
 
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="inline-block">
               <img src="/logo.png" alt="FOOTXI" className="h-7 w-auto" />
             </Link>
-            <p className="mt-3 text-sm text-zinc-500 leading-relaxed">
+            <p className="mt-4 text-[13px] text-[#9CA3AF]/60 leading-relaxed">
               Premium football kits from all major leagues. Fans version, player
               version, and retro kits available.
             </p>
-            <div className="mt-4 flex items-center gap-2 text-sm text-zinc-400">
+            <div className="mt-5 flex items-center gap-2 text-[13px] text-[#9CA3AF]/60">
               <Mail className="w-4 h-4" />
               <a
                 href="mailto:support@footxi.com"
-                className="hover:text-amber-400 transition-colors"
+                className="hover:text-gold transition-colors duration-300"
               >
                 support@footxi.com
               </a>
@@ -81,13 +81,15 @@ export default function Footer() {
 
           {/* Leagues */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Leagues</h3>
-            <ul className="space-y-2.5">
+            <h3 className="text-[11px] font-semibold text-[#F3F4F6] mb-5 uppercase tracking-[0.2em]">
+              Leagues
+            </h3>
+            <ul className="space-y-3">
               {leagues.slice(0, 6).map((league) => (
                 <li key={league.slug}>
                   <Link
                     href={`/league/${league.slug}`}
-                    className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+                    className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
                   >
                     {league.name}
                   </Link>
@@ -98,14 +100,14 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">
+            <h3 className="text-[11px] font-semibold text-[#F3F4F6] mb-5 uppercase tracking-[0.2em]">
               Quick Links
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               <li>
                 <Link
                   href="/"
-                  className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+                  className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
                 >
                   Home
                 </Link>
@@ -113,7 +115,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/cart"
-                  className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+                  className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
                 >
                   Cart
                 </Link>
@@ -121,7 +123,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+                  className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
                 >
                   Contact Us
                 </Link>
@@ -131,43 +133,55 @@ export default function Footer() {
 
           {/* Pricing Info */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Pricing</h3>
-            <ul className="space-y-2.5 text-sm text-zinc-500">
+            <h3 className="text-[11px] font-semibold text-[#F3F4F6] mb-5 uppercase tracking-[0.2em]">
+              Pricing
+            </h3>
+            <ul className="space-y-3 text-[13px]">
               <li className="flex justify-between">
-                <span>Fans Version</span>
-                <span className="text-zinc-300">{formatPrice(PRICING.fans)}</span>
+                <span className="text-[#9CA3AF]/50">Fans Version</span>
+                <span className="text-[#F3F4F6]">
+                  {formatPrice(PRICING.fans)}
+                </span>
               </li>
               <li className="flex justify-between">
-                <span>Player Version</span>
-                <span className="text-zinc-300">{formatPrice(PRICING.player)}</span>
+                <span className="text-[#9CA3AF]/50">Player Version</span>
+                <span className="text-[#F3F4F6]">
+                  {formatPrice(PRICING.player)}
+                </span>
               </li>
               <li className="flex justify-between">
-                <span>Retro Kit</span>
-                <span className="text-zinc-300">{formatPrice(PRICING.retro)}</span>
+                <span className="text-[#9CA3AF]/50">Retro Kit</span>
+                <span className="text-[#F3F4F6]">
+                  {formatPrice(PRICING.retro)}
+                </span>
               </li>
               <li className="flex justify-between">
-                <span>Custom Name/No.</span>
-                <span className="text-zinc-300">+{formatPrice(PRICING.customNameNumber)}</span>
+                <span className="text-[#9CA3AF]/50">Custom Name/No.</span>
+                <span className="text-[#F3F4F6]">
+                  +{formatPrice(PRICING.customNameNumber)}
+                </span>
               </li>
               <li className="flex justify-between">
-                <span>Arm Badge</span>
-                <span className="text-zinc-300">{formatPrice(PRICING.badgePrice)}</span>
+                <span className="text-[#9CA3AF]/50">Arm Badge</span>
+                <span className="text-[#F3F4F6]">
+                  {formatPrice(PRICING.badgePrice)}
+                </span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-white/5">
+        <div className="mt-14 pt-8 border-t border-white/[0.04]">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-zinc-600">
+            <p className="text-[11px] text-[#9CA3AF]/30 tracking-wide">
               &copy; {new Date().getFullYear()} FootXI. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <span className="text-xs text-zinc-600">
+              <span className="text-[11px] text-[#9CA3AF]/30 tracking-wide">
                 3-6 kits: 5% off
               </span>
-              <span className="text-xs text-zinc-600">
+              <span className="text-[11px] text-[#9CA3AF]/30 tracking-wide">
                 7-15 kits: 10% off
               </span>
             </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -7,8 +7,14 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Providers from "@/components/Providers";
 
 const inter = Inter({
-  variable: "--font-geist-sans",
+  variable: "--font-inter",
   subsets: ["latin"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +41,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} antialiased bg-black text-white`}>
+      <body
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[#0D0F14] text-[#F3F4F6]`}
+      >
         <Providers>
           <SmoothScroll />
           <Navbar />

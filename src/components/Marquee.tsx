@@ -1,45 +1,57 @@
 "use client";
 
-const ITEMS = [
-  "BARCELONA",
-  "REAL MADRID",
-  "MANCHESTER UNITED",
-  "LIVERPOOL",
-  "AC MILAN",
-  "BAYERN MUNICH",
-  "PARIS SAINT-GERMAIN",
-  "JUVENTUS",
-  "ARSENAL",
-  "INTER MILAN",
-  "GALATASARAY",
-  "CHELSEA",
-  "BORUSSIA DORTMUND",
-  "NAPOLI",
-  "FENERBAHCE",
-  "BENFICA",
-  "AJAX",
-  "PORTO",
-  "TOTTENHAM",
-  "BESIKTAS",
+import { Globe, Users, Truck, Award } from "lucide-react";
+
+const TRUST_ITEMS = [
+  {
+    icon: Globe,
+    label: "8+ Major Leagues",
+    sublabel: "Worldwide Coverage",
+  },
+  {
+    icon: Users,
+    label: "40+ Teams",
+    sublabel: "All Top Clubs",
+  },
+  {
+    icon: Truck,
+    label: "Worldwide Shipping",
+    sublabel: "Express & Standard",
+  },
+  {
+    icon: Award,
+    label: "Premium Quality",
+    sublabel: "Embroidered Badges",
+  },
 ];
 
 export default function Marquee() {
   return (
-    <div className="relative py-6 bg-zinc-950 border-y border-white/[0.03] overflow-hidden">
-      {/* Fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-zinc-950 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-zinc-950 to-transparent z-10 pointer-events-none" />
-
-      <div className="flex animate-[marquee_40s_linear_infinite]">
-        {[...ITEMS, ...ITEMS].map((item, i) => (
-          <div key={i} className="flex items-center flex-shrink-0 mx-6">
-            <span className="text-[11px] font-bold tracking-[0.25em] text-zinc-700 hover:text-amber-400/60 transition-colors duration-300 cursor-default whitespace-nowrap">
-              {item}
-            </span>
-            <span className="ml-6 text-amber-400/20 text-lg">&bull;</span>
-          </div>
-        ))}
+    <section className="relative py-10 sm:py-14 bg-[#0D0F14] border-y border-white/[0.04]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
+          {TRUST_ITEMS.map((item, i) => (
+            <div
+              key={i}
+              className={`flex items-center gap-4 ${
+                i > 0 ? "lg:border-l lg:border-white/[0.04] lg:pl-8" : ""
+              }`}
+            >
+              <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center border border-white/[0.06] bg-white/[0.02]">
+                <item.icon className="w-[18px] h-[18px] text-gold" />
+              </div>
+              <div>
+                <p className="text-[13px] font-semibold text-[#F3F4F6] tracking-wide">
+                  {item.label}
+                </p>
+                <p className="text-[11px] text-[#9CA3AF] mt-0.5">
+                  {item.sublabel}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
