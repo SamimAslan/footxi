@@ -22,19 +22,23 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-[3/4] bg-gradient-to-b from-[#141721] to-[#0D0F14] overflow-hidden">
         {product.image && product.image.startsWith("http") ? (
           <>
-            <img
-              src={product.image}
-              alt={product.name}
-              className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.03] ${
-                product.backImage ? "group-hover:opacity-0" : ""
-              }`}
-            />
-            {product.backImage && (
+            <div className="absolute inset-0 flex items-center justify-center p-6">
               <img
-                src={product.backImage}
-                alt={`${product.name} back`}
-                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700"
+                src={product.image}
+                alt={product.name}
+                className={`max-w-full max-h-full object-contain transition-all duration-700 group-hover:scale-[1.05] ${
+                  product.backImage ? "group-hover:opacity-0" : ""
+                }`}
               />
+            </div>
+            {product.backImage && (
+              <div className="absolute inset-0 flex items-center justify-center p-6">
+                <img
+                  src={product.backImage}
+                  alt={`${product.name} back`}
+                  className="max-w-full max-h-full object-contain opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-700"
+                />
+              </div>
             )}
           </>
         ) : (
