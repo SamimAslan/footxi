@@ -37,7 +37,7 @@ export interface League {
 
 // All prices in CHF (Swiss Franc) - converted to user's currency at display time
 export const PRICING = {
-  fans: 25,
+  fans: 1,
   player: 30,
   retro: 33,
   customNameNumber: 5,
