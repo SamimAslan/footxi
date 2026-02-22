@@ -23,6 +23,15 @@ function SuccessContent() {
     clearCart();
   }, [clearCart]);
 
+  useEffect(() => {
+    if (!orderId) return;
+    fetch("/api/orders/confirm-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId }),
+    }).catch(() => {});
+  }, [orderId]);
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
