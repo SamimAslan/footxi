@@ -109,21 +109,8 @@ export default function LeagueSection() {
                     </div>
                   </div>
 
-                  {/* Right */}
-                  <div className="flex items-center gap-5 relative z-10">
-                    {/* Team peek */}
-                    <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0">
-                      {league.teams.slice(0, 3).map((team) => (
-                        <span
-                          key={team}
-                          className="px-3 py-1 text-[10px] bg-white/[0.03] text-[#9CA3AF] border border-white/[0.04] tracking-wide"
-                        >
-                          {team}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Arrow */}
+                  {/* Right - Arrow only */}
+                  <div className="relative z-10">
                     <div className="w-10 h-10 border border-white/[0.06] flex items-center justify-center group-hover:border-gold/20 group-hover:bg-gold/[0.04] transition-all duration-500">
                       <ArrowRight className="w-4 h-4 text-[#9CA3AF]/40 group-hover:text-gold group-hover:translate-x-0.5 transition-all duration-500" />
                     </div>
