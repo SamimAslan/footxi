@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       total,
       paymentCurrency: stripeCurrency.toUpperCase(),
       exchangeRate: rate,
-      status: "pending",
+      status: "awaiting_payment",
     });
 
     const lineItems = items.map((item: { name: string; team: string; kitType: string; size: string; quantity: number; totalPrice: number }) => ({

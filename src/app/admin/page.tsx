@@ -19,7 +19,6 @@ import {
 
 interface Stats {
   total: number;
-  pending: number;
   paid: number;
   accepted: number;
   shipped: number;
@@ -39,7 +38,7 @@ interface OrderRow {
 }
 
 const statusColors: Record<string, string> = {
-  pending: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  awaiting_payment: "bg-amber-500/10 text-amber-400 border-amber-500/20",
   paid: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   accepted: "bg-teal-500/10 text-teal-400 border-teal-500/20",
   shipped: "bg-purple-500/10 text-purple-400 border-purple-500/20",
@@ -49,7 +48,7 @@ const statusColors: Record<string, string> = {
 };
 
 const statusDots: Record<string, string> = {
-  pending: "bg-amber-400",
+  awaiting_payment: "bg-amber-400",
   paid: "bg-blue-400",
   accepted: "bg-teal-400",
   shipped: "bg-purple-400",
@@ -71,7 +70,6 @@ export default function AdminDashboard() {
       const orders = data.orders || [];
       const s: Stats = {
         total: orders.length,
-        pending: 0,
         paid: 0,
         accepted: 0,
         shipped: 0,
@@ -85,7 +83,7 @@ export default function AdminDashboard() {
         if (key in s && typeof s[key] === "number" && key !== "total" && key !== "revenue") {
           (s[key] as number)++;
         }
-        if (!["declined", "cancelled", "pending"].includes(o.status)) {
+        if (!["declined", "cancelled", "awaiting_payment"].includes(o.status)) {
           s.revenue += o.total;
         }
       }
@@ -132,8 +130,8 @@ export default function AdminDashboard() {
       trend: null,
     },
     {
-      label: "Pending / Paid",
-      value: (stats?.pending || 0) + (stats?.paid || 0),
+      label: "Awaiting Action",
+      value: stats?.paid || 0,
       icon: Clock,
       iconBg: "bg-amber-500/10",
       iconColor: "text-amber-400",
@@ -177,7 +175,7 @@ export default function AdminDashboard() {
       icon: Clock,
       iconColor: "text-blue-400",
       iconBg: "bg-blue-500/10",
-      count: (stats?.paid || 0) + (stats?.pending || 0),
+      count: stats?.paid || 0,
       countColor: "text-blue-400 bg-blue-500/10",
     },
     {
@@ -314,7 +312,7 @@ export default function AdminDashboard() {
             </div>
             <div className="text-center py-3 rounded-xl bg-zinc-900/40 border border-white/[0.04]">
               <p className="text-lg font-bold text-amber-400">
-                {(stats?.pending || 0) + (stats?.paid || 0)}
+                {stats?.paid || 0}
               </p>
               <p className="text-[10px] text-zinc-600 uppercase tracking-wider mt-0.5">Awaiting</p>
             </div>
@@ -436,11 +434,11 @@ export default function AdminDashboard() {
                 <div className="md:col-span-1">
                   <span
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-md border ${
-                      statusColors[order.status] || statusColors.pending
+                      statusColors[order.status] || statusColors.awaiting_payment
                     }`}
                   >
-                    <span className={`w-1.5 h-1.5 rounded-full ${statusDots[order.status] || statusDots.pending}`} />
-                    {order.status}
+                    <span className={`w-1.5 h-1.5 rounded-full ${statusDots[order.status] || statusDots.awaiting_payment}`} />
+                    {order.status.replace(/_/g, " ")}
                   </span>
                 </div>
                 <div className="md:col-span-1 flex items-center text-[11px] text-zinc-600">

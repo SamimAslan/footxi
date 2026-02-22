@@ -5,6 +5,7 @@ export interface IOrderItem {
   name: string;
   team: string;
   league: string;
+  image: string;
   kitType: "fans" | "player" | "retro";
   type: string;
   size: string;
@@ -27,7 +28,7 @@ export interface IShippingAddress {
 }
 
 export type OrderStatus =
-  | "pending"
+  | "awaiting_payment"
   | "paid"
   | "accepted"
   | "shipped"
@@ -63,6 +64,7 @@ const OrderItemSchema = new Schema<IOrderItem>(
     name: { type: String, required: true },
     team: { type: String, required: true },
     league: { type: String, required: true },
+    image: { type: String, default: "" },
     kitType: { type: String, enum: ["fans", "player", "retro"], required: true },
     type: { type: String, required: true },
     size: { type: String, required: true },
@@ -128,7 +130,7 @@ const OrderSchema = new Schema<IOrder>(
     status: {
       type: String,
       enum: [
-        "pending",
+        "awaiting_payment",
         "paid",
         "accepted",
         "shipped",
@@ -136,7 +138,7 @@ const OrderSchema = new Schema<IOrder>(
         "declined",
         "cancelled",
       ],
-      default: "pending",
+      default: "awaiting_payment",
     },
     paymentCurrency: { type: String, default: "CHF" },
     exchangeRate: { type: Number, default: 1 },

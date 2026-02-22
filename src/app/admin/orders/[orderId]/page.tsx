@@ -28,6 +28,7 @@ interface OrderDetail {
     name: string;
     team: string;
     league: string;
+    image: string;
     kitType: string;
     type: string;
     size: string;
@@ -70,7 +71,7 @@ const statusActions = [
     color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20",
   },
   {
-    from: ["paid", "pending"],
+    from: ["paid"],
     to: "declined",
     label: "Decline Order",
     icon: XCircle,
@@ -91,7 +92,7 @@ const statusActions = [
     color: "bg-green-500/10 border-green-500/30 text-green-400 hover:bg-green-500/20",
   },
   {
-    from: ["pending", "paid", "accepted", "shipped"],
+    from: ["paid", "accepted", "shipped"],
     to: "cancelled",
     label: "Cancel Order",
     icon: AlertTriangle,
@@ -100,7 +101,7 @@ const statusActions = [
 ];
 
 const statusColors: Record<string, string> = {
-  pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  awaiting_payment: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
   paid: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   accepted: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   shipped: "bg-purple-500/10 text-purple-400 border-purple-500/20",
@@ -274,7 +275,7 @@ export default function AdminOrderDetailPage() {
                 statusColors[order.status] || statusColors.pending
               }`}
             >
-              {order.status}
+              {order.status.replace(/_/g, " ")}
             </span>
           </h1>
           <p className="text-sm text-zinc-500 mt-1">
@@ -304,16 +305,16 @@ export default function AdminOrderDetailPage() {
                   key={i}
                   className="flex items-start gap-3 pb-3 border-b border-white/5 last:border-0 last:pb-0"
                 >
-                  <div className="w-10 h-10 flex-shrink-0 bg-zinc-800 flex items-center justify-center">
-                    <svg
-                      viewBox="0 0 120 150"
-                      className="w-6 h-7 opacity-40"
-                    >
-                      <path
-                        d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z"
-                        className="fill-zinc-700"
-                      />
-                    </svg>
+                  <div className="w-10 h-10 flex-shrink-0 bg-zinc-800 rounded overflow-hidden">
+                    {item.image && item.image.startsWith("http") ? (
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <svg viewBox="0 0 120 150" className="w-6 h-7 opacity-40">
+                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-zinc-700" />
+                        </svg>
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white font-medium">

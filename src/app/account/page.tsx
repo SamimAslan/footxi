@@ -25,7 +25,7 @@ interface OrderSummary {
 }
 
 const statusColors: Record<string, string> = {
-  pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  awaiting_payment: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
   paid: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   accepted: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   shipped: "bg-purple-500/10 text-purple-400 border-purple-500/20",
@@ -34,7 +34,7 @@ const statusColors: Record<string, string> = {
   cancelled: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
 };
 
-const removableStatuses = ["pending", "cancelled", "declined"];
+const removableStatuses = ["awaiting_payment", "cancelled", "declined"];
 
 export default function AccountPage() {
   const { data: session, status } = useSession();
@@ -150,10 +150,10 @@ export default function AccountPage() {
                           </span>
                           <span
                             className={`px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider border ${
-                              statusColors[order.status] || statusColors.pending
+                              statusColors[order.status] || statusColors.awaiting_payment
                             }`}
                           >
-                            {order.status}
+                            {order.status.replace(/_/g, " ")}
                           </span>
                         </div>
                         <div className="flex flex-wrap gap-1.5 mb-2">

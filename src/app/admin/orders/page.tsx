@@ -33,7 +33,6 @@ interface OrderRow {
 
 const statuses = [
   "all",
-  "pending",
   "paid",
   "accepted",
   "shipped",
@@ -43,7 +42,7 @@ const statuses = [
 ];
 
 const statusColors: Record<string, string> = {
-  pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  awaiting_payment: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
   paid: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   accepted: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   shipped: "bg-purple-500/10 text-purple-400 border-purple-500/20",
@@ -296,10 +295,10 @@ function AdminOrdersContent() {
                 <div className="md:col-span-1">
                   <span
                     className={`inline-block px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider border ${
-                      statusColors[order.status] || statusColors.pending
+                      statusColors[order.status] || statusColors.awaiting_payment
                     }`}
                   >
-                    {order.status}
+                    {order.status.replace(/_/g, " ")}
                   </span>
                 </div>
                 <div className="md:col-span-1 flex items-center gap-1 text-[10px] text-zinc-600">

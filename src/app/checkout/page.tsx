@@ -110,6 +110,7 @@ export default function CheckoutPage() {
           name: item.product.name,
           team: item.product.team,
           league: item.product.league,
+          image: item.product.image || "",
           kitType: item.product.kitType,
           type: item.product.type,
           size: item.size,

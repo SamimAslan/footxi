@@ -61,7 +61,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    const removableStatuses = ["pending", "cancelled", "declined"];
+    const removableStatuses = ["awaiting_payment", "cancelled", "declined"];
     if (!removableStatuses.includes(order.status)) {
       return NextResponse.json(
         { error: "Only pending, cancelled, or declined orders can be removed" },

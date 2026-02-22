@@ -13,7 +13,10 @@ export async function GET() {
 
     await connectDB();
 
-    const orders = await Order.find({ user: session.user.id })
+    const orders = await Order.find({
+      user: session.user.id,
+      status: { $ne: "awaiting_payment" },
+    })
       .sort({ createdAt: -1 })
       .lean();
 

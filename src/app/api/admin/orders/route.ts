@@ -18,9 +18,11 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
 
-    const filter: Record<string, string> = {};
+    const filter: Record<string, unknown> = {};
     if (status && status !== "all") {
       filter.status = status;
+    } else {
+      filter.status = { $ne: "awaiting_payment" };
     }
 
     const total = await Order.countDocuments(filter);

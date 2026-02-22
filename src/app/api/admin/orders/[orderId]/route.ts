@@ -78,7 +78,7 @@ export async function PATCH(
     const { status, adminNote } = await req.json();
 
     const validStatuses = [
-      "pending",
+      "awaiting_payment",
       "paid",
       "accepted",
       "shipped",
