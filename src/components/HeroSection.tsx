@@ -68,12 +68,11 @@ export default function HeroSection() {
                 <span className="block text-[#F3F4F6]">FOOT</span>
                 <span className="block text-gold">XI</span>
               </h1>
-              <div className="max-w-md space-y-2">
+              <div className="max-w-lg space-y-2">
                 <p className="text-xl sm:text-2xl font-light text-silver tracking-wide leading-relaxed">
-                  Elite Football Kits
-                </p>
-                <p className="text-base text-[#9CA3AF] tracking-wide">
-                  Every League. Every Era.
+                  Built for Matchday.
+                  <br />
+                  <span className="text-[#F3F4F6]">Worn Beyond It.</span>
                 </p>
               </div>
             </div>

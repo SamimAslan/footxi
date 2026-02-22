@@ -16,7 +16,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${productId}`}
-      className="group block bg-[#141721]/40 border border-white/[0.04] overflow-hidden hover:border-gold/[0.15] transition-all duration-500"
+      className="group block bg-[#141721]/40 border border-white/[0.04] overflow-hidden hover:border-gold/[0.15] hover:shadow-[0_8px_40px_rgba(245,184,0,0.06)] transition-all duration-500"
     >
       {/* Image */}
       <div className="relative aspect-[3/4] bg-gradient-to-b from-[#141721] to-[#0D0F14] overflow-hidden">
@@ -25,17 +25,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             <img
               src={product.image}
               alt={product.name}
-              className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
-                product.backImage
-                  ? "group-hover:opacity-0"
-                  : "group-hover:scale-[1.05]"
+              className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.03] ${
+                product.backImage ? "group-hover:opacity-0" : ""
               }`}
             />
             {product.backImage && (
               <img
                 src={product.backImage}
                 alt={`${product.name} back`}
-                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700"
               />
             )}
           </>

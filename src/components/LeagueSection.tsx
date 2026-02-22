@@ -78,15 +78,18 @@ export default function LeagueSection() {
                   } ${colors.bg}`}
                 >
                   {/* Background league name */}
-                  <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none select-none">
+                  <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none select-none overflow-hidden">
                     <span
-                      className={`font-display text-[5vw] sm:text-[4vw] font-bold ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity duration-700 tracking-[-0.02em]`}
+                      className={`font-display text-[5vw] sm:text-[4vw] font-bold ${colors.text} opacity-0 group-hover:opacity-[0.15] translate-x-4 group-hover:translate-x-0 transition-all duration-700 ease-out tracking-[-0.02em] block`}
                     >
                       {league.name.toUpperCase()}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-8 sm:gap-12 relative z-10">
+                  {/* Gold underline slide-in */}
+                  <div className="absolute bottom-0 left-0 h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-gold/40 via-gold/20 to-transparent transition-all duration-700 ease-out" />
+
+                  <div className="flex items-center gap-8 sm:gap-12 relative z-10 group-hover:translate-x-2.5 transition-transform duration-500 ease-out">
                     {/* Number */}
                     <span className="text-[11px] font-mono text-[#9CA3AF]/30 hidden sm:block w-6 tabular-nums">
                       {String(i + 1).padStart(2, "0")}
@@ -112,7 +115,7 @@ export default function LeagueSection() {
                   {/* Right - Arrow only */}
                   <div className="relative z-10">
                     <div className="w-10 h-10 border border-white/[0.06] flex items-center justify-center group-hover:border-gold/20 group-hover:bg-gold/[0.04] transition-all duration-500">
-                      <ArrowRight className="w-4 h-4 text-[#9CA3AF]/40 group-hover:text-gold group-hover:translate-x-0.5 transition-all duration-500" />
+                      <ArrowRight className="w-4 h-4 text-[#9CA3AF]/40 group-hover:text-gold group-hover:translate-x-1 transition-all duration-500" />
                     </div>
                   </div>
                 </Link>
