@@ -5,12 +5,12 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
 import { ChevronDown } from "lucide-react";
 
-const currencyList: { code: CurrencyCode; flag: string }[] = [
-  { code: "CHF", flag: "🇨🇭" },
-  { code: "EUR", flag: "🇪🇺" },
-  { code: "USD", flag: "🇺🇸" },
-  { code: "GBP", flag: "🇬🇧" },
-  { code: "TRY", flag: "🇹🇷" },
+const currencyList: { code: CurrencyCode; flagUrl: string }[] = [
+  { code: "CHF", flagUrl: "https://flagcdn.com/w40/ch.png" },
+  { code: "EUR", flagUrl: "https://flagcdn.com/w40/eu.png" },
+  { code: "USD", flagUrl: "https://flagcdn.com/w40/us.png" },
+  { code: "GBP", flagUrl: "https://flagcdn.com/w40/gb.png" },
+  { code: "TRY", flagUrl: "https://flagcdn.com/w40/tr.png" },
 ];
 
 export default function CurrencySelector() {
@@ -36,12 +36,17 @@ export default function CurrencySelector() {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-1.5 px-2 py-1.5 text-xs text-zinc-400 hover:text-white border border-white/[0.06] rounded-md hover:border-white/[0.12] transition-all bg-white/[0.02]"
       >
-        <span className="text-sm leading-none" aria-hidden="true">{current.flag}</span>
+        <img
+          src={current.flagUrl}
+          alt={currencyCode}
+          className="w-4 h-3 object-cover rounded-[2px]"
+          loading="lazy"
+        />
         <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
-        <div className="absolute top-full right-0 mt-1.5 w-36 bg-zinc-900 border border-white/10 rounded-lg shadow-2xl py-1 z-50">
+        <div className="absolute top-full right-0 mt-1.5 w-40 bg-zinc-900 border border-white/10 rounded-lg shadow-2xl py-1 z-50">
           {currencyList.map((item) => {
             const info = CURRENCIES[item.code];
             const isActive = item.code === currencyCode;
@@ -58,8 +63,13 @@ export default function CurrencySelector() {
                     : "text-zinc-400 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <span className="text-sm leading-none" aria-hidden="true">{item.flag}</span>
-                <span className="font-medium">{info.name}</span>
+                <img
+                  src={item.flagUrl}
+                  alt={item.code}
+                  className="w-4 h-3 object-cover rounded-[2px]"
+                  loading="lazy"
+                />
+                <span className="font-medium">{item.code}</span>
                 <span className="text-zinc-600 ml-auto">{info.symbol}</span>
               </button>
             );
