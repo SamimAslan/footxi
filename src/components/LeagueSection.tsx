@@ -87,15 +87,15 @@ export default function LeagueSection() {
 
                   <div className="flex items-center gap-5 sm:gap-7 relative z-10 group-hover:translate-x-2.5 transition-transform duration-500 ease-out">
                     {/* League logo */}
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border border-white/[0.08] bg-[#141721] flex items-center justify-center flex-shrink-0">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center flex-shrink-0">
                       {league.logo ? (
                         <img
                           src={league.logo}
                           alt={`${league.name} logo`}
-                          className="w-full h-full object-contain p-1.5"
+                          className="w-full h-full object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)]"
                         />
                       ) : (
-                        <span className="text-[10px] font-semibold text-[#9CA3AF]/40 tracking-wider">
+                        <span className="text-xs font-semibold text-[#9CA3AF]/50 tracking-wider">
                           {league.name.slice(0, 2).toUpperCase()}
                         </span>
                       )}
