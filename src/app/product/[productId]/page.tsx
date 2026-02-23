@@ -156,11 +156,13 @@ export default function ProductPage() {
           <div className="relative">
             <div className="aspect-square bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center">
               {hasRealImage ? (
-                <img
-                  src={currentImage}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-opacity duration-300"
-                />
+                <div className="w-full h-full p-8 sm:p-10 flex items-center justify-center">
+                  <img
+                    src={currentImage}
+                    alt={product.name}
+                    className="max-w-full max-h-full object-contain transition-all duration-300 scale-95"
+                  />
+                </div>
               ) : (
                 <svg viewBox="0 0 120 150" className="w-56 h-72 opacity-80">
                   <path
@@ -213,7 +215,7 @@ export default function ProductPage() {
               <div className="flex gap-3 mt-3">
                 <button
                   onClick={() => setShowBack(false)}
-                  className={`w-20 h-20 rounded-lg border overflow-hidden transition-all ${
+                  className={`w-16 h-16 rounded-lg border overflow-hidden transition-all ${
                     !showBack
                       ? "border-amber-400 ring-1 ring-amber-400/30"
                       : "border-white/10 hover:border-white/20"
@@ -222,12 +224,12 @@ export default function ProductPage() {
                   <img
                     src={product.image}
                     alt="Front"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain p-1 bg-zinc-900"
                   />
                 </button>
                 <button
                   onClick={() => setShowBack(true)}
-                  className={`w-20 h-20 rounded-lg border overflow-hidden transition-all ${
+                  className={`w-16 h-16 rounded-lg border overflow-hidden transition-all ${
                     showBack
                       ? "border-amber-400 ring-1 ring-amber-400/30"
                       : "border-white/10 hover:border-white/20"
@@ -236,7 +238,7 @@ export default function ProductPage() {
                   <img
                     src={product.backImage}
                     alt="Back"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain p-1 bg-zinc-900"
                   />
                 </button>
               </div>

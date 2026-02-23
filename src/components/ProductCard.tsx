@@ -22,7 +22,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-[3/4] bg-gradient-to-b from-[#141721] to-[#0D0F14] overflow-hidden">
         {product.image && product.image.startsWith("http") ? (
           <>
-            <div className="absolute inset-0 flex items-center justify-center p-6">
+            <div className="absolute inset-0 flex items-center justify-center p-7">
               <img
                 src={product.image}
                 alt={product.name}
@@ -32,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               />
             </div>
             {product.backImage && (
-              <div className="absolute inset-0 flex items-center justify-center p-6">
+              <div className="absolute inset-0 flex items-center justify-center p-7">
                 <img
                   src={product.backImage}
                   alt={`${product.name} back`}

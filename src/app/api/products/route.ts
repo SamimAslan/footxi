@@ -12,7 +12,15 @@ export async function GET(req: NextRequest) {
     const featured = searchParams.get("featured") || "";
 
     const filter: Record<string, unknown> = { isActive: true };
-    if (league) filter.leagueSlug = league;
+    if (league) {
+      if (league === "others") {
+        filter.leagueSlug = {
+          $nin: ["la-liga", "premier-league", "serie-a", "bundesliga", "ligue-1", "super-lig"],
+        };
+      } else {
+        filter.leagueSlug = league;
+      }
+    }
     if (team) filter.team = team;
     if (featured === "true") filter.isFeatured = true;
 

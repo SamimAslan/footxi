@@ -97,18 +97,11 @@ export const leagues: League[] = [
     teams: ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"],
   },
   {
-    name: "Primeira Liga",
-    slug: "primeira-liga",
-    country: "Portugal",
-    logo: "/leagues/primeira-liga.png",
-    teams: ["Benfica", "Porto", "Sporting CP"],
-  },
-  {
-    name: "Eredivisie",
-    slug: "eredivisie",
-    country: "Netherlands",
-    logo: "/leagues/eredivisie.png",
-    teams: ["Ajax", "PSV", "Feyenoord"],
+    name: "Others",
+    slug: "others",
+    country: "Mixed",
+    logo: "/globe.svg",
+    teams: [],
   },
 ];
 
