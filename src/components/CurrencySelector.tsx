@@ -36,8 +36,7 @@ export default function CurrencySelector() {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-1.5 px-2 py-1.5 text-xs text-zinc-400 hover:text-white border border-white/[0.06] rounded-md hover:border-white/[0.12] transition-all bg-white/[0.02]"
       >
-        <span>{current.flag}</span>
-        <span className="font-medium">{currencyCode}</span>
+        <span className="text-sm leading-none" aria-hidden="true">{current.flag}</span>
         <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
@@ -59,8 +58,8 @@ export default function CurrencySelector() {
                     : "text-zinc-400 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <span>{item.flag}</span>
-                <span className="font-medium">{item.code}</span>
+                <span className="text-sm leading-none" aria-hidden="true">{item.flag}</span>
+                <span className="font-medium">{info.name}</span>
                 <span className="text-zinc-600 ml-auto">{info.symbol}</span>
               </button>
             );
