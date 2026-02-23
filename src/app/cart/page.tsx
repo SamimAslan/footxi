@@ -114,9 +114,9 @@ export default function CartPage() {
                           {item.product.name}
                         </h3>
                         <p className="text-xs text-zinc-500 mt-0.5">
-                          {item.product.kitType === "fans"
+                          {(item.selectedKitType || item.product.kitType) === "fans"
                             ? "Fans Version"
-                            : item.product.kitType === "player"
+                            : (item.selectedKitType || item.product.kitType) === "player"
                             ? "Player Version"
                             : "Retro Kit"}{" "}
                           &middot; Size {item.size}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { leagues } from "@/data/products";
+import { useEffect, useState } from "react";
 
 const leagueColors: Record<string, { bg: string; text: string }> = {
   "la-liga": { bg: "group-hover:bg-red-500/[0.03]", text: "text-red-400/60" },
@@ -37,6 +38,28 @@ const leagueColors: Record<string, { bg: string; text: string }> = {
 };
 
 export default function LeagueSection() {
+  const [leaguePreviewImages, setLeaguePreviewImages] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    async function fetchLeaguePreviews() {
+      try {
+        const res = await fetch("/api/products");
+        if (!res.ok) return;
+        const products: Array<{ leagueSlug: string; image: string }> = await res.json();
+        const map: Record<string, string> = {};
+        for (const p of products) {
+          if (!map[p.leagueSlug] && p.image && p.image.startsWith("http")) {
+            map[p.leagueSlug] = p.image;
+          }
+        }
+        setLeaguePreviewImages(map);
+      } catch {
+        // ignore preview image loading errors
+      }
+    }
+    fetchLeaguePreviews();
+  }, []);
+
   return (
     <section id="leagues" className="relative overflow-hidden bg-[#0D0F14]">
       <div className="py-28 sm:py-36 relative">
@@ -89,11 +112,21 @@ export default function LeagueSection() {
                   {/* Gold underline slide-in */}
                   <div className="absolute bottom-0 left-0 h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-gold/40 via-gold/20 to-transparent transition-all duration-700 ease-out" />
 
-                  <div className="flex items-center gap-8 sm:gap-12 relative z-10 group-hover:translate-x-2.5 transition-transform duration-500 ease-out">
-                    {/* Number */}
-                    <span className="text-[11px] font-mono text-[#9CA3AF]/30 hidden sm:block w-6 tabular-nums">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+                  <div className="flex items-center gap-5 sm:gap-7 relative z-10 group-hover:translate-x-2.5 transition-transform duration-500 ease-out">
+                    {/* League image */}
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border border-white/[0.08] bg-[#141721] flex items-center justify-center flex-shrink-0">
+                      {leaguePreviewImages[league.slug] ? (
+                        <img
+                          src={leaguePreviewImages[league.slug]}
+                          alt={`${league.name} preview`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-[10px] font-semibold text-[#9CA3AF]/40 tracking-wider">
+                          {league.name.slice(0, 2).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
 
                     {/* League info */}
                     <div>

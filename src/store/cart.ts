@@ -4,6 +4,7 @@ import { Product, Badge, PRICING, getBasePrice, getProductId } from "@/data/prod
 
 export interface CartItem {
   product: Product;
+  selectedKitType: "fans" | "player" | "retro";
   quantity: number;
   selectedBadges: Badge[];
   customName: string;
@@ -61,7 +62,8 @@ export const useCartStore = create<CartStore>()(
       },
 
       getItemPrice: (item) => {
-        let price = getBasePrice(item.product.kitType);
+        const kitType = item.selectedKitType || item.product.kitType;
+        let price = getBasePrice(kitType);
         if (item.hasCustomNameNumber) {
           price += PRICING.customNameNumber;
         }

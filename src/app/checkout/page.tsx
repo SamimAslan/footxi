@@ -99,7 +99,8 @@ export default function CheckoutPage() {
 
     try {
       const orderItems = items.map((item) => {
-        let unitPrice = getBasePrice(item.product.kitType);
+        const kitType = item.selectedKitType || item.product.kitType;
+        let unitPrice = getBasePrice(kitType);
         if (item.hasCustomNameNumber) unitPrice += PRICING.customNameNumber;
         for (const badge of item.selectedBadges) {
           unitPrice += badge.price;
@@ -111,7 +112,7 @@ export default function CheckoutPage() {
           team: item.product.team,
           league: item.product.league,
           image: item.product.image || "",
-          kitType: item.product.kitType,
+          kitType,
           type: item.product.type,
           size: item.size,
           quantity: item.quantity,
@@ -358,7 +359,7 @@ export default function CheckoutPage() {
                         {item.product.team}
                       </p>
                       <p className="text-[10px] text-zinc-600">
-                        {item.product.kitType.toUpperCase()} &middot; Size{" "}
+                        {(item.selectedKitType || item.product.kitType).toUpperCase()} &middot; Size{" "}
                         {item.size} &middot; x{item.quantity}
                       </p>
                     </div>

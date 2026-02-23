@@ -40,10 +40,14 @@ export async function PUT(
 
     const { productId } = await params;
     const body = await req.json();
+    const normalizedBody = {
+      ...body,
+      kitType: body?.type === "retro" ? "retro" : "fans",
+    };
 
     await connectDB();
 
-    const product = await ProductModel.findByIdAndUpdate(productId, body, {
+    const product = await ProductModel.findByIdAndUpdate(productId, normalizedBody, {
       new: true,
     }).lean();
 

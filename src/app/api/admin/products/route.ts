@@ -56,10 +56,14 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
+    const normalizedBody = {
+      ...body,
+      kitType: body?.type === "retro" ? "retro" : "fans",
+    };
 
     await connectDB();
 
-    const product = await ProductModel.create(body);
+    const product = await ProductModel.create(normalizedBody);
 
     return NextResponse.json(product, { status: 201 });
   } catch (error) {

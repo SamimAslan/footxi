@@ -27,6 +27,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState("M");
+  const [selectedKitType, setSelectedKitType] = useState<"fans" | "player" | "retro">("fans");
   const [quantity, setQuantity] = useState(1);
   const [selectedBadges, setSelectedBadges] = useState<Badge[]>([]);
   const [hasCustom, setHasCustom] = useState(false);
@@ -52,6 +53,15 @@ export default function ProductPage() {
     fetchProduct();
   }, [productId]);
 
+  useEffect(() => {
+    if (!product) return;
+    if (product.type === "retro") {
+      setSelectedKitType("retro");
+    } else if (selectedKitType === "retro") {
+      setSelectedKitType("fans");
+    }
+  }, [product, selectedKitType]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -76,7 +86,11 @@ export default function ProductPage() {
   }
 
   const sizes = product.sizes || ["S", "M", "L", "XL", "XXL"];
-  const basePrice = getBasePrice(product.kitType);
+  const availableKitTypes =
+    product.type === "retro"
+      ? (["retro"] as const)
+      : (["fans", "player"] as const);
+  const basePrice = getBasePrice(selectedKitType);
 
   const toggleBadge = (badge: Badge) => {
     setSelectedBadges((prev) => {
@@ -98,6 +112,7 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     addItem({
       product,
+      selectedKitType,
       quantity,
       selectedBadges,
       customName: hasCustom ? customName : "",
@@ -175,14 +190,14 @@ export default function ProductPage() {
 
               {/* Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
-                {product.kitType === "player" && (
-                  <span className="px-3 py-1 text-xs font-semibold bg-white/10 text-white rounded-full backdrop-blur-sm">
-                    PLAYER VERSION
-                  </span>
-                )}
-                {product.kitType === "retro" && (
+                {selectedKitType === "retro" && (
                   <span className="px-3 py-1 text-xs font-semibold bg-amber-400/20 text-amber-400 rounded-full backdrop-blur-sm">
                     RETRO
+                  </span>
+                )}
+                {selectedKitType === "player" && (
+                  <span className="px-3 py-1 text-xs font-semibold bg-white/10 text-white rounded-full backdrop-blur-sm">
+                    PLAYER VERSION
                   </span>
                 )}
                 {product.isNewArrival && (
@@ -244,9 +259,9 @@ export default function ProductPage() {
                 {product.name}
               </h1>
               <p className="mt-1 text-zinc-500">
-                {product.kitType === "fans"
+                {selectedKitType === "fans"
                   ? "Fans Version"
-                  : product.kitType === "player"
+                  : selectedKitType === "player"
                   ? "Player Version"
                   : "Retro Kit"}
               </p>
@@ -266,6 +281,30 @@ export default function ProductPage() {
 
             {/* Divider */}
             <div className="border-t border-white/5" />
+
+            {/* Kit Version */}
+            <div>
+              <h3 className="text-sm font-medium text-white mb-3">Version</h3>
+              <div className="flex gap-2">
+                {availableKitTypes.map((kitType) => (
+                  <button
+                    key={kitType}
+                    onClick={() => setSelectedKitType(kitType)}
+                    className={`px-4 h-11 rounded-lg text-sm font-medium transition-all ${
+                      selectedKitType === kitType
+                        ? "bg-amber-400 text-black"
+                        : "bg-zinc-900 text-zinc-400 border border-white/5 hover:border-white/20"
+                    }`}
+                  >
+                    {kitType === "fans"
+                      ? `Fans (${formatPrice(PRICING.fans)})`
+                      : kitType === "player"
+                      ? `Player (${formatPrice(PRICING.player)})`
+                      : `Retro (${formatPrice(PRICING.retro)})`}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Size */}
             <div>

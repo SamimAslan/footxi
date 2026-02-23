@@ -52,12 +52,6 @@ const TYPES: { value: ProductFormData["type"]; label: string }[] = [
   { value: "third", label: "Third" },
   { value: "retro", label: "Retro" },
 ];
-const KIT_TYPES: { value: ProductFormData["kitType"]; label: string; desc: string }[] = [
-  { value: "fans", label: "Fans", desc: "CHF 25" },
-  { value: "player", label: "Player", desc: "CHF 30" },
-  { value: "retro", label: "Retro", desc: "CHF 33" },
-];
-
 interface Props {
   initialData?: ProductFormData & { _id?: string };
   isEditing?: boolean;
@@ -206,10 +200,15 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         : "/api/admin/products";
       const method = isEditing ? "PUT" : "POST";
 
+      const payload: ProductFormData = {
+        ...form,
+        kitType: form.type === "retro" ? "retro" : "fans",
+      };
+
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -576,35 +575,12 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               </div>
             </div>
 
-            {/* Kit Type */}
-            <div>
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-3">
-                Kit Version (determines price)
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {KIT_TYPES.map((kt) => (
-                  <button
-                    key={kt.value}
-                    onClick={() => update({ kitType: kt.value })}
-                    className={`px-4 py-4 rounded-lg border transition-all text-center ${
-                      form.kitType === kt.value
-                        ? "bg-amber-400/10 border-amber-400/30"
-                        : "bg-zinc-800/50 border-white/5 hover:border-white/10"
-                    }`}
-                  >
-                    <p
-                      className={`text-sm font-semibold ${
-                        form.kitType === kt.value
-                          ? "text-amber-400"
-                          : "text-zinc-300"
-                      }`}
-                    >
-                      {kt.label}
-                    </p>
-                    <p className="text-xs text-zinc-500 mt-1">{kt.desc}</p>
-                  </button>
-                ))}
-              </div>
+            <div className="rounded-lg border border-white/10 bg-zinc-900/40 px-4 py-3">
+              <p className="text-xs text-zinc-400">
+                Kit versions are now automatic: customers can choose{" "}
+                <span className="text-white font-medium">Fans / Player</span> on
+                product detail. Retro kits stay Retro only.
+              </p>
             </div>
           </div>
         </div>
