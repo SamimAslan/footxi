@@ -101,7 +101,17 @@ export const leagues: League[] = [
     slug: "others",
     country: "Mixed",
     logo: "/globe.svg",
-    teams: [],
+    teams: [
+      "Ajax",
+      "Benfica",
+      "Besiktas",
+      "Club Brugge",
+      "Fenerbahce",
+      "Galatasaray",
+      "Olympiakos",
+      "PSV",
+      "Sporting CP",
+    ],
   },
 ];
 
