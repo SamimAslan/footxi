@@ -2,41 +2,17 @@
 
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Product } from "@/data/products";
 
 export default function HeroSection() {
-  const [heroProduct, setHeroProduct] = useState<Product | null>(null);
-
-  useEffect(() => {
-    async function fetchHeroProduct() {
-      try {
-        const res = await fetch("/api/products/search?q=Inter Milan away");
-        if (res.ok) {
-          const data: Product[] = await res.json();
-          const target = data.find(
-            (p) => p.team.toLowerCase().includes("inter") && p.type === "away"
-          );
-          if (target) setHeroProduct(target);
-        }
-      } catch {
-        /* ignore */
-      }
-    }
-    fetchHeroProduct();
-  }, []);
-
   return (
     <section className="relative min-h-[86vh] sm:min-h-[88vh] flex items-end overflow-hidden bg-[#0D0F14]">
       {/* Background */}
       <div className="absolute inset-0">
-        {heroProduct?.image ? (
-          <img
-            src={heroProduct.image}
-            alt=""
-            className="absolute right-[-8%] sm:right-[-4%] lg:right-0 top-0 h-full w-auto object-cover opacity-45 sm:opacity-55"
-          />
-        ) : null}
+        <img
+          src="/hero-entry-bg.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-75"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0D0F14]/96 via-[#0D0F14]/78 to-[#0D0F14]/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F14] via-transparent to-[#0D0F14]/40" />
         <div className="absolute left-0 right-0 bottom-0 h-24 bg-gradient-to-t from-[#0D0F14] to-transparent" />

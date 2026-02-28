@@ -77,6 +77,29 @@ export default function Footer() {
                 support@footxi.com
               </a>
             </div>
+            <div className="mt-5">
+              <p className="text-[11px] font-semibold text-[#F3F4F6] uppercase tracking-[0.2em]">
+                Follow Us
+              </p>
+              <div className="mt-3 flex items-center gap-3">
+                <a
+                  href="https://www.instagram.com/footxi.official/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-3 py-1.5 border border-white/[0.08] text-[12px] text-[#9CA3AF]/70 hover:text-[#F3F4F6] hover:border-gold/30 transition-all duration-300"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://www.tiktok.com/@footxi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-3 py-1.5 border border-white/[0.08] text-[12px] text-[#9CA3AF]/70 hover:text-[#F3F4F6] hover:border-gold/30 transition-all duration-300"
+                >
+                  TikTok
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Leagues */}

@@ -1,17 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { Product, getBasePrice, getProductId } from "@/data/products";
+import { PRICING, Product, getBasePrice, getProductId } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
 
 interface ProductCardProps {
   product: Product;
 }
 
+function getEstimatedDeliveryWindow(): string {
+  const [minDays, maxDays] = PRICING.cargo.standard.days
+    .split("-")
+    .map((v) => Number(v.trim()));
+
+  if (!Number.isFinite(minDays) || !Number.isFinite(maxDays)) {
+    return `${PRICING.cargo.standard.days} days`;
+  }
+
+  const now = new Date();
+  const minDate = new Date(now);
+  const maxDate = new Date(now);
+  minDate.setDate(now.getDate() + minDays);
+  maxDate.setDate(now.getDate() + maxDays);
+
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+
+  return `${fmt(minDate)} - ${fmt(maxDate)}`;
+}
+
 export default function ProductCard({ product }: ProductCardProps) {
   const price = getBasePrice(product.kitType);
   const { formatPrice } = useCurrency();
   const productId = getProductId(product);
+  const estimatedDelivery = getEstimatedDeliveryWindow();
 
   return (
     <Link
@@ -88,6 +110,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             {formatPrice(price)}
           </span>
         </div>
+        <p className="mt-2 text-[10px] text-[#9CA3AF]/45 tracking-[0.08em] uppercase">
+          Estimated delivery: {estimatedDelivery}
+        </p>
       </div>
     </Link>
   );
