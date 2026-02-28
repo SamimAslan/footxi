@@ -30,9 +30,12 @@ export const metadata: Metadata = {
     "bundesliga",
   ],
   icons: {
-    icon: "/favicon.png?v=2",
-    shortcut: "/favicon.png?v=2",
-    apple: "/favicon.png?v=2",
+    icon: [
+      { url: "/icon.png?v=3", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.png?v=3", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.png?v=3",
+    apple: "/apple-icon.png?v=3",
   },
 };
 
