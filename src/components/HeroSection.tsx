@@ -11,7 +11,7 @@ export default function HeroSection() {
         <img
           src="/hero-entry-bg.png"
           alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-75"
+          className="absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-[68%_center] lg:object-[72%_center] opacity-75"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0D0F14]/96 via-[#0D0F14]/78 to-[#0D0F14]/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F14] via-transparent to-[#0D0F14]/40" />
