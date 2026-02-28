@@ -56,7 +56,7 @@ export default function FeaturedProducts() {
 
   return (
     <section className="relative bg-[#0D0F14]">
-      <div className="relative py-28 sm:py-36">
+      <div className="relative pt-28 pb-14 sm:pt-36 sm:pb-20">
         {/* Subtle bg gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.01] via-transparent to-transparent" />
 

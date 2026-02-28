@@ -1,7 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import Marquee from "@/components/Marquee";
-import LeagueSection from "@/components/LeagueSection";
 import FeaturedProducts from "@/components/FeaturedProducts";
+import MiniLeagueGrid from "@/components/MiniLeagueGrid";
 import PricingSection from "@/components/PricingSection";
 
 export default function Home() {
@@ -9,8 +9,8 @@ export default function Home() {
     <>
       <HeroSection />
       <Marquee />
-      <LeagueSection />
       <FeaturedProducts />
+      <MiniLeagueGrid />
       <PricingSection />
     </>
   );
