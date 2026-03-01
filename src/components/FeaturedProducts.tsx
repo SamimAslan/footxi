@@ -16,24 +16,8 @@ export default function FeaturedProducts() {
         if (!res.ok) return;
         const all: Product[] = await res.json();
 
-        const picks = [
-          { team: "AC Milan", type: "home" },
-          { team: "Arsenal", type: "home" },
-          { team: "Inter Milan", type: "away" },
-          { team: "Chelsea", type: "away" },
-          { team: "Juventus", type: "home" },
-          { team: "Liverpool", type: "home" },
-          { team: "Barcelona", type: "home" },
-          { team: "Napoli", type: "away" },
-        ];
-
-        const selected: Product[] = [];
-        for (const pick of picks) {
-          const found = all.find(
-            (p) => p.team === pick.team && p.type === pick.type
-          );
-          if (found) selected.push(found);
-        }
+        const fanMade = all.filter((p) => p.leagueSlug === "fan-made");
+        const selected: Product[] = fanMade.slice(0, 8);
 
         if (selected.length < 8) {
           for (const p of all) {
@@ -77,7 +61,7 @@ export default function FeaturedProducts() {
               </h2>
             </div>
             <Link
-              href="/league/premier-league"
+              href="/league/fan-made"
               className="hidden sm:inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#9CA3AF] hover:text-gold transition-colors duration-300 uppercase gold-underline"
             >
               View all
@@ -95,7 +79,7 @@ export default function FeaturedProducts() {
           {/* Mobile CTA */}
           <div className="mt-12 text-center sm:hidden">
             <Link
-              href="/league/premier-league"
+              href="/league/fan-made"
               className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-gold uppercase"
             >
               View all kits

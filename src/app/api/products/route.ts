@@ -14,9 +14,7 @@ export async function GET(req: NextRequest) {
     const filter: Record<string, unknown> = { isActive: true };
     if (league) {
       if (league === "others") {
-        filter.leagueSlug = {
-          $nin: ["la-liga", "premier-league", "serie-a", "bundesliga", "ligue-1", "super-lig"],
-        };
+        filter.leagueSlug = "others";
       } else {
         filter.leagueSlug = league;
       }
