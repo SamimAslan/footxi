@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   Loader2,
   Plus,
+  Upload,
   Search,
   Pencil,
   Trash2,
@@ -45,6 +46,9 @@ export default function AdminProductsPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [csvUploading, setCsvUploading] = useState(false);
+  const [csvResult, setCsvResult] = useState<string>("");
+  const [csvError, setCsvError] = useState<string>("");
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -84,6 +88,43 @@ export default function AdminProductsPage() {
     }
   };
 
+  const handleCsvUpload = async (file: File) => {
+    if (!file.name.toLowerCase().endsWith(".csv")) {
+      setCsvError("Please upload a .csv file");
+      setCsvResult("");
+      return;
+    }
+
+    setCsvUploading(true);
+    setCsvError("");
+    setCsvResult("");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/admin/products/import-csv", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setCsvError(data.error || "CSV import failed");
+        return;
+      }
+
+      setCsvResult(
+        `Imported. Created: ${data.created}, Updated: ${data.updated}, Skipped: ${data.skipped}`
+      );
+      fetchProducts();
+    } catch {
+      setCsvError("CSV import failed");
+    } finally {
+      setCsvUploading(false);
+    }
+  };
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1400px] mx-auto">
       {/* Header */}
@@ -92,13 +133,52 @@ export default function AdminProductsPage() {
           <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Products</h1>
           <p className="text-sm text-zinc-500 mt-1">{total} total products</p>
         </div>
-        <Link
-          href="/admin/products/new"
-          className="flex items-center gap-2 px-4 py-2.5 bg-amber-400 text-black font-semibold text-sm rounded-lg hover:bg-amber-300 transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Add Product
-        </Link>
+        <div className="flex items-center gap-2">
+          <label className="flex items-center gap-2 px-4 py-2.5 bg-zinc-900 border border-white/[0.08] text-zinc-200 font-semibold text-sm rounded-lg hover:border-white/[0.16] transition-colors cursor-pointer">
+            {csvUploading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Upload className="w-4 h-4" />
+            )}
+            Upload CSV
+            <input
+              type="file"
+              accept=".csv,text/csv"
+              className="hidden"
+              disabled={csvUploading}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleCsvUpload(file);
+                e.currentTarget.value = "";
+              }}
+            />
+          </label>
+
+          <Link
+            href="/admin/products/new"
+            className="flex items-center gap-2 px-4 py-2.5 bg-amber-400 text-black font-semibold text-sm rounded-lg hover:bg-amber-300 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Add Product
+          </Link>
+        </div>
+      </div>
+
+      <div className="mb-5 space-y-2">
+        <p className="text-xs text-zinc-500">
+          CSV columns supported: product_name, team_name, category, sizes, badges,
+          main_image_url, image_url_2, all_image_urls.
+        </p>
+        {csvResult && (
+          <div className="text-xs px-3 py-2 rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-300">
+            {csvResult}
+          </div>
+        )}
+        {csvError && (
+          <div className="text-xs px-3 py-2 rounded-lg border border-red-500/25 bg-red-500/10 text-red-300">
+            {csvError}
+          </div>
+        )}
       </div>
 
       {/* Search & Filters */}
