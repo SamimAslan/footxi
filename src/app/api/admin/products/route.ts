@@ -71,3 +71,32 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user || session.user.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const body = await req.json().catch(() => ({}));
+    const ids = Array.isArray(body?.ids)
+      ? body.ids.filter((id: unknown) => typeof id === "string" && id.trim())
+      : [];
+
+    if (ids.length === 0) {
+      return NextResponse.json({ error: "No product IDs provided" }, { status: 400 });
+    }
+
+    await connectDB();
+    const result = await ProductModel.deleteMany({ _id: { $in: ids } });
+
+    return NextResponse.json({
+      message: "Products deleted",
+      deletedCount: result.deletedCount || 0,
+    });
+  } catch (error) {
+    console.error("Error deleting products:", error);
+    return NextResponse.json({ error: "Failed to delete products" }, { status: 500 });
+  }
+}

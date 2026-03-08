@@ -46,6 +46,8 @@ export default function AdminProductsPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [csvUploading, setCsvUploading] = useState(false);
   const [csvResult, setCsvResult] = useState<string>("");
   const [csvError, setCsvError] = useState<string>("");
@@ -61,7 +63,11 @@ export default function AdminProductsPage() {
 
       const res = await fetch(`/api/admin/products?${params}`);
       const data = await res.json();
-      setProducts(data.products || []);
+      const nextProducts: ProductRow[] = data.products || [];
+      setProducts(nextProducts);
+      setSelectedIds((prev) =>
+        prev.filter((id) => nextProducts.some((p) => p._id === id))
+      );
       setTotal(data.total || 0);
       setTotalPages(data.totalPages || 1);
     } catch {
@@ -85,6 +91,54 @@ export default function AdminProductsPage() {
       // ignore
     } finally {
       setDeleting(null);
+    }
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
+    );
+  };
+
+  const toggleSelectAllOnPage = () => {
+    const pageIds = products.map((p) => p._id);
+    const allSelected =
+      pageIds.length > 0 && pageIds.every((id) => selectedIds.includes(id));
+    if (allSelected) {
+      setSelectedIds((prev) => prev.filter((id) => !pageIds.includes(id)));
+    } else {
+      setSelectedIds((prev) => [...new Set([...prev, ...pageIds])]);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    if (
+      !window.confirm(
+        `Delete ${selectedIds.length} selected product(s)? This cannot be undone.`
+      )
+    ) {
+      return;
+    }
+
+    setBulkDeleting(true);
+    try {
+      const res = await fetch("/api/admin/products", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: selectedIds }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setCsvError(data.error || "Bulk delete failed");
+        return;
+      }
+      setSelectedIds([]);
+      fetchProducts();
+    } catch {
+      setCsvError("Bulk delete failed");
+    } finally {
+      setBulkDeleting(false);
     }
   };
 
@@ -243,6 +297,33 @@ export default function AdminProductsPage() {
         </div>
       ) : (
         <>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <label className="inline-flex items-center gap-2 text-xs text-zinc-400">
+              <input
+                type="checkbox"
+                checked={
+                  products.length > 0 &&
+                  products.every((p) => selectedIds.includes(p._id))
+                }
+                onChange={toggleSelectAllOnPage}
+                className="h-4 w-4 rounded border-white/20 bg-zinc-900 text-amber-400 focus:ring-amber-400/40"
+              />
+              Select all on page
+            </label>
+            <button
+              onClick={handleBulkDelete}
+              disabled={selectedIds.length === 0 || bulkDeleting}
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded-lg border border-red-500/20 bg-red-500/10 text-red-300 hover:bg-red-500/15 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              {bulkDeleting ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Trash2 className="w-3.5 h-3.5" />
+              )}
+              Delete selected ({selectedIds.length})
+            </button>
+          </div>
+
           <div className="bg-[#111114] rounded-2xl border border-white/[0.06] overflow-hidden">
             {/* Header */}
             <div className="hidden lg:grid grid-cols-12 gap-4 px-5 py-3 bg-[#0d0d10] border-b border-white/[0.06] text-[10px] font-semibold text-zinc-600 uppercase tracking-wider">
@@ -262,10 +343,20 @@ export default function AdminProductsPage() {
                 className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 px-5 py-4 border-b border-white/[0.04] hover:bg-white/[0.015] transition-all duration-200 items-center"
               >
                 <div className="lg:col-span-3">
-                  <p className="text-sm font-medium text-white truncate">
-                    {product.name}
-                  </p>
-                  <p className="text-[10px] text-zinc-600">{product.season}</p>
+                  <div className="flex items-start gap-2.5">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(product._id)}
+                      onChange={() => toggleSelectOne(product._id)}
+                      className="mt-0.5 h-4 w-4 rounded border-white/20 bg-zinc-900 text-amber-400 focus:ring-amber-400/40"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-white truncate">
+                        {product.name}
+                      </p>
+                      <p className="text-[10px] text-zinc-600">{product.season}</p>
+                    </div>
+                  </div>
                 </div>
                 <div className="lg:col-span-2">
                   <p className="text-xs text-zinc-300">{product.team}</p>
