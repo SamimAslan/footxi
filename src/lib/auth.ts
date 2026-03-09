@@ -91,6 +91,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.role = (user as { role: string }).role || "user";
         token.id = user.id;
+        if (user.image) {
+          token.picture = user.image;
+        }
       }
       if (profile?.picture) {
         token.picture = profile.picture as string;

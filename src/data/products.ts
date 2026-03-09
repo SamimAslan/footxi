@@ -11,6 +11,8 @@ export interface Product {
   brand?: string;
   league: string;
   leagueSlug: string;
+  shopCategory?: string;
+  extraCategories?: string[];
   season: string;
   type: "home" | "away" | "third" | "retro";
   kitType: "fans" | "player" | "retro";
@@ -36,6 +38,16 @@ export interface League {
   logo: string;
   teams: string[];
 }
+
+export const shopCategories = [
+  { name: "Jersey", slug: "jersey" },
+  { name: "Windbreaker", slug: "windbreaker" },
+  { name: "Jackets", slug: "jackets" },
+  { name: "Hoody", slug: "hoody" },
+  { name: "Tracksuit", slug: "tracksuit" },
+  { name: "Kids", slug: "kids" },
+  { name: "NBA & NFL", slug: "nba-nfl" },
+];
 
 // All prices in CHF (Swiss Franc) - converted to user's currency at display time
 export const PRICING = {
@@ -120,6 +132,26 @@ export const leagues: League[] = [
     ],
   },
   {
+    name: "International Teams",
+    slug: "international-teams",
+    country: "National Teams",
+    logo: "/leagues/international-teams.png",
+    teams: [
+      "Argentina",
+      "Brazil",
+      "Germany",
+      "Italy",
+      "France",
+      "Spain",
+      "Portugal",
+      "England",
+      "Mexico",
+      "Japan",
+      "Turkey",
+      "USA",
+    ],
+  },
+  {
     name: "Others",
     slug: "others",
     country: "Mixed",
@@ -127,14 +159,67 @@ export const leagues: League[] = [
     teams: [
       "Ajax",
       "Benfica",
-      "Besiktas",
       "Club Brugge",
-      "Fenerbahce",
-      "Galatasaray",
       "Olympiakos",
       "PSV",
       "Sporting CP",
     ],
+  },
+  {
+    name: "NBA & NFL",
+    slug: "nba-nfl",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
+  },
+  {
+    name: "Windbreaker",
+    slug: "windbreaker",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
+  },
+  {
+    name: "Jackets",
+    slug: "jackets",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
+  },
+  {
+    name: "Hoody",
+    slug: "hoody",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
+  },
+  {
+    name: "Tracksuit",
+    slug: "tracksuit",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
+  },
+  {
+    name: "Kids",
+    slug: "kids",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
+  },
+  {
+    name: "Jersey",
+    slug: "jersey",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
+  },
+  {
+    name: "Retro Kits",
+    slug: "retro-kits",
+    country: "Collections",
+    logo: "/globe.svg",
+    teams: [],
   },
 ];
 

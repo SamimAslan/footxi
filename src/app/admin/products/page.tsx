@@ -256,11 +256,11 @@ export default function AdminProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Products</h1>
-          <p className="text-sm text-zinc-500 mt-1">{total} total products</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] tracking-tight">Products</h1>
+          <p className="text-sm text-[var(--muted)] mt-1">{total} total products</p>
         </div>
         <div className="flex items-center gap-2">
-          <label className="flex items-center gap-2 px-4 py-2.5 bg-zinc-900 border border-white/[0.08] text-zinc-200 font-semibold text-sm rounded-lg hover:border-white/[0.16] transition-colors cursor-pointer">
+          <label className="flex items-center gap-2 px-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] font-semibold text-sm rounded-lg hover:bg-[var(--surface-muted)] transition-colors cursor-pointer">
             {csvUploading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
@@ -291,7 +291,7 @@ export default function AdminProductsPage() {
       </div>
 
       <div className="mb-5 space-y-2">
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-[var(--muted)]">
           CSV columns supported: product_name, category, brand, sizes, main_image_url,
           image_url_2, image_url_3, image_url_4, image_url_5, all_image_urls.
         </p>
@@ -315,7 +315,7 @@ export default function AdminProductsPage() {
       {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted)]" />
           <input
             type="text"
             value={search}
@@ -324,7 +324,7 @@ export default function AdminProductsPage() {
               setPage(1);
             }}
             placeholder="Search by name or team..."
-            className="w-full pl-10 pr-4 py-2.5 bg-[#111114] border border-white/[0.06] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
           />
         </div>
         <input
@@ -335,10 +335,10 @@ export default function AdminProductsPage() {
             setPage(1);
           }}
           placeholder="Filter by brand..."
-          className="sm:w-52 px-4 py-2.5 bg-[#111114] border border-white/[0.06] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+          className="sm:w-52 px-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
         />
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-zinc-500" />
+          <Filter className="w-4 h-4 text-[var(--muted)]" />
           {["", "fans", "player", "retro"].map((kt) => (
             <button
               key={kt}
@@ -349,7 +349,7 @@ export default function AdminProductsPage() {
               className={`px-3 py-2 text-xs font-medium uppercase tracking-wider rounded-lg transition-all ${
                 kitTypeFilter === kt
                   ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
-                  : "bg-zinc-900/60 text-zinc-500 border border-white/[0.06] hover:text-zinc-300"
+                  : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:text-[var(--foreground)]"
               }`}
             >
               {kt || "All"}
@@ -364,10 +364,10 @@ export default function AdminProductsPage() {
           <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
         </div>
       ) : products.length === 0 ? (
-        <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-16 text-center">
-          <Shirt className="w-10 h-10 text-zinc-800 mx-auto mb-3" />
-          <p className="text-zinc-400 mb-1">No products found</p>
-          <p className="text-xs text-zinc-600 mb-6">
+        <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-16 text-center">
+          <Shirt className="w-10 h-10 text-[var(--muted)] mx-auto mb-3" />
+          <p className="text-[var(--foreground)] mb-1">No products found</p>
+          <p className="text-xs text-[var(--muted)] mb-6">
             {search || kitTypeFilter
               ? "Try different filters"
               : "Start by adding your first product"}
@@ -385,7 +385,7 @@ export default function AdminProductsPage() {
       ) : (
         <>
           <div className="mb-3 flex items-center justify-between gap-3">
-            <label className="inline-flex items-center gap-2 text-xs text-zinc-400">
+            <label className="inline-flex items-center gap-2 text-xs text-[var(--muted)]">
               <input
                 type="checkbox"
                 checked={
@@ -393,7 +393,7 @@ export default function AdminProductsPage() {
                   products.every((p) => selectedIds.includes(p._id))
                 }
                 onChange={toggleSelectAllOnPage}
-                className="h-4 w-4 rounded border-white/20 bg-zinc-900 text-amber-400 focus:ring-amber-400/40"
+                className="h-4 w-4 rounded border-[color:var(--border)] bg-[var(--surface)] text-amber-400 focus:ring-amber-400/40"
               />
               Select all on page
             </label>
@@ -411,9 +411,9 @@ export default function AdminProductsPage() {
             </button>
           </div>
 
-          <div className="bg-[#111114] rounded-2xl border border-white/[0.06] overflow-hidden">
+          <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] overflow-hidden">
             {/* Header */}
-            <div className="hidden lg:grid grid-cols-12 gap-4 px-5 py-3 bg-[#0d0d10] border-b border-white/[0.06] text-[10px] font-semibold text-zinc-600 uppercase tracking-wider">
+            <div className="hidden lg:grid grid-cols-12 gap-4 px-5 py-3 bg-[var(--surface-muted)] border-b border-[color:var(--border)] text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider">
               <div className="col-span-3">Product</div>
               <div className="col-span-2">Team / League</div>
               <div className="col-span-1">Type</div>
@@ -427,7 +427,7 @@ export default function AdminProductsPage() {
             {products.map((product) => (
               <div
                 key={product._id}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 px-5 py-4 border-b border-white/[0.04] hover:bg-white/[0.015] transition-all duration-200 items-center"
+                className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 px-5 py-4 border-b border-[color:var(--border)] hover:bg-[var(--surface-muted)] transition-all duration-200 items-center"
               >
                 <div className="lg:col-span-3">
                   <div className="flex items-start gap-2.5">
@@ -435,25 +435,25 @@ export default function AdminProductsPage() {
                       type="checkbox"
                       checked={selectedIds.includes(product._id)}
                       onChange={() => toggleSelectOne(product._id)}
-                      className="mt-0.5 h-4 w-4 rounded border-white/20 bg-zinc-900 text-amber-400 focus:ring-amber-400/40"
+                      className="mt-0.5 h-4 w-4 rounded border-[color:var(--border)] bg-[var(--surface)] text-amber-400 focus:ring-amber-400/40"
                     />
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-white truncate">
+                      <p className="text-sm font-medium text-[var(--foreground)] truncate">
                         {product.name}
                       </p>
-                      <p className="text-[10px] text-zinc-600">{product.season}</p>
+                      <p className="text-[10px] text-[var(--muted)]">{product.season}</p>
                     </div>
                   </div>
                 </div>
                 <div className="lg:col-span-2">
-                  <p className="text-xs text-zinc-300">{product.team}</p>
-                  <p className="text-[10px] text-zinc-600">
+                  <p className="text-xs text-[var(--foreground)]">{product.team}</p>
+                  <p className="text-[10px] text-[var(--muted)]">
                     {product.league}
                     {product.brand ? ` · ${product.brand}` : ""}
                   </p>
                 </div>
                 <div className="lg:col-span-1">
-                  <span className="text-xs text-zinc-400 capitalize">
+                  <span className="text-xs text-[var(--muted)] capitalize">
                     {product.type}
                   </span>
                 </div>
@@ -471,7 +471,7 @@ export default function AdminProductsPage() {
                     {product.sizes.map((s) => (
                       <span
                         key={s}
-                        className="px-1.5 py-0.5 text-[9px] bg-zinc-800 text-zinc-400 border border-white/5"
+                        className="px-1.5 py-0.5 text-[9px] bg-[var(--surface-muted)] text-[var(--muted)] border border-[color:var(--border)]"
                       >
                         {s}
                       </span>
@@ -483,11 +483,11 @@ export default function AdminProductsPage() {
                     {product.isActive ? (
                       <Eye className="w-3 h-3 text-green-400" />
                     ) : (
-                      <EyeOff className="w-3 h-3 text-zinc-600" />
+                      <EyeOff className="w-3 h-3 text-[var(--muted)]" />
                     )}
                     <span
                       className={`text-[10px] ${
-                        product.isActive ? "text-green-400" : "text-zinc-600"
+                        product.isActive ? "text-green-500" : "text-[var(--muted)]"
                       }`}
                     >
                       {product.isActive ? "Active" : "Hidden"}
@@ -509,7 +509,7 @@ export default function AdminProductsPage() {
                 <div className="lg:col-span-2 flex items-center justify-end gap-2">
                   <Link
                     href={`/admin/products/${product._id}`}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-zinc-800/60 border border-white/[0.06] text-zinc-300 hover:text-white hover:border-white/[0.12] transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-all"
                   >
                     <Pencil className="w-3 h-3" />
                     Edit
@@ -517,7 +517,7 @@ export default function AdminProductsPage() {
                   <button
                     onClick={() => handleDelete(product._id)}
                     disabled={deleting === product._id}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-zinc-800/60 border border-white/[0.06] text-red-400 hover:bg-red-500/10 hover:border-red-500/20 transition-all disabled:opacity-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-red-500 hover:bg-red-500/10 hover:border-red-500/20 transition-all disabled:opacity-50"
                   >
                     {deleting === product._id ? (
                       <Loader2 className="w-3 h-3 animate-spin" />
@@ -537,17 +537,17 @@ export default function AdminProductsPage() {
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 text-xs rounded-lg bg-[#111114] border border-white/[0.06] text-zinc-400 hover:text-white hover:border-white/[0.12] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 Previous
               </button>
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-[var(--muted)]">
                 Page {page} of {totalPages}
               </span>
               <button
                 onClick={() => setPage(Math.min(totalPages, page + 1))}
                 disabled={page === totalPages}
-                className="px-4 py-2 text-xs rounded-lg bg-[#111114] border border-white/[0.06] text-zinc-400 hover:text-white hover:border-white/[0.12] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 Next
               </button>

@@ -39,30 +39,30 @@ export default function FeaturedProducts() {
   if (products.length === 0) return null;
 
   return (
-    <section className="relative bg-[#0D0F14]">
+    <section className="relative bg-[var(--background)]">
       <div className="relative pt-28 pb-14 sm:pt-36 sm:pb-20">
         {/* Subtle bg gradient */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.01] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/[0.07] via-transparent to-transparent" />
 
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           {/* Header */}
-          <div className="flex items-end justify-between mb-16">
+          <div className="flex items-end justify-between mb-12">
             <div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="h-px w-14 bg-gold" />
                 <span className="text-[11px] font-semibold tracking-[0.3em] text-gold uppercase">
-                  Top Picks
+                  Trending Now
                 </span>
               </div>
-              <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-[#F3F4F6] tracking-[-0.03em] leading-[0.9]">
-                Featured
+              <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--foreground)] tracking-[-0.03em] leading-[0.95]">
+                Best Sellers
                 <br />
-                <span className="text-[#9CA3AF]/40">Kits</span>
+                <span className="text-[var(--muted)]">This Week</span>
               </h2>
             </div>
             <Link
               href="/league/fan-made"
-              className="hidden sm:inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#9CA3AF] hover:text-gold transition-colors duration-300 uppercase gold-underline"
+              className="hidden sm:inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[var(--muted)] hover:text-gold transition-colors duration-300 uppercase gold-underline"
             >
               View all
               <ArrowRight className="w-3.5 h-3.5" />

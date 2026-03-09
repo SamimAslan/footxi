@@ -243,15 +243,15 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/admin/products"
-          className="p-2 text-zinc-400 hover:text-white transition-colors"
+          className="p-2 text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-[var(--foreground)]">
             {isEditing ? "Edit Product" : "Add New Product"}
           </h1>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm text-[var(--muted)] mt-1">
             {isEditing
               ? "Update product details"
               : "Fill in the details to create a new jersey listing"}
@@ -267,35 +267,35 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
 
       <div className="space-y-8">
         {/* Basic Info */}
-        <div className="bg-[#111114] border border-white/[0.06] p-5 sm:p-6 rounded-2xl">
-          <h2 className="text-sm font-semibold text-white mb-5 flex items-center gap-2">
+        <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
+          <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
             <Shirt className="w-4 h-4 text-amber-400" />
             Basic Information
           </h2>
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                 Product Name *
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => update({ name: e.target.value })}
-                className="w-full px-4 py-3 bg-zinc-800/50 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
                 placeholder="e.g. Barcelona Home Kit 25/26"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                 <Globe className="w-3 h-3 inline mr-1" />
                 League *
               </label>
               <select
                 value={form.leagueSlug}
                 onChange={(e) => selectLeague(e.target.value)}
-                className="w-full px-4 py-3 bg-zinc-800/50 border border-white/10 text-white text-sm focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg appearance-none"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg appearance-none"
               >
                 <option value="">Select league</option>
                 {leagues.map((l) => (
@@ -307,7 +307,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
             </div>
 
             <div className="relative">
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                 Team *
               </label>
               <input
@@ -319,13 +319,13 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 }}
                 onFocus={() => setTeamFocused(true)}
                 onBlur={() => setTimeout(() => setTeamFocused(false), 200)}
-                className="w-full px-4 py-3 bg-zinc-800/50 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
                 placeholder="Type to search teams..."
               />
 
               {/* Autocomplete dropdown */}
               {teamFocused && filteredTeams.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 z-20 bg-zinc-900 border border-white/10 rounded-lg shadow-2xl max-h-52 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 z-20 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg shadow-2xl max-h-52 overflow-y-auto">
                   {filteredTeams.map((team) => (
                     <button
                       key={team}
@@ -339,7 +339,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                       className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                         form.team === team
                           ? "bg-amber-400/10 text-amber-400"
-                          : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                          : "text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                       }`}
                     >
                       {team}
@@ -353,7 +353,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                         update({ team: teamQuery.trim() });
                         setTeamFocused(false);
                       }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-amber-400 hover:bg-white/5 border-t border-white/5 flex items-center gap-2"
+                      className="w-full text-left px-4 py-2.5 text-sm text-amber-500 hover:bg-[var(--surface-muted)] border-t border-[color:var(--border)] flex items-center gap-2"
                     >
                       <Plus className="w-3 h-3" />
                       Add &quot;{teamQuery.trim()}&quot; as new team
@@ -364,7 +364,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                 <Calendar className="w-3 h-3 inline mr-1" />
                 Season
               </label>
@@ -372,20 +372,20 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 type="text"
                 value={form.season}
                 onChange={(e) => update({ season: e.target.value })}
-                className="w-full px-4 py-3 bg-zinc-800/50 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
                 placeholder="2025/26"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                 <ImageIcon className="w-3 h-3 inline mr-1" />
                 Product Image
               </label>
 
               {form.image ? (
                 <div className="flex items-start gap-4">
-                  <div className="relative w-32 h-40 bg-zinc-800 rounded-lg overflow-hidden border border-white/10 flex-shrink-0">
+                  <div className="relative w-32 h-40 bg-white rounded-lg overflow-hidden border border-[color:var(--border)] flex-shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={form.image}
@@ -394,9 +394,9 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                     />
                   </div>
                   <div className="flex-1 space-y-2">
-                    <p className="text-xs text-zinc-500 break-all">{form.image}</p>
+                    <p className="text-xs text-[var(--muted)] break-all">{form.image}</p>
                     <div className="flex gap-2">
-                      <label className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white transition-colors rounded-lg cursor-pointer">
+                      <label className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-colors rounded-lg cursor-pointer">
                         <Upload className="w-3 h-3" />
                         Replace
                         <input
@@ -408,7 +408,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                       </label>
                       <button
                         onClick={() => update({ image: "" })}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-zinc-800 border border-white/10 text-red-400 hover:bg-red-500/10 transition-colors rounded-lg"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[var(--surface)] border border-[color:var(--border)] text-red-500 hover:bg-red-500/10 transition-colors rounded-lg"
                       >
                         <Trash2 className="w-3 h-3" />
                         Remove
@@ -427,21 +427,21 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                   className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
                     dragOver
                       ? "border-amber-400/50 bg-amber-400/5"
-                      : "border-white/10 hover:border-white/20"
+                      : "border-[color:var(--border)] hover:border-amber-300/50"
                   }`}
                 >
                   {uploading ? (
                     <div className="flex flex-col items-center gap-3">
                       <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
-                      <p className="text-sm text-zinc-400">Uploading...</p>
+                      <p className="text-sm text-[var(--muted)]">Uploading...</p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                        <Upload className="w-5 h-5 text-zinc-500" />
+                      <div className="w-12 h-12 bg-[var(--surface-muted)] rounded-xl flex items-center justify-center">
+                        <Upload className="w-5 h-5 text-[var(--muted)]" />
                       </div>
                       <div>
-                        <p className="text-sm text-zinc-300">
+                        <p className="text-sm text-[var(--foreground)]">
                           Drag &amp; drop an image here, or{" "}
                           <label className="text-amber-400 hover:text-amber-300 cursor-pointer transition-colors">
                             browse
@@ -453,7 +453,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                             />
                           </label>
                         </p>
-                        <p className="text-[10px] text-zinc-600 mt-1">
+                        <p className="text-[10px] text-[var(--muted)] mt-1">
                           PNG, JPG, WEBP up to 10MB
                         </p>
                       </div>
@@ -465,14 +465,14 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
 
             {/* Back Image */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                 <ImageIcon className="w-3 h-3 inline mr-1" />
                 Back Image (Optional)
               </label>
 
               {form.backImage ? (
                 <div className="flex items-start gap-4">
-                  <div className="relative w-32 h-40 bg-zinc-800 rounded-lg overflow-hidden border border-white/10 flex-shrink-0">
+                  <div className="relative w-32 h-40 bg-white rounded-lg overflow-hidden border border-[color:var(--border)] flex-shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={form.backImage}
@@ -481,9 +481,9 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                     />
                   </div>
                   <div className="flex-1 space-y-2">
-                    <p className="text-xs text-zinc-500 break-all">{form.backImage}</p>
+                    <p className="text-xs text-[var(--muted)] break-all">{form.backImage}</p>
                     <div className="flex gap-2">
-                      <label className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white transition-colors rounded-lg cursor-pointer">
+                      <label className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-colors rounded-lg cursor-pointer">
                         <Upload className="w-3 h-3" />
                         Replace
                         <input
@@ -495,7 +495,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                       </label>
                       <button
                         onClick={() => update({ backImage: "" })}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-zinc-800 border border-white/10 text-red-400 hover:bg-red-500/10 transition-colors rounded-lg"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[var(--surface)] border border-[color:var(--border)] text-red-500 hover:bg-red-500/10 transition-colors rounded-lg"
                       >
                         <Trash2 className="w-3 h-3" />
                         Remove
@@ -514,18 +514,18 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                   className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-all ${
                     dragOverBack
                       ? "border-amber-400/50 bg-amber-400/5"
-                      : "border-white/10 hover:border-white/20"
+                      : "border-[color:var(--border)] hover:border-amber-300/50"
                   }`}
                 >
                   {uploadingBack ? (
                     <div className="flex flex-col items-center gap-2">
                       <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
-                      <p className="text-sm text-zinc-400">Uploading...</p>
+                      <p className="text-sm text-[var(--muted)]">Uploading...</p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center gap-2">
-                      <Upload className="w-5 h-5 text-zinc-600" />
-                      <p className="text-xs text-zinc-400">
+                      <Upload className="w-5 h-5 text-[var(--muted)]" />
+                      <p className="text-xs text-[var(--muted)]">
                         Drop back image or{" "}
                         <label className="text-amber-400 hover:text-amber-300 cursor-pointer">
                           browse
@@ -546,8 +546,8 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         </div>
 
         {/* Type & Kit Type */}
-        <div className="bg-[#111114] border border-white/[0.06] p-5 sm:p-6 rounded-2xl">
-          <h2 className="text-sm font-semibold text-white mb-5 flex items-center gap-2">
+        <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
+          <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
             <Tag className="w-4 h-4 text-amber-400" />
             Jersey Type
           </h2>
@@ -555,7 +555,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
           <div className="space-y-5">
             {/* Type */}
             <div>
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-3">
+              <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-3">
                 Kit Style
               </label>
               <div className="flex flex-wrap gap-2">
@@ -566,7 +566,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                     className={`px-4 py-2.5 text-sm font-medium rounded-lg border transition-all ${
                       form.type === t.value
                         ? "bg-amber-400/10 border-amber-400/30 text-amber-400"
-                        : "bg-zinc-800/50 border-white/5 text-zinc-400 hover:text-zinc-200 hover:border-white/10"
+                : "bg-[var(--surface-muted)] border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
                     }`}
                   >
                     {t.label}
@@ -575,10 +575,10 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               </div>
             </div>
 
-            <div className="rounded-lg border border-white/10 bg-zinc-900/40 px-4 py-3">
-              <p className="text-xs text-zinc-400">
+            <div className="rounded-lg border border-[color:var(--border)] bg-[var(--surface-muted)] px-4 py-3">
+              <p className="text-xs text-[var(--muted)]">
                 Kit versions are now automatic: customers can choose{" "}
-                <span className="text-white font-medium">Fans / Player</span> on
+                <span className="text-[var(--foreground)] font-medium">Fans / Player</span> on
                 product detail. Retro kits stay Retro only.
               </p>
             </div>
@@ -586,12 +586,12 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         </div>
 
         {/* Sizes */}
-        <div className="bg-[#111114] border border-white/[0.06] p-5 sm:p-6 rounded-2xl">
-          <h2 className="text-sm font-semibold text-white mb-5 flex items-center gap-2">
+        <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
+          <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-400" />
             Available Sizes
           </h2>
-          <p className="text-xs text-zinc-500 mb-4">
+          <p className="text-xs text-[var(--muted)] mb-4">
             Click to toggle which sizes are available for this product
           </p>
           <div className="flex flex-wrap gap-2">
@@ -604,7 +604,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                   className={`w-14 h-14 rounded-xl border text-sm font-semibold transition-all ${
                     active
                       ? "bg-amber-400/10 border-amber-400/30 text-amber-400"
-                      : "bg-zinc-800/50 border-white/5 text-zinc-600 hover:text-zinc-400 hover:border-white/10"
+                      : "bg-[var(--surface-muted)] border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
                   {size}
@@ -612,14 +612,14 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               );
             })}
           </div>
-          <p className="text-[10px] text-zinc-600 mt-3">
+          <p className="text-[10px] text-[var(--muted)] mt-3">
             Selected: {form.sizes.join(", ") || "None"}
           </p>
         </div>
 
         {/* Badges */}
-        <div className="bg-[#111114] border border-white/[0.06] p-5 sm:p-6 rounded-2xl">
-          <h2 className="text-sm font-semibold text-white mb-5 flex items-center gap-2">
+        <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
+          <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
             <Shield className="w-4 h-4 text-amber-400" />
             Arm Badges
           </h2>
@@ -630,16 +630,16 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               {form.badges.map((badge, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-2 px-3 py-2 bg-zinc-800/50 border border-white/5 rounded-lg"
+                  className="flex items-center gap-2 px-3 py-2 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg"
                 >
                   <Shield className="w-3 h-3 text-amber-400" />
-                  <span className="text-sm text-zinc-300">{badge.name}</span>
-                  <span className="text-xs text-zinc-500">
+                  <span className="text-sm text-[var(--foreground)]">{badge.name}</span>
+                  <span className="text-xs text-[var(--muted)]">
                     CHF {badge.price}
                   </span>
                   <button
                     onClick={() => removeBadge(i)}
-                    className="ml-1 p-0.5 text-zinc-600 hover:text-red-400 transition-colors"
+                    className="ml-1 p-0.5 text-[var(--muted)] hover:text-red-500 transition-colors"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -655,19 +655,19 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               value={newBadgeName}
               onChange={(e) => setNewBadgeName(e.target.value)}
               placeholder="Badge name (e.g. La Liga Badge)"
-              className="flex-1 px-4 py-2.5 bg-zinc-800/50 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+              className="flex-1 px-4 py-2.5 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
               onKeyDown={(e) => e.key === "Enter" && addBadge()}
             />
             <input
               type="number"
               value={newBadgePrice}
               onChange={(e) => setNewBadgePrice(e.target.value)}
-              className="w-24 px-4 py-2.5 bg-zinc-800/50 border border-white/10 text-white text-sm focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+              className="w-24 px-4 py-2.5 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
               placeholder="3"
             />
             <button
               onClick={addBadge}
-              className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white text-sm transition-colors rounded-lg"
+              className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-muted)] text-sm transition-colors rounded-lg"
             >
               <Plus className="w-4 h-4" />
               Add
@@ -676,8 +676,8 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         </div>
 
         {/* Flags */}
-        <div className="bg-[#111114] border border-white/[0.06] p-5 sm:p-6 rounded-2xl">
-          <h2 className="text-sm font-semibold text-white mb-5 flex items-center gap-2">
+        <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
+          <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
             <Star className="w-4 h-4 text-amber-400" />
             Visibility & Flags
           </h2>
@@ -696,11 +696,11 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 />
               </div>
               <div>
-                <p className="text-sm text-white flex items-center gap-2">
-                  <Eye className="w-3.5 h-3.5 text-zinc-400" />
+                <p className="text-sm text-[var(--foreground)] flex items-center gap-2">
+                  <Eye className="w-3.5 h-3.5 text-[var(--muted)]" />
                   Active
                 </p>
-                <p className="text-[10px] text-zinc-600">
+                <p className="text-[10px] text-[var(--muted)]">
                   Visible to customers on the website
                 </p>
               </div>
@@ -720,11 +720,11 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 />
               </div>
               <div>
-                <p className="text-sm text-white flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5 text-zinc-400" />
+                <p className="text-sm text-[var(--foreground)] flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-[var(--muted)]" />
                   New Arrival
                 </p>
-                <p className="text-[10px] text-zinc-600">
+                <p className="text-[10px] text-[var(--muted)]">
                   Shows &quot;NEW&quot; badge on the product card
                 </p>
               </div>
@@ -744,11 +744,11 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 />
               </div>
               <div>
-                <p className="text-sm text-white flex items-center gap-2">
-                  <Star className="w-3.5 h-3.5 text-zinc-400" />
+                <p className="text-sm text-[var(--foreground)] flex items-center gap-2">
+                  <Star className="w-3.5 h-3.5 text-[var(--muted)]" />
                   Featured
                 </p>
-                <p className="text-[10px] text-zinc-600">
+                <p className="text-[10px] text-[var(--muted)]">
                   Show on the homepage featured section
                 </p>
               </div>
@@ -760,7 +760,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         <div className="flex items-center justify-between pt-4">
           <Link
             href="/admin/products"
-            className="text-sm text-zinc-400 hover:text-white transition-colors"
+            className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
           >
             Cancel
           </Link>

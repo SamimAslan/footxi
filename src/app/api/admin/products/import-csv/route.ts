@@ -4,6 +4,11 @@ import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
 import { filterAllowedImages } from "@/lib/imageBlocker";
+import {
+  buildExtraCategories,
+  inferShopCategoryFromText,
+  mapLeagueByRawCategory,
+} from "@/lib/productTaxonomy";
 
 type CsvRow = {
   product_name?: string;
@@ -182,10 +187,18 @@ async function normalizeRow(row: CsvRow) {
   const name = (row.product_name || "").trim();
   const team = inferTeam(name);
   const brand = (row.brand || "").trim();
-  const league = (row.category || "").trim() || "Imported";
-  const leagueSlug = slugify(league) || "imported";
   const type = inferType(name);
   const kitType = inferKitType(name, type);
+  const shopCategory = inferShopCategoryFromText(name, row.category);
+  const mappedLeague = mapLeagueByRawCategory(
+    (row.category || "").trim(),
+    team,
+    name,
+    shopCategory
+  );
+  const league = mappedLeague.league;
+  const leagueSlug = mappedLeague.leagueSlug || (slugify(league) || "others");
+  const extraCategories = buildExtraCategories(leagueSlug, kitType, shopCategory);
   const priceOverride = inferPriceOverride(name, type);
   const { image, backImage, blockedRemovedCount } = await getImages(row);
 
@@ -195,6 +208,8 @@ async function normalizeRow(row: CsvRow) {
     brand,
     league,
     leagueSlug,
+    shopCategory,
+    extraCategories,
     season: inferSeason(name),
     type,
     kitType,

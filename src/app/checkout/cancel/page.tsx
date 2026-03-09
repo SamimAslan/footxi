@@ -5,16 +5,16 @@ import { XCircle, ArrowLeft } from "lucide-react";
 
 export default function CheckoutCancelPage() {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
         <div className="w-20 h-20 bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-8">
           <XCircle className="w-10 h-10 text-red-400" />
         </div>
 
-        <h1 className="text-3xl font-bold text-white mb-3">
+        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-3">
           Payment Cancelled
         </h1>
-        <p className="text-zinc-400 mb-8">
+        <p className="text-[var(--muted)] mb-8">
           Your payment was cancelled. No charges were made. Your cart items are
           still saved.
         </p>
@@ -29,7 +29,7 @@ export default function CheckoutCancelPage() {
           </Link>
           <Link
             href="/"
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 border border-white/10 text-white text-sm hover:bg-zinc-800 transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm hover:bg-black/[0.03] transition-colors"
           >
             Continue Shopping
           </Link>

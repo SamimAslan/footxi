@@ -84,10 +84,10 @@ export default function AdminLayout({
     session?.user?.role !== "admin"
   ) {
     return (
-      <div className="min-h-screen bg-[#09090b] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
-          <span className="text-xs text-zinc-600 tracking-wider uppercase">Loading admin...</span>
+          <span className="text-xs text-[var(--muted)] tracking-wider uppercase">Loading admin...</span>
         </div>
       </div>
     );
@@ -96,23 +96,23 @@ export default function AdminLayout({
   const breadcrumbs = getBreadcrumb(pathname);
 
   return (
-    <div className="min-h-screen bg-[#09090b]">
+    <div className="min-h-screen bg-[var(--background)]">
       {/* ===== SIDEBAR (Desktop) ===== */}
       <aside
-        className={`fixed top-0 left-0 z-40 h-full bg-[#0c0c0f] border-r border-white/[0.06] transition-all duration-300 ease-in-out hidden lg:flex flex-col ${
+        className={`fixed top-28 left-0 z-40 h-[calc(100vh-7rem)] bg-[var(--surface)] border-r border-[color:var(--border)] transition-all duration-300 ease-in-out hidden lg:flex flex-col ${
           sidebarOpen ? "w-60" : "w-[68px]"
         }`}
       >
         {/* Sidebar Header */}
-        <div className={`h-16 flex items-center border-b border-white/[0.06] ${sidebarOpen ? "px-5 justify-between" : "px-0 justify-center"}`}>
+        <div className={`h-16 flex items-center border-b border-[color:var(--border)] ${sidebarOpen ? "px-5 justify-between" : "px-0 justify-center"}`}>
           {sidebarOpen ? (
             <Link href="/admin" className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center">
                 <Shield className="w-4 h-4 text-black" />
               </div>
               <div>
-                <span className="text-sm font-bold text-white tracking-tight">FOOTXI</span>
-                <span className="text-[9px] text-zinc-600 block -mt-0.5 tracking-widest uppercase">Admin</span>
+                <span className="text-sm font-bold text-[var(--foreground)] tracking-tight">FOOTXI</span>
+                <span className="text-[9px] text-[var(--muted)] block -mt-0.5 tracking-widest uppercase">Admin</span>
               </div>
             </Link>
           ) : (
@@ -123,7 +123,7 @@ export default function AdminLayout({
           {sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(false)}
-              className="p-1.5 rounded-md text-zinc-600 hover:text-zinc-400 hover:bg-white/[0.04] transition-colors"
+              className="p-1.5 rounded-md text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-colors"
             >
               <PanelLeftClose className="w-4 h-4" />
             </button>
@@ -148,13 +148,13 @@ export default function AdminLayout({
                 } ${
                   isActive
                     ? "bg-amber-400/[0.08] text-amber-400"
-                    : "text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.03]"
+                    : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                 }`}
               >
                 {isActive && (
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-amber-400" />
                 )}
-                <Icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-amber-400" : "text-zinc-500 group-hover:text-zinc-300"}`} />
+                <Icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-amber-400" : "text-[var(--muted)] group-hover:text-[var(--foreground)]"}`} />
                 {sidebarOpen && (
                   <span className={`text-[13px] font-medium ${isActive ? "text-amber-400" : ""}`}>
                     {item.label}
@@ -166,18 +166,18 @@ export default function AdminLayout({
         </nav>
 
         {/* Sidebar Footer */}
-        <div className={`border-t border-white/[0.06] py-4 px-3`}>
+        <div className={`border-t border-[color:var(--border)] py-4 px-3`}>
           {!sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(true)}
-              className="w-full flex justify-center p-2.5 rounded-lg text-zinc-600 hover:text-zinc-400 hover:bg-white/[0.04] transition-colors"
+              className="w-full flex justify-center p-2.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-colors"
             >
               <PanelLeft className="w-[18px] h-[18px]" />
             </button>
           )}
           <Link
             href="/"
-            className={`flex items-center gap-2.5 rounded-lg text-zinc-600 hover:text-zinc-400 hover:bg-white/[0.04] transition-colors ${
+            className={`flex items-center gap-2.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-colors ${
               sidebarOpen ? "px-3 py-2.5" : "px-0 py-2.5 justify-center"
             }`}
           >
@@ -194,14 +194,14 @@ export default function AdminLayout({
         }`}
       >
         {/* ===== TOPBAR ===== */}
-        <header className="sticky top-0 z-30 h-16 bg-[#09090b]/80 backdrop-blur-xl border-b border-white/[0.06]">
+        <header className="sticky top-28 z-30 h-16 bg-[color:color-mix(in_srgb,var(--background)_86%,white)] backdrop-blur-xl border-b border-[color:var(--border)]">
           <div className="h-full px-4 sm:px-6 flex items-center justify-between gap-4">
             {/* Left: Mobile menu + Breadcrumbs */}
             <div className="flex items-center gap-3">
               {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 -ml-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/[0.04] transition-colors"
+                className="lg:hidden p-2 -ml-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-colors"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -210,11 +210,11 @@ export default function AdminLayout({
               <nav className="hidden sm:flex items-center gap-1.5 text-sm">
                 {breadcrumbs.map((crumb, i) => (
                   <span key={crumb.href} className="flex items-center gap-1.5">
-                    {i > 0 && <ChevronRight className="w-3 h-3 text-zinc-700" />}
+                    {i > 0 && <ChevronRight className="w-3 h-3 text-[var(--muted)]" />}
                     {i === breadcrumbs.length - 1 ? (
-                      <span className="text-white font-medium">{crumb.label}</span>
+                      <span className="text-[var(--foreground)] font-medium">{crumb.label}</span>
                     ) : (
-                      <Link href={crumb.href} className="text-zinc-500 hover:text-zinc-300 transition-colors">
+                      <Link href={crumb.href} className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">
                         {crumb.label}
                       </Link>
                     )}
@@ -223,7 +223,7 @@ export default function AdminLayout({
               </nav>
 
               {/* Mobile: just page title */}
-              <span className="sm:hidden text-sm font-medium text-white">
+              <span className="sm:hidden text-sm font-medium text-[var(--foreground)]">
                 {breadcrumbs[breadcrumbs.length - 1]?.label}
               </span>
             </div>
@@ -235,19 +235,19 @@ export default function AdminLayout({
                   <img
                     src={session.user.image}
                     alt=""
-                    className="w-8 h-8 rounded-full object-cover border border-white/[0.06]"
+                    className="w-8 h-8 rounded-full object-cover border border-[color:var(--border)]"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/[0.06] flex items-center justify-center">
-                    <User className="w-4 h-4 text-zinc-400" />
+                  <div className="w-8 h-8 rounded-full bg-[var(--surface-muted)] border border-[color:var(--border)] flex items-center justify-center">
+                    <User className="w-4 h-4 text-[var(--muted)]" />
                   </div>
                 )}
                 <div className="hidden sm:block">
-                  <p className="text-xs font-medium text-zinc-300 leading-tight">
+                  <p className="text-xs font-medium text-[var(--foreground)] leading-tight">
                     {session?.user?.name || session?.user?.email?.split("@")[0]}
                   </p>
-                  <p className="text-[10px] text-zinc-600 leading-tight">Administrator</p>
+                  <p className="text-[10px] text-[var(--muted)] leading-tight">Administrator</p>
                 </div>
               </div>
             </div>
@@ -261,20 +261,20 @@ export default function AdminLayout({
               className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
-            <div className="fixed top-0 left-0 z-50 h-full w-64 bg-[#0c0c0f] border-r border-white/[0.06] lg:hidden">
-              <div className="h-16 flex items-center justify-between px-5 border-b border-white/[0.06]">
+            <div className="fixed top-28 left-0 z-50 h-[calc(100vh-7rem)] w-64 bg-[var(--surface)] border-r border-[color:var(--border)] lg:hidden">
+              <div className="h-16 flex items-center justify-between px-5 border-b border-[color:var(--border)]">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center">
                     <Shield className="w-4 h-4 text-black" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-white tracking-tight">FOOTXI</span>
-                    <span className="text-[9px] text-zinc-600 block -mt-0.5 tracking-widest uppercase">Admin</span>
+                    <span className="text-sm font-bold text-[var(--foreground)] tracking-tight">FOOTXI</span>
+                    <span className="text-[9px] text-[var(--muted)] block -mt-0.5 tracking-widest uppercase">Admin</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-1.5 rounded-md text-zinc-500 hover:text-white transition-colors"
+                  className="p-1.5 rounded-md text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -293,13 +293,13 @@ export default function AdminLayout({
                       className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
                         isActive
                           ? "bg-amber-400/[0.08] text-amber-400"
-                          : "text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.03]"
+                          : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                       }`}
                     >
                       {isActive && (
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-amber-400" />
                       )}
-                      <Icon className={`w-[18px] h-[18px] ${isActive ? "text-amber-400" : "text-zinc-500"}`} />
+                      <Icon className={`w-[18px] h-[18px] ${isActive ? "text-amber-400" : "text-[var(--muted)]"}`} />
                       <span className={`text-[13px] font-medium ${isActive ? "text-amber-400" : ""}`}>
                         {item.label}
                       </span>
@@ -307,10 +307,10 @@ export default function AdminLayout({
                   );
                 })}
               </nav>
-              <div className="absolute bottom-0 left-0 right-0 border-t border-white/[0.06] py-4 px-3">
+              <div className="absolute bottom-0 left-0 right-0 border-t border-[color:var(--border)] py-4 px-3">
                 <Link
                   href="/"
-                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-600 hover:text-zinc-400 hover:bg-white/[0.04] transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-colors"
                 >
                   <ArrowLeft className="w-[18px] h-[18px]" />
                   <span className="text-[13px]">Back to store</span>

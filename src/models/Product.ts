@@ -12,6 +12,8 @@ export interface IProduct extends Document {
   brand?: string;
   league: string;
   leagueSlug: string;
+  shopCategory?: string;
+  extraCategories?: string[];
   season: string;
   type: "home" | "away" | "third" | "retro";
   kitType: "fans" | "player" | "retro";
@@ -42,6 +44,8 @@ const ProductSchema = new Schema<IProduct>(
     brand: { type: String, default: "" },
     league: { type: String, required: true },
     leagueSlug: { type: String, required: true },
+    shopCategory: { type: String, default: "jersey" },
+    extraCategories: { type: [String], default: [] },
     season: { type: String, default: "2025/26" },
     type: {
       type: String,

@@ -45,14 +45,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[#0D0F14] text-[#F3F4F6]`}
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[var(--background)] text-[var(--foreground)]`}
       >
         <Providers>
           <SmoothScroll />
           <Navbar />
-          <main className="min-h-screen pt-16">{children}</main>
+          <main className="min-h-screen pt-28">{children}</main>
           <Footer />
         </Providers>
       </body>

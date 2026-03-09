@@ -34,7 +34,7 @@ export default function CurrencySelector() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-2 py-1.5 text-xs text-zinc-400 hover:text-white border border-white/[0.06] rounded-md hover:border-white/[0.12] transition-all bg-white/[0.02]"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-[var(--foreground)] border border-[color:var(--border)] rounded-md hover:bg-[var(--surface-muted)] transition-all bg-[var(--surface)]"
       >
         <img
           src={current.flagUrl}
@@ -42,11 +42,12 @@ export default function CurrencySelector() {
           className="w-4 h-3 object-cover rounded-[2px]"
           loading="lazy"
         />
+        <span className="font-medium">{currencyCode}</span>
         <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
-        <div className="absolute top-full right-0 mt-1.5 w-40 bg-zinc-900 border border-white/10 rounded-lg shadow-2xl py-1 z-50">
+        <div className="absolute top-full right-0 mt-1.5 w-44 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg shadow-[0_10px_26px_rgba(0,0,0,0.14)] py-1 z-50">
           {currencyList.map((item) => {
             const info = CURRENCIES[item.code];
             const isActive = item.code === currencyCode;
@@ -59,8 +60,8 @@ export default function CurrencySelector() {
                 }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors ${
                   isActive
-                    ? "text-amber-400 bg-amber-400/5"
-                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                    ? "text-[#111] bg-[#F5B301]/20"
+                    : "text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                 }`}
               >
                 <img
@@ -70,7 +71,7 @@ export default function CurrencySelector() {
                   loading="lazy"
                 />
                 <span className="font-medium">{item.code}</span>
-                <span className="text-zinc-600 ml-auto">{info.symbol}</span>
+                <span className="text-[var(--muted)] ml-auto">{info.symbol}</span>
               </button>
             );
           })}

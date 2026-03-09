@@ -241,7 +241,7 @@ export default function AdminOrderDetailPage() {
       <div className="flex items-center justify-center py-32">
         <div className="text-center">
           <XCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <p className="text-zinc-400">Order not found</p>
+          <p className="text-[var(--muted)]">Order not found</p>
           <button
             onClick={() => router.back()}
             className="mt-4 text-sm text-amber-400"
@@ -263,12 +263,12 @@ export default function AdminOrderDetailPage() {
       <div className="flex items-center gap-4 mb-6">
         <Link
           href="/admin/orders"
-          className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/[0.04] transition-all"
+          className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-all"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div className="flex-1">
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-xl font-bold text-[var(--foreground)] tracking-tight flex items-center gap-3">
             Order #{order._id.slice(-8).toUpperCase()}
             <span
               className={`px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-md border ${
@@ -278,7 +278,7 @@ export default function AdminOrderDetailPage() {
               {order.status.replace(/_/g, " ")}
             </span>
           </h1>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm text-[var(--muted)] mt-1">
             {new Date(order.createdAt).toLocaleDateString("en-US", {
               month: "long",
               day: "numeric",
@@ -294,8 +294,8 @@ export default function AdminOrderDetailPage() {
         {/* Left: Items + Customer */}
         <div className="lg:col-span-2 space-y-6">
           {/* Items */}
-          <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-5 sm:p-6">
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-5 sm:p-6">
+            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
               <Package className="w-4 h-4" />
               Items ({order.items.length})
             </h2>
@@ -303,24 +303,24 @@ export default function AdminOrderDetailPage() {
               {order.items.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 pb-3 border-b border-white/5 last:border-0 last:pb-0"
+                  className="flex items-start gap-3 pb-3 border-b border-[color:var(--border)] last:border-0 last:pb-0"
                 >
-                  <div className="w-10 h-10 flex-shrink-0 bg-zinc-800 rounded overflow-hidden">
+                  <div className="w-10 h-10 flex-shrink-0 bg-[var(--surface-muted)] rounded overflow-hidden">
                     {item.image && item.image.startsWith("http") ? (
                       <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <svg viewBox="0 0 120 150" className="w-6 h-7 opacity-40">
-                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-zinc-700" />
+                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-[var(--muted)]" />
                         </svg>
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white font-medium">
+                    <p className="text-sm text-[var(--foreground)] font-medium">
                       {item.team} - {item.name}
                     </p>
-                    <p className="text-[10px] text-zinc-500">
+                    <p className="text-[10px] text-[var(--muted)]">
                       {item.kitType.toUpperCase()} &middot; {item.type} &middot;
                       Size {item.size} &middot; Qty: {item.quantity} &middot;
                       CHF {item.unitPrice}/unit
@@ -343,7 +343,7 @@ export default function AdminOrderDetailPage() {
                       </p>
                     )}
                   </div>
-                  <span className="text-sm font-semibold text-white flex-shrink-0">
+                  <span className="text-sm font-semibold text-[var(--foreground)] flex-shrink-0">
                     CHF {item.totalPrice.toFixed(2)}
                   </span>
                 </div>
@@ -353,29 +353,29 @@ export default function AdminOrderDetailPage() {
 
           {/* Customer + Shipping */}
           <div className="grid sm:grid-cols-2 gap-6">
-            <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-5 sm:p-6">
-              <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-5 sm:p-6">
+              <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
                 <User className="w-4 h-4" />
                 Customer
               </h2>
-              <p className="text-sm text-white font-medium">{order.email}</p>
-              <p className="text-xs text-zinc-500 mt-1 font-mono">
+              <p className="text-sm text-[var(--foreground)] font-medium">{order.email}</p>
+              <p className="text-xs text-[var(--muted)] mt-1 font-mono">
                 User: {order._id}
               </p>
               {order.stripePaymentIntentId && (
-                <p className="text-xs text-zinc-600 mt-2">
+                <p className="text-xs text-[var(--muted)] mt-2">
                   Stripe PI: {order.stripePaymentIntentId}
                 </p>
               )}
             </div>
 
-            <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-5 sm:p-6">
-              <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-5 sm:p-6">
+              <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 Shipping
               </h2>
-              <div className="text-sm text-zinc-300 space-y-1">
-                <p className="font-medium text-white">
+              <div className="text-sm text-[var(--foreground)] space-y-1">
+                <p className="font-medium text-[var(--foreground)]">
                   {order.shippingAddress.fullName}
                 </p>
                 <p>{order.shippingAddress.address}</p>
@@ -384,10 +384,10 @@ export default function AdminOrderDetailPage() {
                 </p>
                 <p>{order.shippingAddress.country}</p>
                 {order.shippingAddress.phone && (
-                  <p className="text-zinc-500">{order.shippingAddress.phone}</p>
+                  <p className="text-[var(--muted)]">{order.shippingAddress.phone}</p>
                 )}
               </div>
-              <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
+              <div className="mt-3 flex items-center gap-2 text-xs text-[var(--muted)]">
                 <Clock className="w-3 h-3" />
                 {order.shippingMethod === "express"
                   ? "Express (7-15 days)"
@@ -400,12 +400,12 @@ export default function AdminOrderDetailPage() {
         {/* Right: Actions + Payment */}
         <div className="space-y-6">
           {/* Actions */}
-          <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-5 sm:p-6">
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">
+          <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-5 sm:p-6">
+            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4">
               Actions
             </h2>
             {availableActions.length === 0 ? (
-              <p className="text-xs text-zinc-600">
+              <p className="text-xs text-[var(--muted)]">
                 No actions available for this status.
               </p>
             ) : (
@@ -431,7 +431,7 @@ export default function AdminOrderDetailPage() {
               </div>
             )}
 
-            <div className="mt-4 pt-4 border-t border-white/[0.06]">
+            <div className="mt-4 pt-4 border-t border-[color:var(--border)]">
               <button
                 onClick={deleteOrder}
                 disabled={updating}
@@ -448,21 +448,21 @@ export default function AdminOrderDetailPage() {
           </div>
 
           {/* Admin Note */}
-          <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-5 sm:p-6">
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">
+          <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-5 sm:p-6">
+            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4">
               Admin Note
             </h2>
             <textarea
               value={adminNote}
               onChange={(e) => setAdminNote(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2.5 bg-[#0d0d10] rounded-xl border border-white/[0.06] text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors resize-none"
+              className="w-full px-3 py-2.5 bg-[var(--surface-muted)] rounded-xl border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors resize-none"
               placeholder="Add a note (visible to customer if declined)"
             />
             <button
               onClick={saveNote}
               disabled={updating}
-              className="mt-2 flex items-center gap-2 px-3 py-1.5 text-xs rounded-lg bg-zinc-800/60 border border-white/[0.06] text-zinc-300 hover:text-white hover:border-white/[0.12] transition-all disabled:opacity-50"
+              className="mt-2 flex items-center gap-2 px-3 py-1.5 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-muted)] transition-all disabled:opacity-50"
             >
               <Send className="w-3 h-3" />
               Save Note
@@ -470,15 +470,15 @@ export default function AdminOrderDetailPage() {
           </div>
 
           {/* Payment Summary */}
-          <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-5 sm:p-6">
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-5 sm:p-6">
+            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
               <CreditCard className="w-4 h-4" />
               Payment
             </h2>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-[var(--muted)]">
                 <span>Subtotal</span>
-                <span className="text-white">
+                <span className="text-[var(--foreground)]">
                   CHF {order.subtotal.toFixed(2)}
                 </span>
               </div>
@@ -488,15 +488,15 @@ export default function AdminOrderDetailPage() {
                   <span>-CHF {order.discountAmount.toFixed(2)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-[var(--muted)]">
                 <span>Shipping</span>
-                <span className="text-white">
+                <span className="text-[var(--foreground)]">
                   CHF {order.shippingCost.toFixed(2)}
                 </span>
               </div>
-              <div className="border-t border-white/5 pt-2 mt-2">
+              <div className="border-t border-[color:var(--border)] pt-2 mt-2">
                 <div className="flex justify-between">
-                  <span className="font-semibold text-white">Total</span>
+                  <span className="font-semibold text-[var(--foreground)]">Total</span>
                   <span className="text-lg font-bold text-amber-400">
                     CHF {order.total.toFixed(2)}
                   </span>

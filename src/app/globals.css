@@ -16,8 +16,24 @@
 }
 
 :root {
+  --background: #f7f8fb;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-muted: #eef2f7;
+  --muted: #64748b;
+  --border: rgba(15, 23, 42, 0.12);
+  /*
+    Dark mode removed globally by request.
+    Legacy dark values are kept here only as commented reference.
+  */
+  /*
   --background: #0D0F14;
   --foreground: #F3F4F6;
+  --surface: #141721;
+  --surface-muted: #1a1d2b;
+  --muted: #9CA3AF;
+  --border: rgba(255, 255, 255, 0.08);
+  */
 }
 
 body {
@@ -33,7 +49,7 @@ body::before {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
@@ -45,16 +61,16 @@ body::before {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0D0F14;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1A1D2B;
+  background: color-mix(in srgb, var(--muted) 40%, transparent);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2A2D3B;
+  background: color-mix(in srgb, var(--muted) 60%, transparent);
 }
 
 /* Smooth scrolling */
@@ -65,7 +81,7 @@ html {
 /* Selection */
 ::selection {
   background: rgba(245, 184, 0, 0.25);
-  color: white;
+  color: var(--foreground);
 }
 
 /* Float animation */

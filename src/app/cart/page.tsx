@@ -39,15 +39,15 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-20 h-20 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag className="w-8 h-8 text-zinc-600" />
+          <div className="w-20 h-20 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center mx-auto mb-6">
+            <ShoppingBag className="w-8 h-8 text-[var(--muted)]" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">
+          <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
             Your cart is empty
           </h1>
-          <p className="text-zinc-500 mb-6">
+          <p className="text-[var(--muted)] mb-6">
             Start by adding some kits to your cart
           </p>
           <Link
@@ -63,21 +63,21 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[var(--background)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)]">
               Shopping Cart
             </h1>
-            <p className="text-zinc-500 mt-1">
+            <p className="text-[var(--muted)] mt-1">
               {totalItems} {totalItems === 1 ? "item" : "items"}
             </p>
           </div>
           <Link
             href="/"
-            className="text-sm text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors"
+            className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] flex items-center gap-1.5 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Continue shopping
@@ -90,17 +90,17 @@ export default function CartPage() {
             {items.map((item, index) => (
               <div
                 key={index}
-                className="bg-zinc-900/50 border border-white/5 rounded-xl p-4 sm:p-6"
+                className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-4 sm:p-6"
               >
                 <div className="flex gap-4">
                   {/* Mini image */}
-                  <div className="w-20 h-20 flex-shrink-0 bg-zinc-800 rounded-lg overflow-hidden">
+                  <div className="w-20 h-20 flex-shrink-0 bg-[var(--surface-muted)] rounded-lg overflow-hidden">
                     {item.product.image && item.product.image.startsWith("http") ? (
                       <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <svg viewBox="0 0 120 150" className="w-12 h-14 opacity-60">
-                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-zinc-700" />
+                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-slate-400" />
                         </svg>
                       </div>
                     )}
@@ -110,10 +110,10 @@ export default function CartPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h3 className="text-sm font-medium text-white truncate">
+                        <h3 className="text-sm font-medium text-[var(--foreground)] truncate">
                           {item.product.name}
                         </h3>
-                        <p className="text-xs text-zinc-500 mt-0.5">
+                        <p className="text-xs text-[var(--muted)] mt-0.5">
                           {(item.selectedKitType || item.product.kitType) === "fans"
                             ? "Fans Version"
                             : (item.selectedKitType || item.product.kitType) === "player"
@@ -124,7 +124,7 @@ export default function CartPage() {
                       </div>
                       <button
                         onClick={() => removeItem(index)}
-                        className="p-1.5 text-zinc-600 hover:text-red-400 transition-colors"
+                        className="p-1.5 text-[var(--muted)] hover:text-red-400 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -141,7 +141,7 @@ export default function CartPage() {
                         </span>
                       ))}
                       {item.hasCustomNameNumber && (
-                        <span className="px-2 py-0.5 text-[10px] bg-white/5 text-zinc-400 rounded-full">
+                        <span className="px-2 py-0.5 text-[10px] bg-[var(--surface-muted)] text-[var(--muted)] rounded-full">
                           {item.customName} #{item.customNumber}
                         </span>
                       )}
@@ -154,23 +154,23 @@ export default function CartPage() {
                           onClick={() =>
                             updateQuantity(index, item.quantity - 1)
                           }
-                          className="w-7 h-7 rounded bg-zinc-800 border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+                          className="w-7 h-7 rounded bg-[var(--surface-muted)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="w-8 text-center text-sm text-white">
+                        <span className="w-8 text-center text-sm text-[var(--foreground)]">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() =>
                             updateQuantity(index, item.quantity + 1)
                           }
-                          className="w-7 h-7 rounded bg-zinc-800 border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+                          className="w-7 h-7 rounded bg-[var(--surface-muted)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
-                      <span className="text-sm font-semibold text-white">
+                      <span className="text-sm font-semibold text-[var(--foreground)]">
                         {formatPrice(getItemPrice(item))}
                       </span>
                     </div>
@@ -182,14 +182,14 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div>
-            <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-6 sticky top-24">
-              <h2 className="text-lg font-semibold text-white mb-6">
+            <div className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-6 sticky top-24">
+              <h2 className="text-lg font-semibold text-[var(--foreground)] mb-6">
                 Order Summary
               </h2>
 
               {/* Shipping Method */}
               <div className="mb-6">
-                <h3 className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-3">
+                <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-3">
                   <Truck className="w-3.5 h-3.5 inline mr-1" />
                   Shipping Method
                 </h3>
@@ -198,8 +198,8 @@ export default function CartPage() {
                     onClick={() => setShippingMethod("standard")}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition-all ${
                       shippingMethod === "standard"
-                        ? "bg-amber-400/10 border border-amber-400/30 text-white"
-                        : "bg-zinc-800/50 border border-white/5 text-zinc-400"
+                        ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
+                        : "bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--muted)]"
                     }`}
                   >
                     <span>
@@ -211,8 +211,8 @@ export default function CartPage() {
                     onClick={() => setShippingMethod("express")}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition-all ${
                       shippingMethod === "express"
-                        ? "bg-amber-400/10 border border-amber-400/30 text-white"
-                        : "bg-zinc-800/50 border border-white/5 text-zinc-400"
+                        ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
+                        : "bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--muted)]"
                     }`}
                   >
                     <span>
@@ -225,9 +225,9 @@ export default function CartPage() {
 
               {/* Breakdown */}
               <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between text-[var(--muted)]">
                   <span>Subtotal</span>
-                  <span className="text-white">{formatPrice(subtotal)}</span>
+                  <span className="text-[var(--foreground)]">{formatPrice(subtotal)}</span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-green-400">
@@ -238,21 +238,21 @@ export default function CartPage() {
                     <span>-{formatPrice(discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between text-[var(--muted)]">
                   <span>Shipping</span>
-                  <span className="text-white">{formatPrice(shipping)}</span>
+                  <span className="text-[var(--foreground)]">{formatPrice(shipping)}</span>
                 </div>
                 {totalItems > 1 && (
-                  <p className="text-[10px] text-zinc-600">
+                  <p className="text-[10px] text-[var(--muted)]">
                     Includes +{formatPrice(PRICING.additionalItem)} for each additional
                     item
                   </p>
                 )}
 
-                <div className="border-t border-white/5 pt-3">
+                <div className="border-t border-[color:var(--border)] pt-3">
                   <div className="flex justify-between">
-                    <span className="font-semibold text-white">Total</span>
-                    <span className="text-xl font-bold text-white">
+                    <span className="font-semibold text-[var(--foreground)]">Total</span>
+                    <span className="text-xl font-bold text-[var(--foreground)]">
                       {formatPrice(total)}
                     </span>
                   </div>
@@ -280,7 +280,7 @@ export default function CartPage() {
                 Proceed to Checkout
               </Link>
 
-              <p className="mt-4 text-center text-[10px] text-zinc-600">
+              <p className="mt-4 text-center text-[10px] text-[var(--muted)]">
                 Contact us at{" "}
                 <a
                   href="mailto:support@footxi.com"

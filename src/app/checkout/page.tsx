@@ -50,7 +50,7 @@ export default function CheckoutPage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
       </div>
     );
@@ -63,13 +63,13 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-20 h-20 bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag className="w-8 h-8 text-zinc-600" />
+          <div className="w-20 h-20 bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center mx-auto mb-6">
+            <ShoppingBag className="w-8 h-8 text-[var(--muted)]" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">Cart is empty</h1>
-          <p className="text-zinc-500 mb-6">Add some kits before checkout</p>
+          <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">Cart is empty</h1>
+          <p className="text-[var(--muted)] mb-6">Add some kits before checkout</p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 px-6 py-3 bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors"
@@ -163,21 +163,21 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[var(--background)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Header */}
         <div className="flex items-center gap-4 mb-10">
           <Link
             href="/cart"
-            className="p-2 text-zinc-400 hover:text-white transition-colors"
+            className="p-2 text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)]">
               Checkout
             </h1>
-            <p className="text-sm text-zinc-500 mt-1">
+            <p className="text-sm text-[var(--muted)] mt-1">
               Logged in as {session?.user?.email}
             </p>
           </div>
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
               <div className="w-8 h-8 bg-amber-400 text-black flex items-center justify-center text-sm font-bold">
                 1
               </div>
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-amber-400" />
                 Shipping Address
               </h2>
@@ -204,7 +204,7 @@ export default function CheckoutPage() {
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
-                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                   Full Name *
                 </label>
                 <input
@@ -213,13 +213,13 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, fullName: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
                   placeholder="Jean Dupont"
                 />
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                   Address *
                 </label>
                 <input
@@ -228,13 +228,13 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, address: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
                   placeholder="12 Rue de la Paix, Apt 3"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                   City *
                 </label>
                 <input
@@ -243,13 +243,13 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, city: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
                   placeholder="Paris"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                   Country *
                 </label>
                 <input
@@ -258,13 +258,13 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, country: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
                   placeholder="France"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                   ZIP / Postal Code *
                 </label>
                 <input
@@ -273,13 +273,13 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, zip: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
                   placeholder="75001"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
                   Phone (optional)
                 </label>
                 <input
@@ -288,7 +288,7 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, phone: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
                   placeholder="+33 6 12 34 56 78"
                 />
               </div>
@@ -300,12 +300,12 @@ export default function CheckoutPage() {
                 <div className="w-8 h-8 bg-amber-400 text-black flex items-center justify-center text-sm font-bold">
                   2
                 </div>
-                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-amber-400" />
                   Payment
                 </h2>
               </div>
-              <p className="text-sm text-zinc-500 mb-4">
+              <p className="text-sm text-[var(--muted)] mb-4">
                 You&apos;ll be redirected to Stripe&apos;s secure payment page.
               </p>
               <button
@@ -322,7 +322,7 @@ export default function CheckoutPage() {
                   </>
                 )}
               </button>
-              <p className="text-[10px] text-zinc-600 text-center mt-3 flex items-center justify-center gap-1">
+              <p className="text-[10px] text-[var(--muted)] text-center mt-3 flex items-center justify-center gap-1">
                 <Lock className="w-3 h-3" />
                 Secured by Stripe. Your payment info is never stored on our
                 servers.
@@ -332,8 +332,8 @@ export default function CheckoutPage() {
 
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-2">
-            <div className="bg-zinc-900/50 border border-white/5 p-6 sticky top-24">
-              <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-6">
+            <div className="bg-[var(--surface)] border border-[color:var(--border)] p-6 sticky top-24">
+              <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-6">
                 Order Summary
               </h2>
 
@@ -341,24 +341,24 @@ export default function CheckoutPage() {
                 {items.map((item, i) => (
                   <div
                     key={i}
-                    className="flex items-start gap-3 pb-4 border-b border-white/5 last:border-0"
+                    className="flex items-start gap-3 pb-4 border-b border-[color:var(--border)] last:border-0"
                   >
-                    <div className="w-10 h-10 flex-shrink-0 bg-zinc-800 rounded overflow-hidden">
+                    <div className="w-10 h-10 flex-shrink-0 bg-[var(--surface-muted)] rounded overflow-hidden">
                       {item.product.image && item.product.image.startsWith("http") ? (
                         <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
                           <svg viewBox="0 0 120 150" className="w-6 h-7 opacity-40">
-                            <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-zinc-700" />
+                            <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-slate-400" />
                           </svg>
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white truncate">
+                      <p className="text-sm text-[var(--foreground)] truncate">
                         {item.product.team}
                       </p>
-                      <p className="text-[10px] text-zinc-600">
+                      <p className="text-[10px] text-[var(--muted)]">
                         {(item.selectedKitType || item.product.kitType).toUpperCase()} &middot; Size{" "}
                         {item.size} &middot; x{item.quantity}
                       </p>
@@ -368,12 +368,12 @@ export default function CheckoutPage() {
               </div>
 
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between text-[var(--muted)]">
                   <span>
                     Subtotal ({totalItems} {totalItems === 1 ? "item" : "items"}
                     )
                   </span>
-                  <span className="text-white">
+                  <span className="text-[var(--foreground)]">
                     {formatPrice(subtotal)}
                   </span>
                 </div>
@@ -383,16 +383,16 @@ export default function CheckoutPage() {
                     <span>-{formatPrice(discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between text-[var(--muted)]">
                   <span>Shipping ({shippingMethod})</span>
-                  <span className="text-white">
+                  <span className="text-[var(--foreground)]">
                     {formatPrice(shipping)}
                   </span>
                 </div>
-                <div className="border-t border-white/5 pt-3 mt-3">
+                <div className="border-t border-[color:var(--border)] pt-3 mt-3">
                   <div className="flex justify-between">
-                    <span className="font-semibold text-white">Total</span>
-                    <span className="text-xl font-bold text-white">
+                    <span className="font-semibold text-[var(--foreground)]">Total</span>
+                    <span className="text-xl font-bold text-[var(--foreground)]">
                       {formatPrice(total)}
                     </span>
                   </div>

@@ -29,10 +29,10 @@ export default function PricingSection() {
   ];
 
   return (
-    <section className="relative bg-[#0D0F14] overflow-hidden">
+    <section className="relative bg-[var(--background)] overflow-hidden">
       {/* Background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold/[0.015] rounded-full blur-[200px]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-display font-bold text-white/[0.01] whitespace-nowrap select-none pointer-events-none tracking-[-0.04em]">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-display font-bold text-black/[0.03] whitespace-nowrap select-none pointer-events-none tracking-[-0.04em]">
         PRICING
       </div>
 
@@ -47,7 +47,7 @@ export default function PricingSection() {
               </span>
               <div className="h-px w-14 bg-gold" />
             </div>
-            <h2 className="font-display text-5xl sm:text-6xl font-bold text-[#F3F4F6] tracking-[-0.03em]">
+            <h2 className="font-display text-5xl sm:text-6xl font-bold text-[var(--foreground)] tracking-[-0.03em]">
               Select Your Kit
             </h2>
           </div>
@@ -59,8 +59,8 @@ export default function PricingSection() {
                 key={tier.name}
                 className={`relative px-10 sm:px-12 py-14 sm:py-16 transition-all duration-500 group ${
                   tier.featured
-                    ? "bg-[#141721] border-y border-x md:border-x-0 md:border-y border-gold/15 md:scale-[1.02] z-10"
-                    : "bg-[#0D0F14] border border-white/[0.04] md:border-y md:first:border-l md:last:border-r md:[&:not(:first-child):not(:last-child)]:border-x-0"
+                    ? "bg-[var(--surface)] border-y border-x md:border-x-0 md:border-y border-gold/25 md:scale-[1.02] z-10"
+                    : "bg-[var(--surface)] border border-[color:var(--border)] md:border-y md:first:border-l md:last:border-r md:[&:not(:first-child):not(:last-child)]:border-x-0"
                 }`}
               >
                 {tier.featured && (
@@ -68,45 +68,45 @@ export default function PricingSection() {
                 )}
 
                 {/* Name */}
-                <h3 className="font-display text-[13px] font-semibold tracking-[0.3em] text-[#9CA3AF]/60 uppercase mb-8">
+                <h3 className="font-display text-[13px] font-semibold tracking-[0.3em] text-[var(--muted)] uppercase mb-8">
                   {tier.name}
                 </h3>
 
                 {/* Price */}
                 <div className="mb-8">
-                  <span className="font-display text-6xl sm:text-7xl font-bold text-[#F3F4F6] tracking-[-0.03em]">
+                  <span className="font-display text-6xl sm:text-7xl font-bold text-[var(--foreground)] tracking-[-0.03em]">
                     {formatPrice(tier.price)}
                   </span>
                 </div>
 
                 {/* Description */}
-                <p className="text-[13px] text-[#9CA3AF]/60 leading-relaxed mb-10 max-w-[240px]">
+                <p className="text-[13px] text-[var(--muted)] leading-relaxed mb-10 max-w-[240px]">
                   {tier.description}
                 </p>
 
                 {/* Extras */}
-                <div className="space-y-3 pt-8 border-t border-white/[0.04]">
+                <div className="space-y-3 pt-8 border-t border-[color:var(--border)]">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-[#9CA3AF]/40 tracking-wide">
+                    <span className="text-[11px] text-[var(--muted)] tracking-wide">
                       Custom name & number
                     </span>
-                    <span className="text-[11px] text-[#F3F4F6] font-medium">
+                    <span className="text-[11px] text-[var(--foreground)] font-medium">
                       +{formatPrice(PRICING.customNameNumber)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-[#9CA3AF]/40 tracking-wide">
+                    <span className="text-[11px] text-[var(--muted)] tracking-wide">
                       Arm badge
                     </span>
-                    <span className="text-[11px] text-[#F3F4F6] font-medium">
+                    <span className="text-[11px] text-[var(--foreground)] font-medium">
                       {formatPrice(PRICING.badgePrice)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-[#9CA3AF]/40 tracking-wide">
+                    <span className="text-[11px] text-[var(--muted)] tracking-wide">
                       Sizes
                     </span>
-                    <span className="text-[11px] text-[#F3F4F6] font-medium">
+                    <span className="text-[11px] text-[var(--foreground)] font-medium">
                       S – XXL
                     </span>
                   </div>
@@ -117,31 +117,31 @@ export default function PricingSection() {
 
           {/* Shipping & Discounts */}
           <div className="grid sm:grid-cols-3 gap-px bg-white/[0.04]">
-            <div className="bg-[#0D0F14] p-8 sm:p-10">
+            <div className="bg-[var(--surface)] p-8 sm:p-10">
               <Truck className="w-4 h-4 text-gold mb-5" />
-              <p className="font-display text-2xl font-bold text-[#F3F4F6] mb-1">
+              <p className="font-display text-2xl font-bold text-[var(--foreground)] mb-1">
                 {formatPrice(PRICING.cargo.standard.price)}
               </p>
-              <p className="text-[11px] text-[#9CA3AF]/50 tracking-wide">
+              <p className="text-[11px] text-[var(--muted)] tracking-wide">
                 Standard · {PRICING.cargo.standard.days} days
               </p>
             </div>
 
-            <div className="bg-[#0D0F14] p-8 sm:p-10">
+            <div className="bg-[var(--surface)] p-8 sm:p-10">
               <Zap className="w-4 h-4 text-gold mb-5" />
-              <p className="font-display text-2xl font-bold text-[#F3F4F6] mb-1">
+              <p className="font-display text-2xl font-bold text-[var(--foreground)] mb-1">
                 {formatPrice(PRICING.cargo.express.price)}
               </p>
-              <p className="text-[11px] text-[#9CA3AF]/50 tracking-wide">
+              <p className="text-[11px] text-[var(--muted)] tracking-wide">
                 Express · {PRICING.cargo.express.days} days
               </p>
             </div>
 
-            <div className="bg-[#0D0F14] p-8 sm:p-10">
+            <div className="bg-[var(--surface)] p-8 sm:p-10">
               <Package className="w-4 h-4 text-gold mb-5" />
               <div className="space-y-1.5">
                 <div className="flex justify-between">
-                  <span className="text-[12px] text-[#9CA3AF]/50">
+                  <span className="text-[12px] text-[var(--muted)]">
                     {PRICING.discount.tier1.min}–{PRICING.discount.tier1.max}{" "}
                     kits
                   </span>
@@ -150,7 +150,7 @@ export default function PricingSection() {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[12px] text-[#9CA3AF]/50">
+                  <span className="text-[12px] text-[var(--muted)]">
                     {PRICING.discount.tier2.min}–{PRICING.discount.tier2.max}{" "}
                     kits
                   </span>
@@ -159,7 +159,7 @@ export default function PricingSection() {
                   </span>
                 </div>
               </div>
-              <p className="text-[10px] text-[#9CA3AF]/30 mt-3 tracking-wide">
+              <p className="text-[10px] text-[var(--muted)] mt-3 tracking-wide">
                 +{formatPrice(PRICING.additionalItem)} per extra item
               </p>
             </div>

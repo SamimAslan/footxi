@@ -162,8 +162,8 @@ function AdminOrdersContent() {
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1400px] mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Orders</h1>
-          <p className="text-sm text-zinc-500 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] tracking-tight">Orders</h1>
+          <p className="text-sm text-[var(--muted)] mt-1">
             {total} total orders
           </p>
         </div>
@@ -185,7 +185,7 @@ function AdminOrdersContent() {
 
       {/* Status Filter */}
       <div className="mb-6 flex items-center gap-2 overflow-x-auto pb-2">
-        <Filter className="w-4 h-4 text-zinc-500 flex-shrink-0" />
+        <Filter className="w-4 h-4 text-[var(--muted)] flex-shrink-0" />
         {statuses.map((s) => (
           <button
             key={s}
@@ -196,7 +196,7 @@ function AdminOrdersContent() {
             className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider whitespace-nowrap rounded-lg transition-all ${
               statusFilter === s
                 ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
-                : "bg-zinc-900/60 text-zinc-500 border border-white/[0.06] hover:text-zinc-300"
+                : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:text-[var(--foreground)]"
             }`}
           >
             {s}
@@ -209,17 +209,17 @@ function AdminOrdersContent() {
           <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
         </div>
       ) : orders.length === 0 ? (
-        <div className="bg-[#111114] rounded-2xl border border-white/[0.06] p-12 text-center">
-          <Package className="w-10 h-10 text-zinc-800 mx-auto mb-3" />
-          <p className="text-zinc-500">No orders found</p>
-          <p className="text-xs text-zinc-700 mt-1">Try adjusting your filters</p>
+        <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-12 text-center">
+          <Package className="w-10 h-10 text-[var(--muted)] mx-auto mb-3" />
+          <p className="text-[var(--muted)]">No orders found</p>
+          <p className="text-xs text-[var(--muted)] mt-1">Try adjusting your filters</p>
         </div>
       ) : (
         <>
           {/* Orders Table */}
-          <div className="bg-[#111114] rounded-2xl border border-white/[0.06] overflow-hidden">
+          <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] overflow-hidden">
             {/* Header */}
-            <div className="hidden md:grid grid-cols-[40px_repeat(12,minmax(0,1fr))] gap-4 px-5 py-3 bg-[#0d0d10] border-b border-white/[0.06] text-[10px] font-semibold text-zinc-600 uppercase tracking-wider items-center">
+            <div className="hidden md:grid grid-cols-[40px_repeat(12,minmax(0,1fr))] gap-4 px-5 py-3 bg-[var(--surface-muted)] border-b border-[color:var(--border)] text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider items-center">
               <div className="flex items-center justify-center">
                 <input
                   type="checkbox"
@@ -242,7 +242,7 @@ function AdminOrdersContent() {
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="grid grid-cols-1 md:grid-cols-[40px_repeat(12,minmax(0,1fr))] gap-2 md:gap-4 px-5 py-4 border-b border-white/[0.04] hover:bg-white/[0.015] transition-all duration-200 items-center group"
+                className="grid grid-cols-1 md:grid-cols-[40px_repeat(12,minmax(0,1fr))] gap-2 md:gap-4 px-5 py-4 border-b border-[color:var(--border)] hover:bg-[var(--surface-muted)] transition-all duration-200 items-center group"
               >
                 <div className="hidden md:flex items-center justify-center"
                   onClick={(e) => e.stopPropagation()}
@@ -258,37 +258,37 @@ function AdminOrdersContent() {
                   href={`/admin/orders/${order._id}`}
                   className="md:col-span-2 contents md:block"
                 >
-                  <span className="text-xs font-mono text-zinc-400">
+                  <span className="text-xs font-mono text-[var(--muted)]">
                     #{order._id.slice(-8).toUpperCase()}
                   </span>
                 </Link>
                 <div className="md:col-span-2">
-                  <span className="text-xs text-zinc-300 truncate block">
+                  <span className="text-xs text-[var(--foreground)] truncate block">
                     {order.email}
                   </span>
                 </div>
                 <div className="md:col-span-3">
                   <div className="flex flex-wrap gap-1">
                     {order.items.slice(0, 2).map((item, i) => (
-                      <span key={i} className="text-xs text-zinc-400">
+                      <span key={i} className="text-xs text-[var(--muted)]">
                         {item.team}
                         {i < Math.min(order.items.length, 2) - 1 && ","}
                       </span>
                     ))}
                     {order.items.length > 2 && (
-                      <span className="text-xs text-zinc-600">
+                      <span className="text-xs text-[var(--muted)]">
                         +{order.items.length - 2}
                       </span>
                     )}
                   </div>
                 </div>
                 <div className="md:col-span-1">
-                  <span className="text-sm font-semibold text-white">
+                  <span className="text-sm font-semibold text-[var(--foreground)]">
                     CHF {order.total.toFixed(2)}
                   </span>
                 </div>
                 <div className="md:col-span-1">
-                  <span className="text-[10px] text-zinc-500 uppercase">
+                  <span className="text-[10px] text-[var(--muted)] uppercase">
                     {order.shippingMethod}
                   </span>
                 </div>
@@ -301,7 +301,7 @@ function AdminOrdersContent() {
                     {order.status.replace(/_/g, " ")}
                   </span>
                 </div>
-                <div className="md:col-span-1 flex items-center gap-1 text-[10px] text-zinc-600">
+                <div className="md:col-span-1 flex items-center gap-1 text-[10px] text-[var(--muted)]">
                   <Clock className="w-3 h-3" />
                   {new Date(order.createdAt).toLocaleDateString("en-US", {
                     month: "short",
@@ -314,13 +314,13 @@ function AdminOrdersContent() {
                       e.stopPropagation();
                       deleteSingle(order._id);
                     }}
-                    className="p-1.5 rounded-lg text-zinc-700 hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+                    className="p-1.5 rounded-lg text-[var(--muted)] hover:text-red-500 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
                     title="Delete order"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                   <Link href={`/admin/orders/${order._id}`}>
-                    <ArrowRight className="w-4 h-4 text-zinc-700 group-hover:text-amber-400 transition-colors" />
+                    <ArrowRight className="w-4 h-4 text-[var(--muted)] group-hover:text-amber-500 transition-colors" />
                   </Link>
                 </div>
               </div>
@@ -333,17 +333,17 @@ function AdminOrdersContent() {
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 text-xs rounded-lg bg-[#111114] border border-white/[0.06] text-zinc-400 hover:text-white hover:border-white/[0.12] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 Previous
               </button>
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-[var(--muted)]">
                 Page {page} of {totalPages}
               </span>
               <button
                 onClick={() => setPage(Math.min(totalPages, page + 1))}
                 disabled={page === totalPages}
-                className="px-4 py-2 text-xs rounded-lg bg-[#111114] border border-white/[0.06] text-zinc-400 hover:text-white hover:border-white/[0.12] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 Next
               </button>

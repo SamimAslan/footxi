@@ -45,7 +45,7 @@ export default function EditProductPage() {
       <div className="flex items-center justify-center py-32">
         <div className="text-center">
           <XCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <p className="text-zinc-400 mb-4">{error || "Product not found"}</p>
+          <p className="text-[var(--muted)] mb-4">{error || "Product not found"}</p>
           <Link
             href="/admin/products"
             className="text-sm text-amber-400 hover:text-amber-300"

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { getProductBasePrice, Badge, PRICING, Product, getProductId } from "@/data/products";
 import { useCartStore } from "@/store/cart";
 import { useCurrency } from "@/context/CurrencyContext";
+import { getDisplayTeamName } from "@/lib/productDisplay";
 import Link from "next/link";
 import {
   ChevronRight,
@@ -74,7 +75,7 @@ export default function ProductPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-2">
+          <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
             Product not found
           </h1>
           <Link href="/" className="text-amber-400 text-sm hover:underline">
@@ -127,25 +128,26 @@ export default function ProductPage() {
   const hasRealImage = product.image && product.image.startsWith("http");
   const hasBackImage = product.backImage && product.backImage.startsWith("http");
   const currentImage = showBack && hasBackImage ? product.backImage : product.image;
+  const displayTeam = getDisplayTeamName(product);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[var(--background)]">
       {/* Breadcrumb */}
-      <div className="bg-zinc-950 border-b border-white/5">
+      <div className="bg-[var(--surface)] border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 text-xs text-zinc-500 flex-wrap">
-            <Link href="/" className="hover:text-zinc-300 transition-colors">
+          <div className="flex items-center gap-2 text-xs text-[var(--muted)] flex-wrap">
+            <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
               Home
             </Link>
             <ChevronRight className="w-3 h-3" />
             <Link
               href={`/league/${product.leagueSlug}`}
-              className="hover:text-zinc-300 transition-colors"
+              className="hover:text-[var(--foreground)] transition-colors"
             >
               {product.league}
             </Link>
             <ChevronRight className="w-3 h-3" />
-            <span className="text-zinc-300">{product.team}</span>
+            <span className="text-[var(--foreground)]">{displayTeam}</span>
           </div>
         </div>
       </div>
@@ -154,7 +156,7 @@ export default function ProductPage() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image */}
           <div className="relative">
-            <div className="aspect-square bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center">
+            <div className="aspect-square bg-white rounded-2xl border border-[color:var(--border)] overflow-hidden flex items-center justify-center">
               {hasRealImage ? (
                 <div className="w-full h-full p-8 sm:p-10 flex items-center justify-center">
                   <img
@@ -167,7 +169,7 @@ export default function ProductPage() {
                 <svg viewBox="0 0 120 150" className="w-56 h-72 opacity-80">
                   <path
                     d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z"
-                    className="fill-zinc-700"
+                    className="fill-slate-300"
                     stroke="rgba(251,191,36,0.15)"
                     strokeWidth="1.5"
                   />
@@ -175,7 +177,7 @@ export default function ProductPage() {
                     x="60"
                     y="75"
                     textAnchor="middle"
-                    className="fill-white/15 text-[8px]"
+                    className="fill-black/20 text-[8px]"
                   >
                     {product.team.toUpperCase()}
                   </text>
@@ -183,7 +185,7 @@ export default function ProductPage() {
                     x="60"
                     y="100"
                     textAnchor="middle"
-                    className="fill-white/10 text-[7px]"
+                    className="fill-black/20 text-[7px]"
                   >
                     {product.type.toUpperCase()}
                   </text>
@@ -198,7 +200,7 @@ export default function ProductPage() {
                   </span>
                 )}
                 {selectedKitType === "player" && (
-                  <span className="px-3 py-1 text-xs font-semibold bg-white/10 text-white rounded-full backdrop-blur-sm">
+                  <span className="px-3 py-1 text-xs font-semibold bg-black/10 text-slate-700 rounded-full backdrop-blur-sm">
                     PLAYER VERSION
                   </span>
                 )}
@@ -218,13 +220,13 @@ export default function ProductPage() {
                   className={`w-16 h-16 rounded-lg border overflow-hidden transition-all ${
                     !showBack
                       ? "border-amber-400 ring-1 ring-amber-400/30"
-                      : "border-white/10 hover:border-white/20"
+                      : "border-[color:var(--border)] hover:border-gold/30"
                   }`}
                 >
                   <img
                     src={product.image}
                     alt="Front"
-                    className="w-full h-full object-contain p-1 bg-zinc-900"
+                    className="w-full h-full object-contain p-1 bg-white"
                   />
                 </button>
                 <button
@@ -232,13 +234,13 @@ export default function ProductPage() {
                   className={`w-16 h-16 rounded-lg border overflow-hidden transition-all ${
                     showBack
                       ? "border-amber-400 ring-1 ring-amber-400/30"
-                      : "border-white/10 hover:border-white/20"
+                      : "border-[color:var(--border)] hover:border-gold/30"
                   }`}
                 >
                   <img
                     src={product.backImage}
                     alt="Back"
-                    className="w-full h-full object-contain p-1 bg-zinc-900"
+                    className="w-full h-full object-contain p-1 bg-white"
                   />
                 </button>
               </div>
@@ -252,15 +254,15 @@ export default function ProductPage() {
                 <span className="text-xs font-medium text-amber-400 uppercase tracking-wider">
                   {product.league}
                 </span>
-                <span className="text-zinc-700">&bull;</span>
-                <span className="text-xs text-zinc-500 uppercase tracking-wider">
+                <span className="text-[var(--muted)]">&bull;</span>
+                <span className="text-xs text-[var(--muted)] uppercase tracking-wider">
                   {product.type} kit
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)]">
                 {product.name}
               </h1>
-              <p className="mt-1 text-zinc-500">
+              <p className="mt-1 text-[var(--muted)]">
                 {selectedKitType === "fans"
                   ? "Fans Version"
                   : selectedKitType === "player"
@@ -271,22 +273,22 @@ export default function ProductPage() {
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-white">
+              <span className="text-3xl font-bold text-[var(--foreground)]">
                 {formatPrice(totalPrice())}
               </span>
               {(hasCustom || selectedBadges.length > 0 || quantity > 1) && (
-                <span className="text-sm text-zinc-500">
+                <span className="text-sm text-[var(--muted)]">
                   (base {formatPrice(basePrice)}/kit)
                 </span>
               )}
             </div>
 
             {/* Divider */}
-            <div className="border-t border-white/5" />
+            <div className="border-t border-[color:var(--border)]" />
 
             {/* Kit Version */}
             <div>
-              <h3 className="text-sm font-medium text-white mb-3">Version</h3>
+              <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">Version</h3>
               <div className="flex gap-2">
                 {availableKitTypes.map((kitType) => (
                   <button
@@ -295,7 +297,7 @@ export default function ProductPage() {
                     className={`px-4 h-11 rounded-lg text-sm font-medium transition-all ${
                       selectedKitType === kitType
                         ? "bg-amber-400 text-black"
-                        : "bg-zinc-900 text-zinc-400 border border-white/5 hover:border-white/20"
+                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-gold/30"
                     }`}
                   >
                     {kitType === "fans"
@@ -310,7 +312,7 @@ export default function ProductPage() {
 
             {/* Size */}
             <div>
-              <h3 className="text-sm font-medium text-white mb-3">Size</h3>
+              <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">Size</h3>
               <div className="flex gap-2">
                 {sizes.map((size) => (
                   <button
@@ -319,7 +321,7 @@ export default function ProductPage() {
                     className={`w-12 h-12 rounded-lg text-sm font-medium transition-all ${
                       selectedSize === size
                         ? "bg-amber-400 text-black"
-                        : "bg-zinc-900 text-zinc-400 border border-white/5 hover:border-white/20"
+                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-gold/30"
                     }`}
                   >
                     {size}
@@ -330,20 +332,20 @@ export default function ProductPage() {
 
             {/* Quantity */}
             <div>
-              <h3 className="text-sm font-medium text-white mb-3">Quantity</h3>
+              <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">Quantity</h3>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+                  className="w-10 h-10 rounded-lg bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="w-12 text-center text-white font-medium">
+                <span className="w-12 text-center text-[var(--foreground)] font-medium">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+                  className="w-10 h-10 rounded-lg bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -353,9 +355,9 @@ export default function ProductPage() {
             {/* Arm Badges */}
             {product.badges && product.badges.length > 0 && (
               <div>
-                <h3 className="text-sm font-medium text-white mb-3">
+                <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">
                   Arm Badges{" "}
-                  <span className="text-zinc-500 font-normal">
+                  <span className="text-[var(--muted)] font-normal">
                     ({formatPrice(PRICING.badgePrice)} each)
                   </span>
                 </h3>
@@ -370,8 +372,8 @@ export default function ProductPage() {
                         onClick={() => toggleBadge(badge)}
                         className={`flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm transition-all ${
                           isSelected
-                            ? "bg-amber-400/10 border border-amber-400/30 text-white"
-                            : "bg-zinc-900 border border-white/5 text-zinc-400 hover:border-white/10"
+                            ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
+                            : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:border-gold/30"
                         }`}
                       >
                         <span className="flex items-center gap-2">
@@ -396,8 +398,8 @@ export default function ProductPage() {
                 onClick={() => setHasCustom(!hasCustom)}
                 className={`flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm transition-all ${
                   hasCustom
-                    ? "bg-amber-400/10 border border-amber-400/30 text-white"
-                    : "bg-zinc-900 border border-white/5 text-zinc-400 hover:border-white/10"
+                    ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
+                    : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:border-gold/30"
                 }`}
               >
                 <span className="flex items-center gap-2">
@@ -412,7 +414,7 @@ export default function ProductPage() {
               {hasCustom && (
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-zinc-500 mb-1.5">
+                    <label className="block text-xs text-[var(--muted)] mb-1.5">
                       Name
                     </label>
                     <input
@@ -420,11 +422,11 @@ export default function ProductPage() {
                       value={customName}
                       onChange={(e) => setCustomName(e.target.value)}
                       placeholder="e.g. MESSI"
-                      className="w-full px-3 py-2.5 bg-zinc-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/50 transition-colors"
+                      className="w-full px-3 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-zinc-500 mb-1.5">
+                    <label className="block text-xs text-[var(--muted)] mb-1.5">
                       Number
                     </label>
                     <input
@@ -433,7 +435,7 @@ export default function ProductPage() {
                       onChange={(e) => setCustomNumber(e.target.value)}
                       placeholder="e.g. 10"
                       maxLength={3}
-                      className="w-full px-3 py-2.5 bg-zinc-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/50 transition-colors"
+                      className="w-full px-3 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors"
                     />
                   </div>
                 </div>
@@ -466,7 +468,7 @@ export default function ProductPage() {
             {added && (
               <button
                 onClick={() => router.push("/cart")}
-                className="w-full py-3 rounded-xl font-medium text-sm border border-white/10 text-white hover:bg-white/5 transition-colors"
+                className="w-full py-3 rounded-xl font-medium text-sm border border-[color:var(--border)] text-[var(--foreground)] hover:bg-black/[0.03] transition-colors"
               >
                 View Cart
               </button>
@@ -474,11 +476,11 @@ export default function ProductPage() {
 
             {/* Trust signals */}
             <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="flex items-center gap-2 text-xs text-zinc-500">
+              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
                 <Truck className="w-4 h-4 text-amber-400/60" />
                 Worldwide shipping
               </div>
-              <div className="flex items-center gap-2 text-xs text-zinc-500">
+              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
                 <Shield className="w-4 h-4 text-amber-400/60" />
                 Quality guaranteed
               </div>

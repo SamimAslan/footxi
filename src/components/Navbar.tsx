@@ -1,505 +1,227 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  ShoppingBag,
-  Menu,
-  X,
-  ChevronDown,
-  Search,
-  User,
-  LogOut,
-  Package,
-  Shield,
-} from "lucide-react";
-import { useCartStore } from "@/store/cart";
-import { leagues, Product, getProductId } from "@/data/products";
+import { useEffect, useRef, useState } from "react";
+import { Search, ShoppingBag, User, Menu, X, LogOut, LayoutDashboard, ClipboardList, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import { useCurrency } from "@/context/CurrencyContext";
-import CurrencySelector from "./CurrencySelector";
+import { signOut, useSession } from "next-auth/react";
+import { useCartStore } from "@/store/cart";
+import CurrencySelector from "@/components/CurrencySelector";
+
+const MARKET_CATEGORIES = [
+  { label: "Jerseys", slug: "jersey" },
+  { label: "Windbreakers", slug: "windbreaker" },
+  { label: "Jackets", slug: "jackets" },
+  { label: "Hoodies", slug: "hoody" },
+  { label: "Tracksuits", slug: "tracksuit" },
+  { label: "Kids", slug: "kids" },
+  { label: "NBA / NFL", slug: "nba-nfl" },
+  { label: "Retro Kits", slug: "retro-kits" },
+  { label: "Fan Made", slug: "fan-made" },
+];
 
 export default function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [leaguesOpen, setLeaguesOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Product[]>([]);
-  const searchRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const userMenuRef = useRef<HTMLDivElement>(null);
-  const totalItems = useCartStore((s) => s.getTotalItems());
   const router = useRouter();
-  const { formatPrice } = useCurrency();
   const { data: session, status } = useSession();
+  const totalItems = useCartStore((s) => s.getTotalItems());
+  const [mounted, setMounted] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [mobileQuery, setMobileQuery] = useState("");
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleSearch = useCallback((q: string) => {
-    setQuery(q);
-    if (q.trim().length < 2) {
-      setResults([]);
-      return;
-    }
-    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
-    searchTimeoutRef.current = setTimeout(async () => {
-      try {
-        const res = await fetch(
-          `/api/products/search?q=${encodeURIComponent(q)}`
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setResults(data.slice(0, 8));
-        }
-      } catch {
-        setResults([]);
-      }
-    }, 200);
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
   }, []);
 
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(e.target as Node)
-      ) {
-        setSearchOpen(false);
-        setQuery("");
-        setResults([]);
-      }
-      if (
-        userMenuRef.current &&
-        !userMenuRef.current.contains(e.target as Node)
-      ) {
-        setUserMenuOpen(false);
+    function handleOutsideClick(e: MouseEvent) {
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) {
+        setAccountOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  useEffect(() => {
-    function handleKey(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setSearchOpen(true);
-        setTimeout(() => inputRef.current?.focus(), 50);
-      }
-      if (e.key === "Escape") {
-        setSearchOpen(false);
-        setQuery("");
-        setResults([]);
-      }
-    }
-    document.addEventListener("keydown", handleKey);
-    return () => document.removeEventListener("keydown", handleKey);
-  }, []);
-
-  const openSearch = () => {
-    setSearchOpen(true);
-    setTimeout(() => inputRef.current?.focus(), 50);
+  const submitDesktopSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = query.trim();
+    if (q.length < 2) return;
+    router.push(`/search?q=${encodeURIComponent(q)}`);
   };
 
-  const goToProduct = (p: Product) => {
-    setSearchOpen(false);
-    setQuery("");
-    setResults([]);
-    router.push(`/product/${getProductId(p)}`);
+  const submitMobileSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = mobileQuery.trim();
+    if (q.length < 2) return;
+    setMobileOpen(false);
+    router.push(`/search?q=${encodeURIComponent(q)}`);
   };
-
-  const isAdmin = session?.user?.role === "admin";
 
   return (
-    <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0D0F14]/90 backdrop-blur-xl border-b border-white/[0.04]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <img src="/logo.png" alt="FOOTXI" className="h-7 w-auto" />
-            </Link>
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[color:var(--border)] bg-[var(--surface)] shadow-[0_1px_12px_rgba(0,0,0,0.04)]">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-16 flex items-center gap-4">
+          <Link href="/" className="shrink-0">
+            <img src="/logo.png" alt="FOOTXI" className="h-7 w-auto" />
+          </Link>
 
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-10">
-              <Link
-                href="/"
-                className="text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] transition-colors duration-300 tracking-wide"
-              >
-                Home
-              </Link>
+          <form onSubmit={submitDesktopSearch} className="hidden md:flex flex-1 relative">
+            <Search className="w-4 h-4 text-[var(--muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search clubs, leagues, players, retro kits..."
+              className="w-full h-10 pl-10 pr-3 rounded-xl border border-[color:var(--border)] bg-[var(--surface-muted)] text-[14px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-gold/40"
+            />
+          </form>
 
-              {/* Leagues Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => setLeaguesOpen(true)}
-                onMouseLeave={() => setLeaguesOpen(false)}
-              >
-                <button className="flex items-center gap-1.5 text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] transition-colors duration-300 py-2 tracking-wide">
-                  Leagues
-                  <ChevronDown className="w-3.5 h-3.5" />
-                </button>
-                {leaguesOpen && (
-                  <div className="absolute top-full left-0 pt-1 w-56">
-                    <div className="bg-[#141721] border border-white/[0.06] shadow-2xl shadow-black/40 py-2">
-                      {leagues.map((league) => (
-                        <Link
-                          key={league.slug}
-                          href={`/league/${league.slug}`}
-                          className="block px-4 py-2.5 text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] hover:bg-white/[0.03] transition-all duration-200"
-                          onClick={() => setLeaguesOpen(false)}
-                        >
-                          <span className="flex items-center justify-between">
-                            {league.name}
-                            <span className="text-[10px] text-[#9CA3AF]/40">
-                              {league.country}
-                            </span>
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+          <div className="ml-auto flex items-center gap-1.5">
+            <CurrencySelector />
 
-              <Link
-                href="/contact"
-                className="text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] transition-colors duration-300 tracking-wide"
-              >
-                Contact
-              </Link>
-            </div>
-
-            {/* Right side */}
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={openSearch}
-                className="p-2 text-[#9CA3AF] hover:text-[#F3F4F6] transition-colors duration-300"
-                title="Search (Ctrl+K)"
-              >
-                <Search className="w-5 h-5" />
-              </button>
-
-              <div className="hidden sm:block">
-                <CurrencySelector />
-              </div>
-
-              {/* Auth */}
-              {status === "authenticated" && session?.user ? (
-                <div className="relative" ref={userMenuRef}>
-                  <button
-                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 p-2 text-[#9CA3AF] hover:text-[#F3F4F6] transition-colors duration-300"
-                  >
-                    {session.user.image ? (
-                      <img
-                        src={session.user.image}
-                        alt=""
-                        className="w-7 h-7 rounded-full object-cover border border-white/[0.08]"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-7 h-7 bg-[#141721] border border-white/[0.08] rounded-full flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-gold uppercase">
-                          {session.user.name?.charAt(0) || "U"}
-                        </span>
-                      </div>
-                    )}
-                  </button>
-
-                  {userMenuOpen && (
-                    <div className="absolute top-full right-0 mt-2 w-56 bg-[#141721] border border-white/[0.06] shadow-2xl shadow-black/40 py-2">
-                      <div className="px-4 py-2.5 border-b border-white/[0.04] flex items-center gap-3">
-                        {session.user.image ? (
-                          <img
-                            src={session.user.image}
-                            alt=""
-                            className="w-9 h-9 rounded-full object-cover border border-white/[0.08] flex-shrink-0"
-                            referrerPolicy="no-referrer"
-                          />
-                        ) : (
-                          <div className="w-9 h-9 bg-[#1A1D2B] border border-white/[0.08] rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs font-bold text-gold uppercase">
-                              {session.user.name?.charAt(0) || "U"}
-                            </span>
-                          </div>
-                        )}
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-[#F3F4F6] truncate">
-                            {session.user.name}
-                          </p>
-                          <p className="text-[10px] text-[#9CA3AF]/60 truncate">
-                            {session.user.email}
-                          </p>
-                        </div>
-                      </div>
-
-                      <Link
-                        href="/account"
-                        className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] hover:bg-white/[0.03] transition-all duration-200"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        <Package className="w-4 h-4" />
-                        My Orders
-                      </Link>
-
-                      {isAdmin && (
-                        <Link
-                          href="/admin"
-                          className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-gold hover:text-gold-light hover:bg-white/[0.03] transition-all duration-200"
-                          onClick={() => setUserMenuOpen(false)}
-                        >
-                          <Shield className="w-4 h-4" />
-                          Admin Panel
-                        </Link>
-                      )}
-
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          signOut({ callbackUrl: "/" });
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#9CA3AF]/60 hover:text-red-400 hover:bg-white/[0.03] transition-all duration-200"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Sign Out
-                      </button>
-                    </div>
+            {status === "authenticated" ? (
+              <div className="relative" ref={accountRef}>
+                <button
+                  onClick={() => setAccountOpen((v) => !v)}
+                  className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)] flex items-center gap-1"
+                  aria-label="Account menu"
+                >
+                  {session?.user?.image ? (
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || "Profile"}
+                      referrerPolicy="no-referrer"
+                      className="w-7 h-7 rounded-full object-cover border border-[color:var(--border)]"
+                    />
+                  ) : (
+                    <span className="w-7 h-7 rounded-full border border-[color:var(--border)] bg-[var(--surface)] flex items-center justify-center">
+                      <User className="w-4 h-4" />
+                    </span>
                   )}
-                </div>
-              ) : status === "unauthenticated" ? (
-                <Link
-                  href="/auth/login"
-                  className="flex items-center gap-2 px-3.5 py-1.5 text-[11px] font-medium text-[#9CA3AF] hover:text-[#F3F4F6] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 tracking-wide"
-                >
-                  <User className="w-3.5 h-3.5" />
-                  Sign In
-                </Link>
-              ) : null}
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${accountOpen ? "rotate-180" : ""}`} />
+                </button>
 
-              <Link
-                href="/cart"
-                className="relative p-2 text-[#9CA3AF] hover:text-[#F3F4F6] transition-colors duration-300"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                {mounted && totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-gold text-[#0D0F14] text-xs font-bold rounded-full flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
-              </Link>
+                {accountOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-52 rounded-xl border border-[color:var(--border)] bg-[var(--surface)] shadow-[0_10px_26px_rgba(0,0,0,0.12)] p-1.5 z-50">
+                    <div className="px-2.5 py-2 border-b border-[color:var(--border)] mb-1">
+                      <p className="text-[12px] font-semibold text-[var(--foreground)] truncate">{session?.user?.name || "Account"}</p>
+                      <p className="text-[11px] text-[var(--muted)] truncate">{session?.user?.email}</p>
+                    </div>
 
-              <button
-                className="md:hidden p-2 text-[#9CA3AF] hover:text-[#F3F4F6]"
-                onClick={() => setMobileOpen(!mobileOpen)}
-              >
-                {mobileOpen ? (
-                  <X className="w-5 h-5" />
-                ) : (
-                  <Menu className="w-5 h-5" />
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileOpen && (
-          <div className="md:hidden bg-[#141721]/95 backdrop-blur-xl border-t border-white/[0.04]">
-            <div className="px-6 py-5 space-y-1">
-              <Link
-                href="/"
-                className="block px-3 py-2.5 text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] hover:bg-white/[0.03] transition-all duration-200"
-                onClick={() => setMobileOpen(false)}
-              >
-                Home
-              </Link>
-              <div className="px-3 py-2 text-[10px] font-semibold text-[#9CA3AF]/40 uppercase tracking-[0.2em]">
-                Leagues
-              </div>
-              {leagues.map((league) => (
-                <Link
-                  key={league.slug}
-                  href={`/league/${league.slug}`}
-                  className="block px-6 py-2.5 text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] hover:bg-white/[0.03] transition-all duration-200"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {league.name}
-                </Link>
-              ))}
-              <Link
-                href="/contact"
-                className="block px-3 py-2.5 text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] hover:bg-white/[0.03] transition-all duration-200"
-                onClick={() => setMobileOpen(false)}
-              >
-                Contact
-              </Link>
-
-              <div className="border-t border-white/[0.04] pt-3 mt-3">
-                {status === "authenticated" && session?.user ? (
-                  <>
                     <Link
                       href="/account"
-                      className="block px-3 py-2.5 text-[13px] text-[#9CA3AF] hover:text-[#F3F4F6] hover:bg-white/[0.03] transition-all duration-200"
-                      onClick={() => setMobileOpen(false)}
+                      onClick={() => setAccountOpen(false)}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 text-[12px] rounded-lg text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                     >
+                      <User className="w-3.5 h-3.5" />
+                      My Account
+                    </Link>
+                    <Link
+                      href="/account"
+                      onClick={() => setAccountOpen(false)}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 text-[12px] rounded-lg text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
+                    >
+                      <ClipboardList className="w-3.5 h-3.5" />
                       My Orders
                     </Link>
-                    {isAdmin && (
+                    {session?.user?.role === "admin" && (
                       <Link
                         href="/admin"
-                        className="block px-3 py-2.5 text-[13px] text-gold hover:text-gold-light hover:bg-white/[0.03] transition-all duration-200"
-                        onClick={() => setMobileOpen(false)}
+                        onClick={() => setAccountOpen(false)}
+                        className="w-full flex items-center gap-2 px-2.5 py-2 text-[12px] rounded-lg text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                       >
+                        <LayoutDashboard className="w-3.5 h-3.5" />
                         Admin Panel
                       </Link>
                     )}
                     <button
                       onClick={() => {
-                        setMobileOpen(false);
+                        setAccountOpen(false);
                         signOut({ callbackUrl: "/" });
                       }}
-                      className="block w-full text-left px-3 py-2.5 text-[13px] text-[#9CA3AF]/60 hover:text-red-400 hover:bg-white/[0.03] transition-all duration-200"
+                      className="w-full flex items-center gap-2 px-2.5 py-2 text-[12px] rounded-lg text-red-600 hover:bg-red-50"
                     >
+                      <LogOut className="w-3.5 h-3.5" />
                       Sign Out
                     </button>
-                  </>
-                ) : (
-                  <Link
-                    href="/auth/login"
-                    className="block px-3 py-2.5 text-[13px] text-gold hover:text-gold-light hover:bg-white/[0.03] transition-all duration-200"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Sign In
-                  </Link>
+                  </div>
                 )}
               </div>
-            </div>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
+                aria-label="Account"
+              >
+                <User className="w-5 h-5" />
+              </Link>
+            )}
+
+            <Link
+              href="/cart"
+              className="relative p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
+              aria-label="Cart"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              {mounted && totalItems > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-gold text-[#111] text-[11px] font-bold flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+
+            <button
+              onClick={() => setMobileOpen((v) => !v)}
+              className="md:hidden p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
-        )}
-      </nav>
+        </div>
 
-      {/* Search Overlay */}
-      {searchOpen && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]">
-          <div className="absolute inset-0 bg-[#0D0F14]/85 backdrop-blur-md" />
+        <div className="hidden md:flex h-11 items-center gap-2 overflow-x-auto border-t border-[color:var(--border)]">
+          {MARKET_CATEGORIES.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/league/${item.slug}`}
+              className="shrink-0 px-3 py-1.5 rounded-lg text-[12px] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
 
-          <div
-            ref={searchRef}
-            className="relative w-full max-w-xl mx-4 animate-[fadeSlideIn_0.2s_ease-out]"
-          >
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]/40" />
-              <input
-                ref={inputRef}
-                type="text"
-                value={query}
-                onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search teams, leagues, kits..."
-                className="w-full pl-12 pr-16 py-4 bg-[#141721] border border-white/[0.06] text-[#F3F4F6] text-sm placeholder:text-[#9CA3AF]/30 focus:outline-none focus:border-gold/20 transition-colors"
-              />
-              <kbd className="absolute right-4 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[10px] text-[#9CA3AF]/30 border border-white/[0.04] bg-[#1A1D2B]">
-                ESC
-              </kbd>
-            </div>
-
-            {query.trim().length >= 2 && (
-              <div className="mt-1 bg-[#141721] border border-white/[0.06] max-h-[50vh] overflow-y-auto">
-                {results.length === 0 ? (
-                  <div className="px-4 py-8 text-center">
-                    <p className="text-sm text-[#9CA3AF]/60">
-                      No results for &ldquo;{query}&rdquo;
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="px-4 py-2 border-b border-white/[0.04]">
-                      <span className="text-[10px] font-semibold tracking-[0.2em] text-[#9CA3AF]/40 uppercase">
-                        {results.length} results
-                      </span>
-                    </div>
-                    {results.map((product) => (
-                      <button
-                        key={getProductId(product)}
-                        onClick={() => goToProduct(product)}
-                        className="w-full flex items-center gap-4 px-4 py-3 hover:bg-white/[0.02] transition-colors text-left"
-                      >
-                        <div className="w-10 h-10 flex-shrink-0 bg-[#1A1D2B] flex items-center justify-center overflow-hidden">
-                          {product.image &&
-                          product.image.startsWith("http") ? (
-                            <img
-                              src={product.image}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <span className="text-[10px] font-bold text-white/[0.1]">
-                              {product.team.substring(0, 3)}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-[#F3F4F6] truncate">
-                            {product.team}
-                          </p>
-                          <p className="text-[10px] text-[#9CA3AF]/40 tracking-wide">
-                            {product.league.toUpperCase()} &middot;{" "}
-                            {product.type.toUpperCase()} &middot;{" "}
-                            {product.kitType.toUpperCase()}
-                          </p>
-                        </div>
-                        <span className="text-sm font-bold text-[#F3F4F6] flex-shrink-0">
-                          {formatPrice(
-                            product.kitType === "fans"
-                              ? 25
-                              : product.kitType === "player"
-                              ? 30
-                              : 33
-                          )}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {query.trim().length < 2 && (
-              <div className="mt-1 bg-[#141721] border border-white/[0.06] px-4 py-6">
-                <p className="text-[11px] text-[#9CA3AF]/30 text-center tracking-wide">
-                  Type at least 2 characters to search
-                </p>
-                <div className="flex flex-wrap justify-center gap-2 mt-4">
-                  {[
-                    "Barcelona",
-                    "Liverpool",
-                    "Galatasaray",
-                    "Milan",
-                    "Retro",
-                  ].map((hint) => (
-                    <button
-                      key={hint}
-                      onClick={() => {
-                        handleSearch(hint);
-                        if (inputRef.current) inputRef.current.value = hint;
-                      }}
-                      className="px-3.5 py-1.5 text-[10px] font-medium tracking-[0.1em] text-[#9CA3AF]/40 bg-white/[0.02] border border-white/[0.04] hover:text-gold hover:border-gold/20 transition-all duration-300"
-                    >
-                      {hint}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-[color:var(--border)] bg-[var(--surface)] px-4 py-4 space-y-3">
+          <form onSubmit={submitMobileSearch} className="relative">
+            <Search className="w-4 h-4 text-[var(--muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              value={mobileQuery}
+              onChange={(e) => setMobileQuery(e.target.value)}
+              placeholder="Search clubs, leagues, players..."
+              className="w-full h-10 pl-10 pr-3 rounded-xl border border-[color:var(--border)] bg-[var(--surface-muted)] text-[14px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-gold/40"
+            />
+          </form>
+          <div className="grid grid-cols-2 gap-2">
+            {MARKET_CATEGORIES.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/league/${item.slug}`}
+                onClick={() => setMobileOpen(false)}
+                className="px-3 py-2 rounded-lg text-[12px] text-[var(--foreground)] bg-[var(--surface-muted)]"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
       )}
-    </>
+    </nav>
   );
 }

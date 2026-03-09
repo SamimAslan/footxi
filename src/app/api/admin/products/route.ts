@@ -3,6 +3,11 @@ import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
 import { isBannedImageByContent } from "@/lib/imageBlocker";
+import {
+  buildExtraCategories,
+  inferShopCategoryFromText,
+  mapLeagueByRawCategory,
+} from "@/lib/productTaxonomy";
 
 export async function GET(req: NextRequest) {
   try {
@@ -72,6 +77,24 @@ export async function POST(req: NextRequest) {
       ...body,
       kitType: body?.type === "retro" ? "retro" : "fans",
     };
+    const shopCategory = inferShopCategoryFromText(
+      normalizedBody?.name || "",
+      normalizedBody?.league || normalizedBody?.leagueSlug || ""
+    );
+    const mappedLeague = mapLeagueByRawCategory(
+      normalizedBody?.league || normalizedBody?.leagueSlug || "",
+      normalizedBody?.team || "",
+      normalizedBody?.name || "",
+      shopCategory
+    );
+    normalizedBody.league = mappedLeague.league;
+    normalizedBody.leagueSlug = mappedLeague.leagueSlug;
+    normalizedBody.shopCategory = shopCategory;
+    normalizedBody.extraCategories = buildExtraCategories(
+      normalizedBody.leagueSlug,
+      normalizedBody.kitType,
+      shopCategory
+    );
 
     await connectDB();
 

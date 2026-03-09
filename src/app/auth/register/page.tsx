@@ -66,20 +66,20 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-black">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-[var(--background)]">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-10">
           <Link href="/" className="inline-block mb-8">
             <span className="text-3xl font-bold tracking-tight">
-              <span className="text-white">FOOT</span>
+              <span className="text-[var(--foreground)]">FOOT</span>
               <span className="text-amber-400">XI</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
+          <h1 className="text-2xl font-bold text-[var(--foreground)] tracking-tight">
             Create your account
           </h1>
-          <p className="text-sm text-zinc-500 mt-2">
+          <p className="text-sm text-[var(--muted)] mt-2">
             Join FootXI and start shopping premium kits
           </p>
         </div>
@@ -93,7 +93,7 @@ export default function RegisterPage() {
           )}
 
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
               Full Name
             </label>
             <input
@@ -101,13 +101,13 @@ export default function RegisterPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
               placeholder="John Doe"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
               Email
             </label>
             <input
@@ -115,13 +115,13 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
               Password
             </label>
             <div className="relative">
@@ -130,13 +130,13 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 pr-12 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+                className="w-full px-4 py-3 pr-12 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
                 placeholder="Min. 6 characters"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--foreground)]"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -148,7 +148,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">
               Confirm Password
             </label>
             <input
@@ -156,7 +156,7 @@ export default function RegisterPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-zinc-900 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
               placeholder="Repeat your password"
             />
           </div>
@@ -179,15 +179,15 @@ export default function RegisterPage() {
 
         {/* Divider */}
         <div className="flex items-center gap-4 my-6">
-          <div className="flex-1 h-px bg-white/5" />
-          <span className="text-[10px] text-zinc-600 uppercase tracking-widest">or</span>
-          <div className="flex-1 h-px bg-white/5" />
+          <div className="flex-1 h-px bg-[color:var(--border)]" />
+          <span className="text-[10px] text-[var(--muted)] uppercase tracking-widest">or</span>
+          <div className="flex-1 h-px bg-[color:var(--border)]" />
         </div>
 
         {/* Google Sign Up */}
         <button
           onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-zinc-900 border border-white/10 text-sm text-zinc-300 hover:text-white hover:border-white/20 transition-all"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:border-gold/30 transition-all"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -211,7 +211,7 @@ export default function RegisterPage() {
         </button>
 
         {/* Footer */}
-        <p className="text-center text-sm text-zinc-500 mt-8">
+        <p className="text-center text-sm text-[var(--muted)] mt-8">
           Already have an account?{" "}
           <Link
             href="/auth/login"

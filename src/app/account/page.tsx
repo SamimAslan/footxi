@@ -82,44 +82,44 @@ export default function AccountPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[var(--background)]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* User Info */}
         <div className="flex items-center gap-4 mb-10">
-          <div className="w-14 h-14 bg-zinc-900 border border-white/10 flex items-center justify-center">
-            <User className="w-6 h-6 text-zinc-400" />
+          <div className="w-14 h-14 bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center">
+            <User className="w-6 h-6 text-[var(--muted)]" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-[var(--foreground)]">
               {session?.user?.name}
             </h1>
-            <p className="text-sm text-zinc-500">{session?.user?.email}</p>
+            <p className="text-sm text-[var(--muted)]">{session?.user?.email}</p>
           </div>
         </div>
 
         {/* Orders */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
             <Package className="w-5 h-5 text-amber-400" />
             Your Orders
           </h2>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm text-[var(--muted)] mt-1">
             Track and manage your orders
           </p>
         </div>
 
         {orders.length === 0 ? (
-          <div className="bg-zinc-900/50 border border-white/5 p-12 text-center">
-            <ShoppingBag className="w-10 h-10 text-zinc-600 mx-auto mb-4" />
-            <p className="text-zinc-400 mb-2">No orders yet</p>
-            <p className="text-sm text-zinc-600 mb-6">
+          <div className="bg-[var(--surface)] border border-[color:var(--border)] p-12 text-center">
+            <ShoppingBag className="w-10 h-10 text-[var(--muted)] mx-auto mb-4" />
+            <p className="text-[var(--foreground)] mb-2">No orders yet</p>
+            <p className="text-sm text-[var(--muted)] mb-6">
               Your order history will appear here
             </p>
             <Link
@@ -135,7 +135,7 @@ export default function AccountPage() {
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="bg-zinc-900/50 border border-white/5 hover:border-white/10 transition-colors group relative"
+                className="bg-[var(--surface)] border border-[color:var(--border)] hover:border-gold/30 transition-colors group relative"
               >
                 <div className="flex items-center">
                   <Link
@@ -145,7 +145,7 @@ export default function AccountPage() {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-xs font-mono text-zinc-500">
+                          <span className="text-xs font-mono text-[var(--muted)]">
                             #{order._id.slice(-8).toUpperCase()}
                           </span>
                           <span
@@ -160,19 +160,19 @@ export default function AccountPage() {
                           {order.items.slice(0, 3).map((item, i) => (
                             <span
                               key={i}
-                              className="text-sm text-zinc-300"
+                              className="text-sm text-[var(--foreground)]"
                             >
                               {item.team} ({item.kitType})
                               {i < Math.min(order.items.length, 3) - 1 && ","}
                             </span>
                           ))}
                           {order.items.length > 3 && (
-                            <span className="text-sm text-zinc-500">
+                            <span className="text-sm text-[var(--muted)]">
                               +{order.items.length - 3} more
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-3 text-xs text-zinc-600">
+                        <div className="flex items-center gap-3 text-xs text-[var(--muted)]">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {new Date(order.createdAt).toLocaleDateString("en-US", {
@@ -184,10 +184,10 @@ export default function AccountPage() {
                         </div>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <span className="text-lg font-bold text-white">
+                        <span className="text-lg font-bold text-[var(--foreground)]">
                           {formatPrice(order.total)}
                         </span>
-                        <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-amber-400 mt-2 ml-auto transition-colors" />
+                        <ArrowRight className="w-4 h-4 text-[var(--muted)] group-hover:text-amber-400 mt-2 ml-auto transition-colors" />
                       </div>
                     </div>
                   </Link>
@@ -201,7 +201,7 @@ export default function AccountPage() {
                           setConfirmDeleteId(order._id);
                         }}
                         disabled={deletingId === order._id}
-                        className="p-2 rounded-lg text-zinc-600 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                        className="p-2 rounded-lg text-[var(--muted)] hover:text-red-400 hover:bg-red-500/10 transition-all"
                         title="Remove from list"
                       >
                         {deletingId === order._id ? (

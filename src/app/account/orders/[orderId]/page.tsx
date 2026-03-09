@@ -116,7 +116,7 @@ export default function OrderDetailPage() {
 
   if (authStatus === "loading" || loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
       </div>
     );
@@ -124,13 +124,13 @@ export default function OrderDetailPage() {
 
   if (error || !order) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
         <div className="text-center">
           <XCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <h1 className="text-xl font-bold text-white mb-2">
+          <h1 className="text-xl font-bold text-[var(--foreground)] mb-2">
             Order not found
           </h1>
-          <p className="text-zinc-500 mb-6">{error}</p>
+          <p className="text-[var(--muted)] mb-6">{error}</p>
           <Link
             href="/account"
             className="inline-flex items-center gap-2 text-sm text-amber-400 hover:text-amber-300"
@@ -148,18 +148,18 @@ export default function OrderDetailPage() {
   const currentStepIndex = getStepIndex(order.status);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[var(--background)]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link
             href="/account"
-            className="p-2 text-zinc-400 hover:text-white transition-colors"
+            className="p-2 text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-white flex items-center gap-3">
+            <h1 className="text-xl font-bold text-[var(--foreground)] flex items-center gap-3">
               Order #{order._id.slice(-8).toUpperCase()}
               <span
                 className={`px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider border ${
@@ -169,7 +169,7 @@ export default function OrderDetailPage() {
                 {order.status.replace(/_/g, " ")}
               </span>
             </h1>
-            <p className="text-sm text-zinc-500 mt-1">
+            <p className="text-sm text-[var(--muted)] mt-1">
               Placed on{" "}
               {new Date(order.createdAt).toLocaleDateString("en-US", {
                 month: "long",
@@ -184,8 +184,8 @@ export default function OrderDetailPage() {
 
         {/* Status Tracker */}
         {!isNegativeStatus && (
-          <div className="bg-zinc-900/50 border border-white/5 p-6 mb-6">
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-6">
+          <div className="bg-[var(--surface)] border border-[color:var(--border)] p-6 mb-6">
+            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-6">
               Order Progress
             </h2>
             <div className="flex items-center justify-between">
@@ -202,7 +202,7 @@ export default function OrderDetailPage() {
                             ? "bg-amber-400/20 border-amber-400 text-amber-400"
                             : isActive
                             ? "bg-green-500/10 border-green-500/30 text-green-400"
-                            : "bg-zinc-800 border-white/5 text-zinc-600"
+                            : "bg-[var(--surface-muted)] border-[color:var(--border)] text-[var(--muted)]"
                         }`}
                       >
                         {isActive && !isCurrent ? (
@@ -215,7 +215,7 @@ export default function OrderDetailPage() {
                       </div>
                       <span
                         className={`text-[10px] mt-2 font-medium ${
-                          isActive ? "text-white" : "text-zinc-600"
+                          isActive ? "text-[var(--foreground)]" : "text-[var(--muted)]"
                         }`}
                       >
                         {step.label}
@@ -226,7 +226,7 @@ export default function OrderDetailPage() {
                         className={`flex-1 h-px mx-2 ${
                           i < currentStepIndex
                             ? "bg-green-500/30"
-                            : "bg-white/5"
+                            : "bg-[color:var(--border)]"
                         }`}
                       />
                     )}
@@ -247,7 +247,7 @@ export default function OrderDetailPage() {
                   Order {order.status.replace(/_/g, " ")}
                 </h3>
                 {order.adminNote && (
-                  <p className="text-sm text-zinc-400 mt-1">
+                  <p className="text-sm text-[var(--muted)] mt-1">
                     {order.adminNote}
                   </p>
                 )}
@@ -258,8 +258,8 @@ export default function OrderDetailPage() {
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Items */}
-          <div className="bg-zinc-900/50 border border-white/5 p-6">
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="bg-[var(--surface)] border border-[color:var(--border)] p-6">
+            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
               <Package className="w-4 h-4" />
               Items ({order.items.length})
             </h2>
@@ -267,24 +267,24 @@ export default function OrderDetailPage() {
               {order.items.map((item, i) => (
                 <div
                   key={i}
-                  className="flex gap-3 pb-4 border-b border-white/5 last:border-0 last:pb-0"
+                  className="flex gap-3 pb-4 border-b border-[color:var(--border)] last:border-0 last:pb-0"
                 >
-                  <div className="w-10 h-10 flex-shrink-0 bg-zinc-800 rounded overflow-hidden">
+                  <div className="w-10 h-10 flex-shrink-0 bg-[var(--surface-muted)] rounded overflow-hidden">
                     {item.image && item.image.startsWith("http") ? (
                       <img src={item.image} alt={item.team} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <svg viewBox="0 0 120 150" className="w-6 h-7 opacity-40">
-                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-zinc-700" />
+                          <path d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z" className="fill-slate-400" />
                         </svg>
                       </div>
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm text-white font-medium">
+                    <p className="text-sm text-[var(--foreground)] font-medium">
                       {item.team}
                     </p>
-                    <p className="text-[10px] text-zinc-500">
+                    <p className="text-[10px] text-[var(--muted)]">
                       {item.kitType.toUpperCase()} &middot; {item.type} &middot;
                       Size {item.size} &middot; x{item.quantity}
                     </p>
@@ -301,12 +301,12 @@ export default function OrderDetailPage() {
                       </div>
                     )}
                     {item.hasCustomNameNumber && (
-                      <p className="text-[10px] text-zinc-500 mt-1">
+                      <p className="text-[10px] text-[var(--muted)] mt-1">
                         Custom: {item.customName} #{item.customNumber}
                       </p>
                     )}
                   </div>
-                  <span className="text-sm font-semibold text-white">
+                  <span className="text-sm font-semibold text-[var(--foreground)]">
                     {formatPrice(item.totalPrice)}
                   </span>
                 </div>
@@ -317,13 +317,13 @@ export default function OrderDetailPage() {
           {/* Right column */}
           <div className="space-y-6">
             {/* Shipping Address */}
-            <div className="bg-zinc-900/50 border border-white/5 p-6">
-              <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-[var(--surface)] border border-[color:var(--border)] p-6">
+              <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 Shipping Address
               </h2>
-              <div className="text-sm text-zinc-300 space-y-1">
-                <p className="font-medium text-white">
+              <div className="text-sm text-[var(--muted)] space-y-1">
+                <p className="font-medium text-[var(--foreground)]">
                   {order.shippingAddress.fullName}
                 </p>
                 <p>{order.shippingAddress.address}</p>
@@ -332,12 +332,12 @@ export default function OrderDetailPage() {
                 </p>
                 <p>{order.shippingAddress.country}</p>
                 {order.shippingAddress.phone && (
-                  <p className="text-zinc-500">
+                  <p className="text-[var(--muted)]">
                     {order.shippingAddress.phone}
                   </p>
                 )}
               </div>
-              <div className="mt-4 flex items-center gap-2 text-xs text-zinc-500">
+              <div className="mt-4 flex items-center gap-2 text-xs text-[var(--muted)]">
                 <Clock className="w-3 h-3" />
                 {order.shippingMethod === "express"
                   ? "Express (7-15 days)"
@@ -346,15 +346,15 @@ export default function OrderDetailPage() {
             </div>
 
             {/* Payment Summary */}
-            <div className="bg-zinc-900/50 border border-white/5 p-6">
-              <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-[var(--surface)] border border-[color:var(--border)] p-6">
+              <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
                 <CreditCard className="w-4 h-4" />
                 Payment Summary
               </h2>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between text-[var(--muted)]">
                   <span>Subtotal</span>
-                  <span className="text-white">
+                  <span className="text-[var(--foreground)]">
                     {formatPrice(order.subtotal)}
                   </span>
                 </div>
@@ -364,16 +364,16 @@ export default function OrderDetailPage() {
                     <span>-{formatPrice(order.discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between text-[var(--muted)]">
                   <span>Shipping</span>
-                  <span className="text-white">
+                  <span className="text-[var(--foreground)]">
                     {formatPrice(order.shippingCost)}
                   </span>
                 </div>
-                <div className="border-t border-white/5 pt-2 mt-2">
+                <div className="border-t border-[color:var(--border)] pt-2 mt-2">
                   <div className="flex justify-between">
-                    <span className="font-semibold text-white">Total</span>
-                    <span className="text-lg font-bold text-white">
+                    <span className="font-semibold text-[var(--foreground)]">Total</span>
+                    <span className="text-lg font-bold text-[var(--foreground)]">
                       {formatPrice(order.total)}
                     </span>
                   </div>
