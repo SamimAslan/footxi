@@ -3,7 +3,7 @@ import { parse } from "csv-parse/sync";
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
-import { filterAllowedImages, isBannedImageByContent } from "@/lib/imageBlocker";
+import { filterAllowedImages } from "@/lib/imageBlocker";
 
 type CsvRow = {
   product_name?: string;
@@ -156,7 +156,20 @@ async function getImages(row: CsvRow): Promise<{
     row.image_url_5,
     ...allImagesRaw,
   ];
-  const { allowed, blockedCount } = await filterAllowedImages(candidates);
+  const orderedCandidates = [...new Set(candidates.map((v) => (v || "").trim()).filter(Boolean))];
+  const allowed: string[] = [];
+  let blockedCount = 0;
+
+  for (const url of orderedCandidates) {
+    // We only need front/back images; stop early to avoid long imports.
+    if (allowed.length >= 2) break;
+    // eslint-disable-next-line no-await-in-loop
+    const { allowed: filtered, blockedCount: currentBlocked } = await filterAllowedImages([url]);
+    blockedCount += currentBlocked;
+    if (filtered.length > 0) {
+      allowed.push(filtered[0]);
+    }
+  }
 
   return {
     image: allowed[0] || "",
@@ -232,15 +245,6 @@ async function processRecords(records: CsvRow[]) {
       skipped += 1;
       errors.push(`Skipped "${name}" (missing valid image URL after blocked-image filter)`);
       continue;
-    }
-
-    if (payload.backImage) {
-      // eslint-disable-next-line no-await-in-loop
-      const backBlocked = await isBannedImageByContent(payload.backImage);
-      if (backBlocked) {
-        payload.backImage = "";
-        blockedImageReferencesRemoved += 1;
-      }
     }
 
     // eslint-disable-next-line no-await-in-loop

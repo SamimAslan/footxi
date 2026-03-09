@@ -37,6 +37,10 @@ interface CsvImportRow {
   [key: string]: string | undefined;
 }
 
+function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 const kitTypeColors: Record<string, string> = {
   fans: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   player: "bg-amber-500/10 text-amber-400 border-amber-500/20",
@@ -179,7 +183,7 @@ export default function AdminProductsPage() {
         return;
       }
 
-      const chunkSize = 250;
+      const chunkSize = 30;
       const totalChunks = Math.ceil(rows.length / chunkSize);
       let created = 0;
       let updated = 0;
@@ -192,16 +196,37 @@ export default function AdminProductsPage() {
         const chunkRows = rows.slice(from, to);
         setCsvProgress(`Importing chunk ${i + 1}/${totalChunks} (${to}/${rows.length})...`);
 
-        // eslint-disable-next-line no-await-in-loop
-        const res = await fetch("/api/admin/products/import-csv", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ rows: chunkRows }),
-        });
+        let res: Response | null = null;
+        let data: {
+          created?: number;
+          updated?: number;
+          skipped?: number;
+          blockedImageReferencesRemoved?: number;
+          error?: string;
+        } = {};
 
-        // eslint-disable-next-line no-await-in-loop
-        const data = await res.json();
-        if (!res.ok) {
+        for (let attempt = 1; attempt <= 3; attempt += 1) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            res = await fetch("/api/admin/products/import-csv", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ rows: chunkRows }),
+            });
+            // eslint-disable-next-line no-await-in-loop
+            data = await res.json().catch(() => ({}));
+
+            if (res.ok) break;
+            if (res.status !== 504 && res.status !== 502 && res.status !== 503) break;
+          } catch {
+            // retry network errors
+          }
+
+          // eslint-disable-next-line no-await-in-loop
+          await wait(700 * attempt);
+        }
+
+        if (!res || !res.ok) {
           setCsvError(data.error || `CSV import failed at chunk ${i + 1}`);
           setCsvProgress("");
           return;
