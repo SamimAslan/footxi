@@ -184,7 +184,19 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="hidden md:flex h-11 items-center gap-2 overflow-x-auto border-t border-[color:var(--border)]">
+        <div className="hidden md:flex h-11 items-center gap-2 overflow-x-auto hide-scrollbar border-t border-[color:var(--border)]">
+          {MARKET_CATEGORIES.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/league/${item.slug}`}
+              className="shrink-0 px-3 py-1.5 rounded-lg text-[12px] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="md:hidden h-10 flex items-center gap-2 overflow-x-auto hide-scrollbar border-t border-[color:var(--border)]">
           {MARKET_CATEGORIES.map((item) => (
             <Link
               key={item.slug}

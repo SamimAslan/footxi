@@ -111,7 +111,7 @@ function ProductTile({
   return (
     <Link
       href={`/product/${getProductId(product)}`}
-      className="group rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all"
+      className="group rounded-xl sm:rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all"
     >
       <div className="relative aspect-[4/5] bg-white overflow-hidden">
         {product.image ? (
@@ -127,11 +127,11 @@ function ProductTile({
           </span>
         ) : null}
       </div>
-      <div className="p-3.5 space-y-2">
-        <p className="text-[14px] font-semibold text-[#111] line-clamp-1">{displayTeam}</p>
+      <div className="p-3 sm:p-3.5 space-y-1.5 sm:space-y-2">
+        <p className="text-[13px] sm:text-[14px] font-semibold text-[#111] line-clamp-1">{displayTeam}</p>
         <p className="text-[11px] uppercase tracking-[0.12em] text-[#666]">{product.kitType} version</p>
         <div className="flex items-center justify-between">
-          <p className="text-[20px] font-bold text-[#111]">{formatPrice(price)}</p>
+          <p className="text-[18px] sm:text-[20px] font-bold text-[#111]">{formatPrice(price)}</p>
           <div className="inline-flex items-center gap-1 text-[11px] text-[#666]">
             <Star className="w-3.5 h-3.5 text-gold fill-gold" />
             {rating}
@@ -143,7 +143,7 @@ function ProductTile({
             onAdd(product);
             setJustAdded(true);
           }}
-          className={`w-full h-9 rounded-lg text-[12px] font-semibold transition-all duration-200 active:scale-[0.97] ${
+          className={`w-full h-8.5 sm:h-9 rounded-lg text-[12px] font-semibold transition-all duration-200 active:scale-[0.97] ${
             justAdded
               ? "bg-emerald-500 text-white shadow-[0_6px_18px_rgba(34,197,94,0.35)]"
               : "bg-[#111] text-white hover:bg-[#222] hover:scale-[1.01]"
@@ -268,9 +268,25 @@ export default function MarketplaceHomepage() {
 
   return (
     <div className="bg-[#fff]">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-8">
+      <div className="max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-5 space-y-6 sm:space-y-8">
+        <section className="lg:hidden">
+          <div className="-mx-1 overflow-x-auto hide-scrollbar pb-1">
+            <div className="flex gap-2 px-1">
+              {HERO_LEFT.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/league/${item.slug}`}
+                  className="shrink-0 px-3 py-1.5 rounded-lg text-[12px] text-[#111] border border-[color:var(--border)] bg-[var(--surface)]"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <aside className="lg:col-span-2 rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] p-3">
+          <aside className="hidden lg:block lg:col-span-2 rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] p-3">
             <p className="px-2 py-1 text-[11px] font-semibold text-[#666] uppercase tracking-[0.16em]">Categories</p>
             <div className="mt-2 space-y-1">
               {HERO_LEFT.map((item) => (
@@ -286,7 +302,7 @@ export default function MarketplaceHomepage() {
             </div>
           </aside>
 
-          <div className="lg:col-span-7 relative rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] min-h-[250px] overflow-hidden">
+          <div className="lg:col-span-7 relative rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] min-h-[200px] sm:min-h-[250px] overflow-hidden">
             <Link href={HERO_BANNERS[bannerIndex].href} className="block absolute inset-0">
               <img
                 src={HERO_BANNERS[bannerIndex].image}
@@ -297,10 +313,10 @@ export default function MarketplaceHomepage() {
               <div className="relative h-full p-5 flex flex-col justify-between">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.16em] text-white/85">Marketplace Banner</p>
-                  <h2 className="mt-3 text-[32px] leading-[1.05] font-bold text-white">
+                  <h2 className="mt-3 text-[24px] sm:text-[32px] leading-[1.05] font-bold text-white">
                     {HERO_BANNERS[bannerIndex].title}
                   </h2>
-                  <p className="mt-2 text-white/85 text-[14px]">{HERO_BANNERS[bannerIndex].subtitle}</p>
+                  <p className="mt-2 text-white/85 text-[13px] sm:text-[14px]">{HERO_BANNERS[bannerIndex].subtitle}</p>
                 </div>
                 <div className="flex gap-2 mt-4">
                   {HERO_BANNERS.map((_, i) => (
@@ -315,21 +331,21 @@ export default function MarketplaceHomepage() {
 
             <button
               onClick={goPrevBanner}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/35 text-white hover:bg-black/50 flex items-center justify-center"
+              className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/35 text-white hover:bg-black/50 flex items-center justify-center"
               aria-label="Previous banner"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={goNextBanner}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/35 text-white hover:bg-black/50 flex items-center justify-center"
+              className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/35 text-white hover:bg-black/50 flex items-center justify-center"
               aria-label="Next banner"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
-          <aside className="lg:col-span-3 grid grid-cols-2 gap-3">
+          <aside className="lg:col-span-3 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
             {HERO_PROMOS.map((promo) => (
               <Link
                 key={promo.title}
@@ -338,8 +354,8 @@ export default function MarketplaceHomepage() {
               >
                 <img src={promo.image} alt={promo.title} className="absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/5" />
-                <div className="relative p-3.5 h-full flex items-end">
-                  <p className="text-[15px] leading-tight font-semibold text-white">{promo.title}</p>
+                <div className="relative p-3 h-full flex items-end">
+                  <p className="text-[13px] sm:text-[15px] leading-tight font-semibold text-white">{promo.title}</p>
                 </div>
               </Link>
             ))}
@@ -347,26 +363,26 @@ export default function MarketplaceHomepage() {
         </section>
 
         <section className="space-y-4">
-          <h3 className="text-[24px] font-bold text-[#111]">Browse by League</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          <h3 className="text-[19px] sm:text-[24px] font-bold text-[#111]">Browse by League</h3>
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3">
             {leagueCards.map((league) => (
               <Link
                 key={league.slug}
                 href={`/league/${league.slug}`}
-                className="rounded-xl border border-[color:var(--border)] bg-[var(--surface)] p-3 text-center hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)]"
+                className="rounded-lg sm:rounded-xl border border-[color:var(--border)] bg-[var(--surface)] p-2 sm:p-3 text-center hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)]"
               >
-                <div className="h-14 flex items-center justify-center">
+                <div className="h-10 sm:h-14 flex items-center justify-center">
                   {league.logo ? (
                     <img
                       src={league.logo}
                       alt={league.name}
                       className={`object-contain ${
-                        league.slug === "international-teams" ? "max-h-14" : "max-h-11"
+                        league.slug === "international-teams" ? "max-h-10 sm:max-h-14" : "max-h-8 sm:max-h-11"
                       }`}
                     />
                   ) : null}
                 </div>
-                <p className="mt-2 text-[12px] text-[#111]">{league.name}</p>
+                <p className="mt-1 sm:mt-2 text-[11px] sm:text-[12px] text-[#111] line-clamp-1">{league.name}</p>
               </Link>
             ))}
           </div>
@@ -393,9 +409,9 @@ export default function MarketplaceHomepage() {
 
         <section className="space-y-4">
           <h3 className="text-[24px] font-bold text-[#111]">Just Dropped</h3>
-          <div className="flex gap-3 overflow-x-auto pb-1">
+          <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1">
             {newArrivals.slice(0, 18).map((p) => (
-              <div key={getProductId(p)} className="w-[220px] shrink-0">
+              <div key={getProductId(p)} className="w-[170px] sm:w-[200px] lg:w-[220px] shrink-0">
                 <ProductTile product={p} badge="NEW" onAdd={addQuick} />
               </div>
             ))}
@@ -431,7 +447,7 @@ export default function MarketplaceHomepage() {
 
         <section className="space-y-4 pb-10">
           <h3 className="text-[24px] font-bold text-[#111]">Explore More Kits</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
             <select
               value={leagueFilter}
               onChange={(e) => setLeagueFilter(e.target.value)}

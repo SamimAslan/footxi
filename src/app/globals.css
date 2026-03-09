@@ -170,3 +170,13 @@ html {
 .font-display {
   font-family: var(--font-display), var(--font-sans), sans-serif;
 }
+
+/* Hide scrollbar but keep horizontal scroll */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
