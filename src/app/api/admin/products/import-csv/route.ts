@@ -8,10 +8,13 @@ import { filterAllowedImages, isBannedImageByContent } from "@/lib/imageBlocker"
 type CsvRow = {
   product_name?: string;
   product_url?: string;
-  team_name?: string;
+  item_no?: string;
+  weight?: string;
   category?: string;
+  tag?: string;
+  brand?: string;
+  creation_time?: string;
   price?: string;
-  description?: string;
   badges?: string;
   sizes?: string;
   main_image_url?: string;
@@ -23,6 +26,29 @@ type CsvRow = {
   local_image_paths?: string;
   date_scraped?: string;
 };
+
+const TEAM_STOP_WORDS = [
+  "home",
+  "away",
+  "third",
+  "retro",
+  "fans",
+  "fan",
+  "player",
+  "kids",
+  "kid",
+  "jersey",
+  "jerseys",
+  "tracksuit",
+  "windbreaker",
+  "jacket",
+  "hoody",
+  "hoodie",
+  "nfl",
+  "nba",
+  "quality",
+  "classis",
+];
 
 function slugify(value: string): string {
   return value
@@ -40,6 +66,50 @@ function inferType(name: string): "home" | "away" | "third" | "retro" {
   if (n.includes("away")) return "away";
   if (n.includes("third")) return "third";
   return "home";
+}
+
+function inferKitType(name: string, type: "home" | "away" | "third" | "retro"): "fans" | "player" | "retro" {
+  if (type === "retro") return "retro";
+  const n = name.toLowerCase();
+  if (n.includes("player")) return "player";
+  if (n.includes("fan")) return "fans";
+  return "fans";
+}
+
+function inferTeam(name: string): string {
+  const cleaned = name
+    .replace(/^\d{4}(?:\/\d{4})?\s*/g, "")
+    .replace(/\b1[:.]?1\b/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const parts = cleaned.split(" ");
+  const collected: string[] = [];
+
+  for (const part of parts) {
+    const token = part.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (!token) continue;
+    if (TEAM_STOP_WORDS.includes(token)) break;
+    collected.push(part);
+    if (collected.length >= 3) break;
+  }
+
+  return (collected.join(" ").trim() || "Unknown Team").replace(/\s+/g, " ");
+}
+
+function inferPriceOverride(name: string, type: "home" | "away" | "third" | "retro"): number {
+  const n = name.toLowerCase();
+
+  if (n.includes("windbreaker")) return 50;
+  if (n.includes("tracksuit")) return 50;
+  if (n.includes("jacket")) return 50;
+  if (n.includes("hoody") || n.includes("hoodie")) return 35;
+  if (n.includes("kids") || n.includes("kid")) return 25;
+  if (n.includes("nba") || n.includes("nfl")) return 30;
+  if (type === "retro" || n.includes("retro")) return 33;
+  if (n.includes("player")) return 30;
+  if (n.includes("fan")) return 25;
+
+  return 25;
 }
 
 function inferSeason(name: string): string {
@@ -97,21 +167,25 @@ async function getImages(row: CsvRow): Promise<{
 
 async function normalizeRow(row: CsvRow) {
   const name = (row.product_name || "").trim();
-  const team = (row.team_name || "").trim() || "Unknown Team";
+  const team = inferTeam(name);
+  const brand = (row.brand || "").trim();
   const league = (row.category || "").trim() || "Imported";
   const leagueSlug = slugify(league) || "imported";
   const type = inferType(name);
-  const kitType: "fans" | "retro" = type === "retro" ? "retro" : "fans";
+  const kitType = inferKitType(name, type);
+  const priceOverride = inferPriceOverride(name, type);
   const { image, backImage, blockedRemovedCount } = await getImages(row);
 
   return {
     name,
     team,
+    brand,
     league,
     leagueSlug,
     season: inferSeason(name),
     type,
     kitType,
+    priceOverride,
     image,
     backImage,
     blockedRemovedCount,

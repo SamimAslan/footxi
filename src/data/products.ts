@@ -8,11 +8,13 @@ export interface Product {
   id?: string;
   name: string;
   team: string;
+  brand?: string;
   league: string;
   leagueSlug: string;
   season: string;
   type: "home" | "away" | "third" | "retro";
   kitType: "fans" | "player" | "retro";
+  priceOverride?: number;
   image: string;
   backImage?: string;
   sizes?: string[];
@@ -240,4 +242,14 @@ export function getLeagueBySlug(slug: string): League | undefined {
 
 export function getBasePrice(kitType: Product["kitType"]): number {
   return PRICING[kitType];
+}
+
+export function getProductBasePrice(
+  product: Product,
+  selectedKitType?: Product["kitType"]
+): number {
+  if (typeof product.priceOverride === "number" && Number.isFinite(product.priceOverride)) {
+    return product.priceOverride;
+  }
+  return getBasePrice(selectedKitType || product.kitType);
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cart";
-import { getBasePrice, PRICING } from "@/data/products";
+import { getProductBasePrice, PRICING } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
 import Link from "next/link";
 import {
@@ -100,7 +100,7 @@ export default function CheckoutPage() {
     try {
       const orderItems = items.map((item) => {
         const kitType = item.selectedKitType || item.product.kitType;
-        let unitPrice = getBasePrice(kitType);
+        let unitPrice = getProductBasePrice(item.product, kitType);
         if (item.hasCustomNameNumber) unitPrice += PRICING.customNameNumber;
         for (const badge of item.selectedBadges) {
           unitPrice += badge.price;

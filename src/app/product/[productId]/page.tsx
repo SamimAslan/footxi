@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getBasePrice, Badge, PRICING, Product, getProductId } from "@/data/products";
+import { getProductBasePrice, Badge, PRICING, Product, getProductId } from "@/data/products";
 import { useCartStore } from "@/store/cart";
 import { useCurrency } from "@/context/CurrencyContext";
 import Link from "next/link";
@@ -90,7 +90,7 @@ export default function ProductPage() {
     product.type === "retro"
       ? (["retro"] as const)
       : (["fans", "player"] as const);
-  const basePrice = getBasePrice(selectedKitType);
+  const basePrice = getProductBasePrice(product, selectedKitType);
 
   const toggleBadge = (badge: Badge) => {
     setSelectedBadges((prev) => {
@@ -299,10 +299,10 @@ export default function ProductPage() {
                     }`}
                   >
                     {kitType === "fans"
-                      ? `Fans (${formatPrice(PRICING.fans)})`
+                      ? `Fans (${formatPrice(getProductBasePrice(product, "fans"))})`
                       : kitType === "player"
-                      ? `Player (${formatPrice(PRICING.player)})`
-                      : `Retro (${formatPrice(PRICING.retro)})`}
+                      ? `Player (${formatPrice(getProductBasePrice(product, "player"))})`
+                      : `Retro (${formatPrice(getProductBasePrice(product, "retro"))})`}
                   </button>
                 ))}
               </div>

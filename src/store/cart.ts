@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Product, Badge, PRICING, getBasePrice, getProductId } from "@/data/products";
+import { Product, Badge, PRICING, getProductBasePrice, getProductId } from "@/data/products";
 
 export interface CartItem {
   product: Product;
@@ -63,7 +63,7 @@ export const useCartStore = create<CartStore>()(
 
       getItemPrice: (item) => {
         const kitType = item.selectedKitType || item.product.kitType;
-        let price = getBasePrice(kitType);
+        let price = getProductBasePrice(item.product, kitType);
         if (item.hasCustomNameNumber) {
           price += PRICING.customNameNumber;
         }

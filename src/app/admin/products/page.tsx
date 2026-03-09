@@ -19,6 +19,7 @@ interface ProductRow {
   _id: string;
   name: string;
   team: string;
+  brand?: string;
   league: string;
   leagueSlug: string;
   type: string;
@@ -42,6 +43,7 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [kitTypeFilter, setKitTypeFilter] = useState("");
+  const [brandFilter, setBrandFilter] = useState("");
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -58,6 +60,7 @@ export default function AdminProductsPage() {
       const params = new URLSearchParams();
       if (search) params.set("search", search);
       if (kitTypeFilter) params.set("kitType", kitTypeFilter);
+      if (brandFilter) params.set("brand", brandFilter);
       params.set("page", page.toString());
       params.set("limit", "30");
 
@@ -75,7 +78,7 @@ export default function AdminProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, kitTypeFilter, page]);
+  }, [search, kitTypeFilter, brandFilter, page]);
 
   useEffect(() => {
     fetchProducts();
@@ -220,8 +223,8 @@ export default function AdminProductsPage() {
 
       <div className="mb-5 space-y-2">
         <p className="text-xs text-zinc-500">
-          CSV columns supported: product_name, team_name, category, sizes, badges,
-          main_image_url, image_url_2, all_image_urls.
+          CSV columns supported: product_name, category, brand, sizes, main_image_url,
+          image_url_2, image_url_3, image_url_4, image_url_5, all_image_urls.
         </p>
         {csvResult && (
           <div className="text-xs px-3 py-2 rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-300">
@@ -250,6 +253,16 @@ export default function AdminProductsPage() {
             className="w-full pl-10 pr-4 py-2.5 bg-[#111114] border border-white/[0.06] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
           />
         </div>
+        <input
+          type="text"
+          value={brandFilter}
+          onChange={(e) => {
+            setBrandFilter(e.target.value);
+            setPage(1);
+          }}
+          placeholder="Filter by brand..."
+          className="sm:w-52 px-4 py-2.5 bg-[#111114] border border-white/[0.06] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-amber-400/30 transition-colors"
+        />
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-zinc-500" />
           {["", "fans", "player", "retro"].map((kt) => (
@@ -360,7 +373,10 @@ export default function AdminProductsPage() {
                 </div>
                 <div className="lg:col-span-2">
                   <p className="text-xs text-zinc-300">{product.team}</p>
-                  <p className="text-[10px] text-zinc-600">{product.league}</p>
+                  <p className="text-[10px] text-zinc-600">
+                    {product.league}
+                    {product.brand ? ` · ${product.brand}` : ""}
+                  </p>
                 </div>
                 <div className="lg:col-span-1">
                   <span className="text-xs text-zinc-400 capitalize">

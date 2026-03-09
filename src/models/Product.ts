@@ -9,11 +9,13 @@ export interface IProduct extends Document {
   _id: mongoose.Types.ObjectId;
   name: string;
   team: string;
+  brand?: string;
   league: string;
   leagueSlug: string;
   season: string;
   type: "home" | "away" | "third" | "retro";
   kitType: "fans" | "player" | "retro";
+  priceOverride?: number;
   image: string;
   backImage: string;
   sizes: string[];
@@ -37,6 +39,7 @@ const ProductSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true },
     team: { type: String, required: true },
+    brand: { type: String, default: "" },
     league: { type: String, required: true },
     leagueSlug: { type: String, required: true },
     season: { type: String, default: "2025/26" },
@@ -50,6 +53,7 @@ const ProductSchema = new Schema<IProduct>(
       enum: ["fans", "player", "retro"],
       required: true,
     },
+    priceOverride: { type: Number, required: false },
     image: { type: String, default: "" },
     backImage: { type: String, default: "" },
     sizes: {

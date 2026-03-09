@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PRICING, Product, getBasePrice, getProductId } from "@/data/products";
+import { PRICING, Product, getProductBasePrice, getProductId } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
 
 interface ProductCardProps {
@@ -30,7 +30,7 @@ function getEstimatedDeliveryWindow(): string {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const price = getBasePrice(product.kitType);
+  const price = getProductBasePrice(product);
   const { formatPrice } = useCurrency();
   const productId = getProductId(product);
   const estimatedDelivery = getEstimatedDeliveryWindow();

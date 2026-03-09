@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search") || "";
     const league = searchParams.get("league") || "";
     const kitType = searchParams.get("kitType") || "";
+    const brand = searchParams.get("brand") || "";
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "50");
 
@@ -29,6 +30,7 @@ export async function GET(req: NextRequest) {
     }
     if (league) filter.leagueSlug = league;
     if (kitType) filter.kitType = kitType;
+    if (brand) filter.brand = { $regex: brand, $options: "i" };
 
     const total = await ProductModel.countDocuments(filter);
     const products = await ProductModel.find(filter)
