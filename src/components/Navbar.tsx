@@ -16,6 +16,7 @@ const MARKET_CATEGORIES = [
   { label: "Tracksuits", slug: "tracksuit" },
   { label: "Kids", slug: "kids" },
   { label: "NBA / NFL", slug: "nba-nfl" },
+  { label: "F1", slug: "f1" },
   { label: "Retro Kits", slug: "retro-kits" },
   { label: "Fan Made", slug: "fan-made" },
 ];

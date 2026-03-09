@@ -59,6 +59,12 @@ export async function GET(req: NextRequest) {
         ];
       } else if (league === "others") {
         filter.leagueSlug = { $in: getLeagueAliasSlugs("others") };
+      } else if (league === "f1") {
+        filter.$or = [
+          { name: { $regex: /f1|formula\s*1|formula one/i } },
+          { team: { $regex: /f1|formula\s*1|formula one/i } },
+          { league: { $regex: /f1|formula\s*1|formula one/i } },
+        ];
       } else if (isShopCategorySlug(league)) {
         filter.$or = [
           { leagueSlug: league },

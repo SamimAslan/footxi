@@ -221,6 +221,13 @@ export const leagues: League[] = [
     logo: "/globe.svg",
     teams: [],
   },
+  {
+    name: "F1",
+    slug: "f1",
+    country: "Racing",
+    logo: "/globe.svg",
+    teams: [],
+  },
 ];
 
 function teamSlug(team: string): string {

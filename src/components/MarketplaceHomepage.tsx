@@ -87,6 +87,39 @@ async function fetchProducts(params: URLSearchParams): Promise<{ items: Product[
   return { items: data.products || [], totalPages: data.totalPages || 1 };
 }
 
+async function searchProducts(q: string, limit: number): Promise<Product[]> {
+  if (!q.trim()) return [];
+  const res = await fetch(`/api/products/search?q=${encodeURIComponent(q)}&limit=${limit}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
+}
+
+async function fetchTrendingMix(): Promise<Product[]> {
+  const [japan, windbreaker, tracksuit, nba, footballFans] = await Promise.all([
+    searchProducts("japan", 3),
+    fetchProducts(new URLSearchParams({ league: "windbreaker", page: "1", limit: "3", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "tracksuit", page: "1", limit: "3", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "nba-nfl", page: "1", limit: "3", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "jersey", kitType: "fans", page: "1", limit: "12", sort: "default" })),
+  ]);
+  const seen = new Set<string>();
+  const merged: Product[] = [];
+  for (const list of [japan, windbreaker.items, tracksuit.items, nba.items, footballFans.items]) {
+    const items = Array.isArray(list) ? list : (list as { items: Product[] }).items || [];
+    for (const p of items) {
+      const id = getProductId(p);
+      if (id && !seen.has(id)) {
+        seen.add(id);
+        merged.push(p);
+      }
+      if (merged.length >= 18) break;
+    }
+    if (merged.length >= 18) break;
+  }
+  return merged.slice(0, 18);
+}
+
 function ProductTile({
   product,
   badge,
@@ -192,16 +225,15 @@ export default function MarketplaceHomepage() {
 
   useEffect(() => {
     async function init() {
-      const trendingParams = new URLSearchParams({ page: "1", limit: "36", sort: "default" });
       const newParams = new URLSearchParams({ page: "1", limit: "18", sort: "newest" });
       const retroParams = new URLSearchParams({ page: "1", limit: "12", sort: "newest", kitType: "retro" });
 
-      const [t, n, r] = await Promise.all([
-        fetchProducts(trendingParams),
+      const [trendingMix, n, r] = await Promise.all([
+        fetchTrendingMix(),
         fetchProducts(newParams),
         fetchProducts(retroParams),
       ]);
-      setTrending(t.items);
+      setTrending(trendingMix);
       setNewArrivals(n.items);
       setRetro(r.items);
     }
