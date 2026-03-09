@@ -14,6 +14,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import Papa from "papaparse";
 
 interface ProductRow {
   _id: string;
@@ -30,6 +31,10 @@ interface ProductRow {
   isFeatured: boolean;
   isActive: boolean;
   createdAt: string;
+}
+
+interface CsvImportRow {
+  [key: string]: string | undefined;
 }
 
 const kitTypeColors: Record<string, string> = {
@@ -53,6 +58,7 @@ export default function AdminProductsPage() {
   const [csvUploading, setCsvUploading] = useState(false);
   const [csvResult, setCsvResult] = useState<string>("");
   const [csvError, setCsvError] = useState<string>("");
+  const [csvProgress, setCsvProgress] = useState<string>("");
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -155,28 +161,66 @@ export default function AdminProductsPage() {
     setCsvUploading(true);
     setCsvError("");
     setCsvResult("");
+    setCsvProgress("");
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/admin/products/import-csv", {
-        method: "POST",
-        body: formData,
+      const parsed = await new Promise<Papa.ParseResult<CsvImportRow>>((resolve, reject) => {
+        Papa.parse<CsvImportRow>(file, {
+          header: true,
+          skipEmptyLines: true,
+          complete: resolve,
+          error: reject,
+        });
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        setCsvError(data.error || "CSV import failed");
+      const rows = parsed.data || [];
+      if (rows.length === 0) {
+        setCsvError("CSV is empty");
         return;
       }
 
+      const chunkSize = 250;
+      const totalChunks = Math.ceil(rows.length / chunkSize);
+      let created = 0;
+      let updated = 0;
+      let skipped = 0;
+      let blocked = 0;
+
+      for (let i = 0; i < totalChunks; i += 1) {
+        const from = i * chunkSize;
+        const to = Math.min((i + 1) * chunkSize, rows.length);
+        const chunkRows = rows.slice(from, to);
+        setCsvProgress(`Importing chunk ${i + 1}/${totalChunks} (${to}/${rows.length})...`);
+
+        // eslint-disable-next-line no-await-in-loop
+        const res = await fetch("/api/admin/products/import-csv", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rows: chunkRows }),
+        });
+
+        // eslint-disable-next-line no-await-in-loop
+        const data = await res.json();
+        if (!res.ok) {
+          setCsvError(data.error || `CSV import failed at chunk ${i + 1}`);
+          setCsvProgress("");
+          return;
+        }
+
+        created += data.created || 0;
+        updated += data.updated || 0;
+        skipped += data.skipped || 0;
+        blocked += data.blockedImageReferencesRemoved || 0;
+      }
+
       setCsvResult(
-        `Imported. Created: ${data.created}, Updated: ${data.updated}, Skipped: ${data.skipped}`
+        `Imported. Created: ${created}, Updated: ${updated}, Skipped: ${skipped}, Blocked images removed: ${blocked}`
       );
+      setCsvProgress("");
       fetchProducts();
     } catch {
       setCsvError("CSV import failed");
+      setCsvProgress("");
     } finally {
       setCsvUploading(false);
     }
@@ -234,6 +278,11 @@ export default function AdminProductsPage() {
         {csvError && (
           <div className="text-xs px-3 py-2 rounded-lg border border-red-500/25 bg-red-500/10 text-red-300">
             {csvError}
+          </div>
+        )}
+        {csvProgress && (
+          <div className="text-xs px-3 py-2 rounded-lg border border-amber-500/25 bg-amber-500/10 text-amber-300">
+            {csvProgress}
           </div>
         )}
       </div>

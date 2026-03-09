@@ -197,6 +197,88 @@ async function normalizeRow(row: CsvRow) {
   };
 }
 
+async function processRecords(records: CsvRow[]) {
+  if (records.length === 0) {
+    return {
+      success: true,
+      totalRows: 0,
+      created: 0,
+      updated: 0,
+      skipped: 0,
+      blockedImageReferencesRemoved: 0,
+      errors: [] as string[],
+    };
+  }
+
+  await connectDB();
+
+  let created = 0;
+  let updated = 0;
+  let skipped = 0;
+  let blockedImageReferencesRemoved = 0;
+  const errors: string[] = [];
+
+  for (const row of records) {
+    const name = (row.product_name || "").trim();
+    if (!name) {
+      skipped += 1;
+      continue;
+    }
+
+    // eslint-disable-next-line no-await-in-loop
+    const payload = await normalizeRow(row);
+    blockedImageReferencesRemoved += payload.blockedRemovedCount;
+    if (!payload.image) {
+      skipped += 1;
+      errors.push(`Skipped "${name}" (missing valid image URL after blocked-image filter)`);
+      continue;
+    }
+
+    if (payload.backImage) {
+      // eslint-disable-next-line no-await-in-loop
+      const backBlocked = await isBannedImageByContent(payload.backImage);
+      if (backBlocked) {
+        payload.backImage = "";
+        blockedImageReferencesRemoved += 1;
+      }
+    }
+
+    // eslint-disable-next-line no-await-in-loop
+    const existing = await ProductModel.findOne({
+      name: payload.name,
+      team: payload.team,
+      leagueSlug: payload.leagueSlug,
+      type: payload.type,
+    }).lean();
+
+    if (existing) {
+      // eslint-disable-next-line no-await-in-loop
+      await ProductModel.findByIdAndUpdate(existing._id, {
+        ...payload,
+        blockedRemovedCount: undefined,
+        updatedAt: new Date(),
+      });
+      updated += 1;
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { blockedRemovedCount: _ignored, ...safePayload } = payload;
+      // eslint-disable-next-line no-await-in-loop
+      await ProductModel.create(safePayload);
+      created += 1;
+    }
+  }
+
+  return {
+    success: true,
+    totalRows: records.length,
+    created,
+    updated,
+    skipped,
+    blockedImageReferencesRemoved,
+    errors,
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
@@ -204,86 +286,36 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const formData = await req.formData();
-    const file = formData.get("file");
-    if (!file || !(file instanceof File)) {
-      return NextResponse.json({ error: "CSV file is required" }, { status: 400 });
-    }
+    const contentType = req.headers.get("content-type") || "";
+    let records: CsvRow[] = [];
 
-    const csvText = await file.text();
-    const records = parse(csvText, {
-      columns: true,
-      skip_empty_lines: true,
-      trim: true,
-      relax_column_count: true,
-    }) as CsvRow[];
+    if (contentType.includes("application/json")) {
+      const body = await req.json().catch(() => ({}));
+      if (!Array.isArray(body?.rows)) {
+        return NextResponse.json({ error: "rows array is required" }, { status: 400 });
+      }
+      records = body.rows as CsvRow[];
+    } else {
+      const formData = await req.formData();
+      const file = formData.get("file");
+      if (!file || !(file instanceof File)) {
+        return NextResponse.json({ error: "CSV file is required" }, { status: 400 });
+      }
+
+      const csvText = await file.text();
+      records = parse(csvText, {
+        columns: true,
+        skip_empty_lines: true,
+        trim: true,
+        relax_column_count: true,
+      }) as CsvRow[];
+    }
 
     if (records.length === 0) {
       return NextResponse.json({ error: "CSV is empty" }, { status: 400 });
     }
-
-    await connectDB();
-
-    let created = 0;
-    let updated = 0;
-    let skipped = 0;
-    let blockedImageReferencesRemoved = 0;
-    const errors: string[] = [];
-
-    for (const row of records) {
-      const name = (row.product_name || "").trim();
-      if (!name) {
-        skipped += 1;
-        continue;
-      }
-
-      const payload = await normalizeRow(row);
-      blockedImageReferencesRemoved += payload.blockedRemovedCount;
-      if (!payload.image) {
-        skipped += 1;
-        errors.push(`Skipped "${name}" (missing valid image URL after blocked-image filter)`);
-        continue;
-      }
-
-      if (payload.backImage) {
-        const backBlocked = await isBannedImageByContent(payload.backImage);
-        if (backBlocked) {
-          payload.backImage = "";
-          blockedImageReferencesRemoved += 1;
-        }
-      }
-
-      const existing = await ProductModel.findOne({
-        name: payload.name,
-        team: payload.team,
-        leagueSlug: payload.leagueSlug,
-        type: payload.type,
-      }).lean();
-
-      if (existing) {
-        await ProductModel.findByIdAndUpdate(existing._id, {
-          ...payload,
-          blockedRemovedCount: undefined,
-          updatedAt: new Date(),
-        });
-        updated += 1;
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { blockedRemovedCount: _ignored, ...safePayload } = payload;
-        await ProductModel.create(safePayload);
-        created += 1;
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      totalRows: records.length,
-      created,
-      updated,
-      skipped,
-      blockedImageReferencesRemoved,
-      errors,
-    });
+    const result = await processRecords(records);
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Error importing products from CSV:", error);
     return NextResponse.json({ error: "Failed to import CSV" }, { status: 500 });
