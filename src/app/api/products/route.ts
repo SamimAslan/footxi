@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { SortOrder } from "mongoose";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
 import {
@@ -76,7 +77,7 @@ export async function GET(req: NextRequest) {
     if (featured === "true") filter.isFeatured = true;
     if (kitType && kitType !== "all") filter.kitType = kitType;
 
-    const sortQuery =
+    const sortQuery: Record<string, SortOrder> =
       sort === "name" ? { team: 1 } : sort === "newest" ? { createdAt: -1 } : { isFeatured: -1, createdAt: -1 };
 
     const hasPagination = Boolean(pageParam || limitParam);
