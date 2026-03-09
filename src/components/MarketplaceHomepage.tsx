@@ -95,19 +95,41 @@ async function searchProducts(q: string, limit: number): Promise<Product[]> {
   return Array.isArray(data) ? data : [];
 }
 
+const F1_REGEX = /f1|formula\s*1|formula one/i;
+
+function isF1Product(p: Product): boolean {
+  return (
+    F1_REGEX.test(p.name || "") ||
+    F1_REGEX.test(p.team || "") ||
+    F1_REGEX.test(p.league || "")
+  );
+}
+
 async function fetchTrendingMix(): Promise<Product[]> {
-  const [japan, windbreaker, tracksuit, nba, footballFans] = await Promise.all([
+  const [japan, windbreaker, tracksuit, nba, premier, laLiga, serieA] = await Promise.all([
     searchProducts("japan", 3),
-    fetchProducts(new URLSearchParams({ league: "windbreaker", page: "1", limit: "3", sort: "default" })),
-    fetchProducts(new URLSearchParams({ league: "tracksuit", page: "1", limit: "3", sort: "default" })),
-    fetchProducts(new URLSearchParams({ league: "nba-nfl", page: "1", limit: "3", sort: "default" })),
-    fetchProducts(new URLSearchParams({ league: "jersey", kitType: "fans", page: "1", limit: "12", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "windbreaker", page: "1", limit: "2", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "tracksuit", page: "1", limit: "1", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "nba-nfl", page: "1", limit: "2", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "premier-league", page: "1", limit: "4", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "la-liga", page: "1", limit: "4", sort: "default" })),
+    fetchProducts(new URLSearchParams({ league: "serie-a", page: "1", limit: "4", sort: "default" })),
   ]);
   const seen = new Set<string>();
   const merged: Product[] = [];
-  for (const list of [japan, windbreaker.items, tracksuit.items, nba.items, footballFans.items]) {
+  const lists = [
+    japan,
+    windbreaker.items,
+    tracksuit.items,
+    nba.items,
+    premier.items,
+    laLiga.items,
+    serieA.items,
+  ];
+  for (const list of lists) {
     const items = Array.isArray(list) ? list : (list as { items: Product[] }).items || [];
     for (const p of items) {
+      if (isF1Product(p)) continue;
       const id = getProductId(p);
       if (id && !seen.has(id)) {
         seen.add(id);
