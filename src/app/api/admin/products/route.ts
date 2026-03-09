@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
+import { isBannedImageByContent } from "@/lib/imageBlocker";
 
 export async function GET(req: NextRequest) {
   try {
@@ -56,6 +57,15 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
+    const imageBlocked = await isBannedImageByContent(body?.image);
+    const backBlocked = await isBannedImageByContent(body?.backImage);
+    if (imageBlocked || backBlocked) {
+      return NextResponse.json(
+        { error: "Blocked image detected. Remove banned image and try again." },
+        { status: 400 }
+      );
+    }
+
     const normalizedBody = {
       ...body,
       kitType: body?.type === "retro" ? "retro" : "fans",

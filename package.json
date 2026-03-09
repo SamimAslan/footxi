@@ -12,6 +12,7 @@
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.9.0",
     "csv-parse": "^6.1.0",
+    "jimp": "^1.6.0",
     "lenis": "^1.3.17",
     "lucide-react": "^0.564.0",
     "mongoose": "^9.2.1",

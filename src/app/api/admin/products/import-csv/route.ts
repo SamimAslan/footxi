@@ -3,6 +3,7 @@ import { parse } from "csv-parse/sync";
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
+import { filterAllowedImages, isBannedImageByContent } from "@/lib/imageBlocker";
 
 type CsvRow = {
   product_name?: string;
@@ -67,35 +68,41 @@ function splitBadges(raw: string | undefined, league: string): { name: string; p
     .map((name) => ({ name, price: 3 }));
 }
 
-function getImages(row: CsvRow): { image: string; backImage: string } {
-  const allImages = (row.all_image_urls || "")
+async function getImages(row: CsvRow): Promise<{
+  image: string;
+  backImage: string;
+  blockedRemovedCount: number;
+}> {
+  const allImagesRaw = (row.all_image_urls || "")
     .split("|")
     .map((s) => s.trim())
     .filter(Boolean);
 
-  const image =
-    row.main_image_url?.trim() ||
-    allImages[0] ||
-    row.image_url_2?.trim() ||
-    "";
+  const candidates = [
+    row.main_image_url,
+    row.image_url_2,
+    row.image_url_3,
+    row.image_url_4,
+    row.image_url_5,
+    ...allImagesRaw,
+  ];
+  const { allowed, blockedCount } = await filterAllowedImages(candidates);
 
-  const backImage =
-    row.image_url_2?.trim() ||
-    allImages[1] ||
-    row.image_url_3?.trim() ||
-    "";
-
-  return { image, backImage };
+  return {
+    image: allowed[0] || "",
+    backImage: allowed[1] || "",
+    blockedRemovedCount: blockedCount,
+  };
 }
 
-function normalizeRow(row: CsvRow) {
+async function normalizeRow(row: CsvRow) {
   const name = (row.product_name || "").trim();
   const team = (row.team_name || "").trim() || "Unknown Team";
   const league = (row.category || "").trim() || "Imported";
   const leagueSlug = slugify(league) || "imported";
   const type = inferType(name);
   const kitType: "fans" | "retro" = type === "retro" ? "retro" : "fans";
-  const { image, backImage } = getImages(row);
+  const { image, backImage, blockedRemovedCount } = await getImages(row);
 
   return {
     name,
@@ -107,6 +114,7 @@ function normalizeRow(row: CsvRow) {
     kitType,
     image,
     backImage,
+    blockedRemovedCount,
     sizes: splitSizes(row.sizes),
     badges: splitBadges(row.badges, league),
     isNewArrival: true,
@@ -145,6 +153,7 @@ export async function POST(req: NextRequest) {
     let created = 0;
     let updated = 0;
     let skipped = 0;
+    let blockedImageReferencesRemoved = 0;
     const errors: string[] = [];
 
     for (const row of records) {
@@ -154,11 +163,20 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
-      const payload = normalizeRow(row);
+      const payload = await normalizeRow(row);
+      blockedImageReferencesRemoved += payload.blockedRemovedCount;
       if (!payload.image) {
         skipped += 1;
-        errors.push(`Skipped "${name}" (missing image URL)`);
+        errors.push(`Skipped "${name}" (missing valid image URL after blocked-image filter)`);
         continue;
+      }
+
+      if (payload.backImage) {
+        const backBlocked = await isBannedImageByContent(payload.backImage);
+        if (backBlocked) {
+          payload.backImage = "";
+          blockedImageReferencesRemoved += 1;
+        }
       }
 
       const existing = await ProductModel.findOne({
@@ -171,11 +189,14 @@ export async function POST(req: NextRequest) {
       if (existing) {
         await ProductModel.findByIdAndUpdate(existing._id, {
           ...payload,
+          blockedRemovedCount: undefined,
           updatedAt: new Date(),
         });
         updated += 1;
       } else {
-        await ProductModel.create(payload);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { blockedRemovedCount: _ignored, ...safePayload } = payload;
+        await ProductModel.create(safePayload);
         created += 1;
       }
     }
@@ -186,6 +207,7 @@ export async function POST(req: NextRequest) {
       created,
       updated,
       skipped,
+      blockedImageReferencesRemoved,
       errors,
     });
   } catch (error) {
