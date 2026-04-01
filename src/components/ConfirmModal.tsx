@@ -21,12 +21,12 @@ const variantStyles = {
     button: "bg-red-500 hover:bg-red-600 text-white",
   },
   warning: {
-    icon: "bg-amber-500/10 text-amber-400",
-    button: "bg-amber-500 hover:bg-amber-600 text-black",
+    icon: "bg-brand-green/15 text-white",
+    button: "bg-brand-green hover:bg-brand-green-dark text-white",
   },
   default: {
     icon: "bg-blue-500/10 text-blue-400",
-    button: "bg-white hover:bg-zinc-200 text-black",
+    button: "bg-zinc-700 hover:bg-zinc-600 text-white",
   },
 };
 

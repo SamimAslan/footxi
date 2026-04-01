@@ -56,7 +56,7 @@ export default function CheckoutPage() {
   if (status === "loading") {
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+        <Loader2 className="w-8 h-8 text-white animate-spin" />
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function CheckoutPage() {
           <p className="text-[var(--muted)] mb-6">Add some kits before checkout</p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold hover:bg-brand-green-dark transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Browse Kits
@@ -192,11 +192,11 @@ export default function CheckoutPage() {
           {/* Shipping Address Form */}
           <div className="lg:col-span-3">
             <div className="mb-6 flex items-center gap-3">
-              <div className="w-8 h-8 bg-amber-400 text-black flex items-center justify-center text-sm font-bold">
+              <div className="w-8 h-8 bg-brand-green text-white flex items-center justify-center text-sm font-bold">
                 1
               </div>
               <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-amber-400" />
+                <MapPin className="w-4 h-4 text-white" />
                 Shipping Address
               </h2>
             </div>
@@ -218,7 +218,7 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, fullName: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40 transition-colors"
                   placeholder="Jean Dupont"
                 />
               </div>
@@ -233,7 +233,7 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, address: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40 transition-colors"
                   placeholder="12 Rue de la Paix, Apt 3"
                 />
               </div>
@@ -248,7 +248,7 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, city: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40 transition-colors"
                   placeholder="Paris"
                 />
               </div>
@@ -263,7 +263,7 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, country: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40 transition-colors"
                   placeholder="France"
                 />
               </div>
@@ -278,7 +278,7 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, zip: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40 transition-colors"
                   placeholder="75001"
                 />
               </div>
@@ -293,7 +293,7 @@ export default function CheckoutPage() {
                   onChange={(e) =>
                     setAddress({ ...address, phone: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+                  className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40 transition-colors"
                   placeholder="+33 6 12 34 56 78"
                 />
               </div>
@@ -302,11 +302,11 @@ export default function CheckoutPage() {
             {/* Pay button */}
             <div className="mt-8">
               <div className="mb-4 flex items-center gap-3">
-                <div className="w-8 h-8 bg-amber-400 text-black flex items-center justify-center text-sm font-bold">
+                <div className="w-8 h-8 bg-brand-green text-white flex items-center justify-center text-sm font-bold">
                   2
                 </div>
                 <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-amber-400" />
+                  <CreditCard className="w-4 h-4 text-white" />
                   Payment
                 </h2>
               </div>
@@ -316,7 +316,7 @@ export default function CheckoutPage() {
               <button
                 onClick={handleCheckout}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-4 bg-amber-400 text-black font-semibold text-sm hover:bg-amber-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 py-4 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

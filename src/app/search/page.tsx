@@ -147,7 +147,7 @@ function SearchContent() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Jersey title, season, colour, club name in listing…"
-            className="w-full pl-12 pr-4 py-3.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-xl text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-gold/35"
+            className="w-full pl-12 pr-4 py-3.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-xl text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40"
           />
         </form>
 
@@ -164,8 +164,8 @@ function SearchContent() {
                   onClick={() => pushParams({ kitType: opt.value })}
                   className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
                     kitTypeFromUrl === opt.value
-                      ? "bg-gold text-[#141414]"
-                      : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-gold/25"
+                      ? "bg-brand-green text-white"
+                      : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-brand-green/30"
                   }`}
                 >
                   {opt.label}
@@ -177,8 +177,8 @@ function SearchContent() {
               onClick={() => pushParams({ newArrival: !newFromUrl })}
               className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors sm:ml-2 ${
                 newFromUrl
-                  ? "bg-gold text-[#141414]"
-                  : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-gold/25"
+                  ? "bg-brand-green text-white"
+                  : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-brand-green/30"
               }`}
             >
               New arrivals only
@@ -188,7 +188,7 @@ function SearchContent() {
 
         {loading ? (
           <div className="py-16 flex items-center justify-center">
-            <Loader2 className="w-6 h-6 animate-spin text-gold" />
+            <Loader2 className="w-6 h-6 animate-spin text-white" />
           </div>
         ) : normalizedQuery.length < 2 ? (
           <p className="text-sm text-[var(--muted)]">Type at least 2 characters to search.</p>

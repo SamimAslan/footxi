@@ -64,7 +64,7 @@ export default function ProductPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-        <Loader2 className="w-8 h-8 text-brand-green animate-spin" />
+        <Loader2 className="w-8 h-8 text-white animate-spin" />
       </div>
     );
   }
@@ -76,7 +76,7 @@ export default function ProductPage() {
           <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
             Product not found
           </h1>
-          <Link href="/" className="text-sm font-semibold text-brand-green hover:text-brand-green-dark hover:underline">
+          <Link href="/" className="text-sm font-semibold text-white hover:text-white/90 hover:underline">
             Go back home
           </Link>
         </div>
@@ -131,13 +131,13 @@ export default function ProductPage() {
       <div className="bg-[var(--surface-muted)]/80 border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
           <div className="flex items-center gap-2 text-[11px] sm:text-xs text-[var(--muted)] flex-wrap uppercase tracking-[0.06em] font-medium">
-            <Link href="/" className="hover:text-brand-green transition-colors">
+            <Link href="/" className="hover:text-white transition-colors">
               Home
             </Link>
             <ChevronRight className="w-3 h-3 shrink-0 opacity-50" />
             <Link
               href={`/league/${product.leagueSlug}`}
-              className="hover:text-brand-green transition-colors"
+              className="hover:text-white transition-colors"
             >
               {product.league}
             </Link>
@@ -153,7 +153,7 @@ export default function ProductPage() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image */}
           <div className="relative">
-            <div className="aspect-square bg-white rounded-xl border border-[color:var(--border)] shadow-sm overflow-hidden flex items-center justify-center">
+            <div className="aspect-square bg-[var(--surface-muted)] rounded-xl border border-[color:var(--border)] shadow-sm overflow-hidden flex items-center justify-center">
               {hasRealImage ? (
                 <div className="w-full h-full p-8 sm:p-10 flex items-center justify-center">
                   <img
@@ -192,7 +192,7 @@ export default function ProductPage() {
               {/* Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
                 {effectiveKitType === "retro" && (
-                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-green/12 text-brand-green rounded-md">
+                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-green/12 text-[var(--foreground)] rounded-md">
                     Retro
                   </span>
                 )}
@@ -223,7 +223,7 @@ export default function ProductPage() {
                   <img
                     src={product.image}
                     alt="Front"
-                    className="w-full h-full object-contain p-1 bg-white"
+                    className="w-full h-full object-contain p-1 bg-[var(--surface-muted)]"
                   />
                 </button>
                 <button
@@ -237,7 +237,7 @@ export default function ProductPage() {
                   <img
                     src={product.backImage}
                     alt="Back"
-                    className="w-full h-full object-contain p-1 bg-white"
+                    className="w-full h-full object-contain p-1 bg-[var(--surface-muted)]"
                   />
                 </button>
               </div>
@@ -248,7 +248,7 @@ export default function ProductPage() {
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <span className="text-[11px] font-bold text-brand-green uppercase tracking-[0.12em]">
+                <span className="text-[11px] font-bold text-white uppercase tracking-[0.12em]">
                   {product.league}
                 </span>
                 <span className="text-[var(--muted)]">&bull;</span>
@@ -266,7 +266,7 @@ export default function ProductPage() {
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-brand-green">
+              <span className="text-3xl font-bold text-white">
                 {formatPrice(totalPrice())}
               </span>
               {(hasCustom || selectedBadges.length > 0 || quantity > 1) && (
@@ -292,7 +292,7 @@ export default function ProductPage() {
                     className={`w-12 h-12 rounded-full text-sm font-bold transition-all ${
                       selectedSize === size
                         ? "bg-brand-green text-white shadow-sm"
-                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-brand-green/40 hover:text-brand-green"
+                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-brand-green/40 hover:text-white"
                     }`}
                   >
                     {size}
@@ -310,7 +310,7 @@ export default function ProductPage() {
                 <button
                   type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-brand-green transition-colors"
+                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-white transition-colors"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
@@ -320,7 +320,7 @@ export default function ProductPage() {
                 <button
                   type="button"
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-brand-green transition-colors"
+                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-white transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -353,11 +353,11 @@ export default function ProductPage() {
                       >
                         <span className="flex items-center gap-2">
                           {isSelected && (
-                            <Check className="w-4 h-4 text-brand-green shrink-0" />
+                            <Check className="w-4 h-4 text-white shrink-0" />
                           )}
                           {badge.name}
                         </span>
-                        <span className={isSelected ? "text-brand-green font-semibold" : ""}>
+                        <span className={isSelected ? "text-white font-semibold" : ""}>
                           +{formatPrice(badge.price)}
                         </span>
                       </button>
@@ -378,10 +378,10 @@ export default function ProductPage() {
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  {hasCustom && <Check className="w-4 h-4 text-brand-green shrink-0" />}
+                  {hasCustom && <Check className="w-4 h-4 text-white shrink-0" />}
                   Custom name & number
                 </span>
-                <span className={hasCustom ? "text-brand-green font-semibold" : ""}>
+                <span className={hasCustom ? "text-white font-semibold" : ""}>
                   +{formatPrice(PRICING.customNameNumber)}
                 </span>
               </button>
@@ -445,7 +445,7 @@ export default function ProductPage() {
               <button
                 type="button"
                 onClick={() => router.push("/cart")}
-                className="w-full py-3 rounded-full font-semibold text-sm border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors"
+                className="w-full py-3 rounded-full font-semibold text-sm border-2 border-brand-green text-white hover:bg-brand-green hover:text-white transition-colors"
               >
                 View cart
               </button>
@@ -454,11 +454,11 @@ export default function ProductPage() {
             {/* Trust signals */}
             <div className="rounded-xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 px-4 py-3 grid grid-cols-2 gap-3">
               <div className="flex items-center gap-2 text-[11px] text-[var(--muted)]">
-                <Truck className="w-4 h-4 text-brand-green shrink-0" />
+                <Truck className="w-4 h-4 text-white shrink-0" />
                 Worldwide shipping
               </div>
               <div className="flex items-center gap-2 text-[11px] text-[var(--muted)]">
-                <Shield className="w-4 h-4 text-brand-green shrink-0" />
+                <Shield className="w-4 h-4 text-white shrink-0" />
                 Quality guaranteed
               </div>
             </div>

@@ -269,7 +269,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         {/* Basic Info */}
         <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
-            <Shirt className="w-4 h-4 text-amber-400" />
+            <Shirt className="w-4 h-4 text-white" />
             Basic Information
           </h2>
 
@@ -282,7 +282,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 type="text"
                 value={form.name}
                 onChange={(e) => update({ name: e.target.value })}
-                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors rounded-lg"
                 placeholder="e.g. Barcelona Home Kit 25/26"
               />
             </div>
@@ -295,7 +295,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               <select
                 value={form.leagueSlug}
                 onChange={(e) => selectLeague(e.target.value)}
-                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg appearance-none"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm focus:outline-none focus:border-brand-green/35 transition-colors rounded-lg appearance-none"
               >
                 <option value="">Select league</option>
                 {leagues.map((l) => (
@@ -319,7 +319,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 }}
                 onFocus={() => setTeamFocused(true)}
                 onBlur={() => setTimeout(() => setTeamFocused(false), 200)}
-                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors rounded-lg"
                 placeholder="Type to search teams..."
               />
 
@@ -338,7 +338,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                       }}
                       className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                         form.team === team
-                          ? "bg-amber-400/10 text-amber-400"
+                          ? "bg-brand-green/10 text-white"
                           : "text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                       }`}
                     >
@@ -353,7 +353,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                         update({ team: teamQuery.trim() });
                         setTeamFocused(false);
                       }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-amber-500 hover:bg-[var(--surface-muted)] border-t border-[color:var(--border)] flex items-center gap-2"
+                      className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-[var(--surface-muted)] border-t border-[color:var(--border)] flex items-center gap-2"
                     >
                       <Plus className="w-3 h-3" />
                       Add &quot;{teamQuery.trim()}&quot; as new team
@@ -372,7 +372,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                 type="text"
                 value={form.season}
                 onChange={(e) => update({ season: e.target.value })}
-                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+                className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors rounded-lg"
                 placeholder="2025/26"
               />
             </div>
@@ -385,7 +385,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
 
               {form.image ? (
                 <div className="flex items-start gap-4">
-                  <div className="relative w-32 h-40 bg-white rounded-lg overflow-hidden border border-[color:var(--border)] flex-shrink-0">
+                  <div className="relative w-32 h-40 bg-[var(--surface-muted)] rounded-lg overflow-hidden border border-[color:var(--border)] flex-shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={form.image}
@@ -426,13 +426,13 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                   onDrop={onDrop}
                   className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
                     dragOver
-                      ? "border-amber-400/50 bg-amber-400/5"
-                      : "border-[color:var(--border)] hover:border-amber-300/50"
+                      ? "border-brand-green/50 bg-brand-green/5"
+                      : "border-[color:var(--border)] hover:border-brand-green/40"
                   }`}
                 >
                   {uploading ? (
                     <div className="flex flex-col items-center gap-3">
-                      <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+                      <Loader2 className="w-8 h-8 text-white animate-spin" />
                       <p className="text-sm text-[var(--muted)]">Uploading...</p>
                     </div>
                   ) : (
@@ -443,7 +443,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                       <div>
                         <p className="text-sm text-[var(--foreground)]">
                           Drag &amp; drop an image here, or{" "}
-                          <label className="text-amber-400 hover:text-amber-300 cursor-pointer transition-colors">
+                          <label className="text-white hover:text-white/90 cursor-pointer transition-colors">
                             browse
                             <input
                               type="file"
@@ -472,7 +472,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
 
               {form.backImage ? (
                 <div className="flex items-start gap-4">
-                  <div className="relative w-32 h-40 bg-white rounded-lg overflow-hidden border border-[color:var(--border)] flex-shrink-0">
+                  <div className="relative w-32 h-40 bg-[var(--surface-muted)] rounded-lg overflow-hidden border border-[color:var(--border)] flex-shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={form.backImage}
@@ -513,13 +513,13 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                   onDrop={onDropBack}
                   className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-all ${
                     dragOverBack
-                      ? "border-amber-400/50 bg-amber-400/5"
-                      : "border-[color:var(--border)] hover:border-amber-300/50"
+                      ? "border-brand-green/50 bg-brand-green/5"
+                      : "border-[color:var(--border)] hover:border-brand-green/40"
                   }`}
                 >
                   {uploadingBack ? (
                     <div className="flex flex-col items-center gap-2">
-                      <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
+                      <Loader2 className="w-6 h-6 text-white animate-spin" />
                       <p className="text-sm text-[var(--muted)]">Uploading...</p>
                     </div>
                   ) : (
@@ -527,7 +527,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                       <Upload className="w-5 h-5 text-[var(--muted)]" />
                       <p className="text-xs text-[var(--muted)]">
                         Drop back image or{" "}
-                        <label className="text-amber-400 hover:text-amber-300 cursor-pointer">
+                        <label className="text-white hover:text-white/90 cursor-pointer">
                           browse
                           <input
                             type="file"
@@ -548,7 +548,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         {/* Type & Kit Type */}
         <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
-            <Tag className="w-4 h-4 text-amber-400" />
+            <Tag className="w-4 h-4 text-white" />
             Jersey Type
           </h2>
 
@@ -565,7 +565,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                     onClick={() => update({ type: t.value })}
                     className={`px-4 py-2.5 text-sm font-medium rounded-lg border transition-all ${
                       form.type === t.value
-                        ? "bg-amber-400/10 border-amber-400/30 text-amber-400"
+                        ? "bg-brand-green/10 border-brand-green/30 text-white"
                 : "bg-[var(--surface-muted)] border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
                     }`}
                   >
@@ -588,7 +588,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         {/* Sizes */}
         <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-400" />
+            <Sparkles className="w-4 h-4 text-white" />
             Available Sizes
           </h2>
           <p className="text-xs text-[var(--muted)] mb-4">
@@ -603,7 +603,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                   onClick={() => toggleSize(size)}
                   className={`w-14 h-14 rounded-xl border text-sm font-semibold transition-all ${
                     active
-                      ? "bg-amber-400/10 border-amber-400/30 text-amber-400"
+                      ? "bg-brand-green/10 border-brand-green/30 text-white"
                       : "bg-[var(--surface-muted)] border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
@@ -620,7 +620,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         {/* Badges */}
         <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
-            <Shield className="w-4 h-4 text-amber-400" />
+            <Shield className="w-4 h-4 text-white" />
             Arm Badges
           </h2>
 
@@ -632,7 +632,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
                   key={i}
                   className="flex items-center gap-2 px-3 py-2 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg"
                 >
-                  <Shield className="w-3 h-3 text-amber-400" />
+                  <Shield className="w-3 h-3 text-white" />
                   <span className="text-sm text-[var(--foreground)]">{badge.name}</span>
                   <span className="text-xs text-[var(--muted)]">
                     CHF {badge.price}
@@ -655,14 +655,14 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               value={newBadgeName}
               onChange={(e) => setNewBadgeName(e.target.value)}
               placeholder="Badge name (e.g. La Liga Badge)"
-              className="flex-1 px-4 py-2.5 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+              className="flex-1 px-4 py-2.5 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors rounded-lg"
               onKeyDown={(e) => e.key === "Enter" && addBadge()}
             />
             <input
               type="number"
               value={newBadgePrice}
               onChange={(e) => setNewBadgePrice(e.target.value)}
-              className="w-24 px-4 py-2.5 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm focus:outline-none focus:border-amber-400/30 transition-colors rounded-lg"
+              className="w-24 px-4 py-2.5 bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--foreground)] text-sm focus:outline-none focus:border-brand-green/35 transition-colors rounded-lg"
               placeholder="3"
             />
             <button
@@ -678,7 +678,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
         {/* Flags */}
         <div className="bg-[var(--surface)] border border-[color:var(--border)] p-5 sm:p-6 rounded-2xl">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
-            <Star className="w-4 h-4 text-amber-400" />
+            <Star className="w-4 h-4 text-white" />
             Visibility & Flags
           </h2>
           <div className="space-y-4">
@@ -710,7 +710,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
               <div
                 onClick={() => update({ isNewArrival: !form.isNewArrival })}
                 className={`w-10 h-6 rounded-full relative transition-colors ${
-                  form.isNewArrival ? "bg-amber-500" : "bg-zinc-700"
+                  form.isNewArrival ? "bg-brand-green" : "bg-zinc-700"
                 }`}
               >
                 <div
@@ -767,7 +767,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
           <button
             onClick={handleSubmit}
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-amber-400 text-black font-semibold text-sm hover:bg-amber-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? (
               <Loader2 className="w-4 h-4 animate-spin" />

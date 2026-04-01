@@ -73,7 +73,7 @@ export default function RegisterPage() {
           <Link href="/" className="inline-block mb-8">
             <span className="text-3xl font-bold tracking-tight">
               <span className="text-[var(--foreground)]">FOOT</span>
-              <span className="text-amber-400">XI</span>
+              <span className="text-white">XI</span>
             </span>
           </Link>
           <h1 className="text-2xl font-bold text-[var(--foreground)] tracking-tight">
@@ -101,7 +101,7 @@ export default function RegisterPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors"
               placeholder="John Doe"
             />
           </div>
@@ -115,7 +115,7 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors"
               placeholder="you@example.com"
             />
           </div>
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 pr-12 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+                className="w-full px-4 py-3 pr-12 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors"
                 placeholder="Min. 6 characters"
               />
               <button
@@ -156,7 +156,7 @@ export default function RegisterPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+              className="w-full px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors"
               placeholder="Repeat your password"
             />
           </div>
@@ -164,7 +164,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-amber-400 text-black font-semibold text-sm hover:bg-amber-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -187,7 +187,7 @@ export default function RegisterPage() {
         {/* Google Sign Up */}
         <button
           onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:border-gold/30 transition-all"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:border-brand-green/30 transition-all"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -215,7 +215,7 @@ export default function RegisterPage() {
           Already have an account?{" "}
           <Link
             href="/auth/login"
-            className="text-amber-400 hover:text-amber-300 transition-colors"
+            className="text-white hover:text-white/90 transition-colors"
           >
             Sign in
           </Link>

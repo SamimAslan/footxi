@@ -35,7 +35,7 @@ export default function EditProductPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+        <Loader2 className="w-8 h-8 text-white animate-spin" />
       </div>
     );
   }
@@ -48,7 +48,7 @@ export default function EditProductPage() {
           <p className="text-[var(--muted)] mb-4">{error || "Product not found"}</p>
           <Link
             href="/admin/products"
-            className="text-sm text-amber-400 hover:text-amber-300"
+            className="text-sm text-white hover:text-white/90"
           >
             Back to products
           </Link>

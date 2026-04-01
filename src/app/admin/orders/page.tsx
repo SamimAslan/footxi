@@ -15,7 +15,7 @@ import ConfirmModal from "@/components/ConfirmModal";
 
 export default function AdminOrdersPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 text-amber-400 animate-spin" /></div>}>
+    <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 text-white animate-spin" /></div>}>
       <AdminOrdersContent />
     </Suspense>
   );
@@ -195,7 +195,7 @@ function AdminOrdersContent() {
             }}
             className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider whitespace-nowrap rounded-lg transition-all ${
               statusFilter === s
-                ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
+                ? "bg-brand-green/10 text-white border border-brand-green/30"
                 : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:text-[var(--foreground)]"
             }`}
           >
@@ -206,7 +206,7 @@ function AdminOrdersContent() {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
+          <Loader2 className="w-6 h-6 text-white animate-spin" />
         </div>
       ) : orders.length === 0 ? (
         <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-12 text-center">
@@ -225,7 +225,7 @@ function AdminOrdersContent() {
                   type="checkbox"
                   checked={orders.length > 0 && selected.size === orders.length}
                   onChange={toggleAll}
-                  className="w-3.5 h-3.5 rounded accent-amber-400 cursor-pointer"
+                  className="w-3.5 h-3.5 rounded accent-brand-green cursor-pointer"
                 />
               </div>
               <div className="col-span-2">Order ID</div>
@@ -251,7 +251,7 @@ function AdminOrdersContent() {
                     type="checkbox"
                     checked={selected.has(order._id)}
                     onChange={() => toggleSelect(order._id)}
-                    className="w-3.5 h-3.5 rounded accent-amber-400 cursor-pointer"
+                    className="w-3.5 h-3.5 rounded accent-brand-green cursor-pointer"
                   />
                 </div>
                 <Link
@@ -320,7 +320,7 @@ function AdminOrdersContent() {
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                   <Link href={`/admin/orders/${order._id}`}>
-                    <ArrowRight className="w-4 h-4 text-[var(--muted)] group-hover:text-amber-500 transition-colors" />
+                    <ArrowRight className="w-4 h-4 text-[var(--muted)] group-hover:text-white transition-colors" />
                   </Link>
                 </div>
               </div>

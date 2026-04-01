@@ -40,8 +40,8 @@ function DropdownFilter({
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-2 px-4 py-2.5 text-[12px] font-medium tracking-wide border transition-all duration-300 ${
           value !== "all"
-            ? "border-gold/20 text-gold bg-gold/[0.04]"
-            : "border-[color:var(--border)] text-[var(--muted)] hover:border-gold/20 hover:text-[var(--foreground)]"
+            ? "border-brand-green/35 text-white bg-brand-green/10"
+            : "border-[color:var(--border)] text-[var(--muted)] hover:border-brand-green/25 hover:text-[var(--foreground)]"
         }`}
       >
         {selectedLabel}
@@ -62,8 +62,8 @@ function DropdownFilter({
               }}
               className={`w-full text-left px-4 py-2.5 text-[12px] transition-all duration-200 ${
                 value === opt.value
-                  ? "text-gold bg-gold/[0.04]"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-black/[0.03]"
+                  ? "text-white bg-brand-green/10"
+                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-white/[0.04]"
               }`}
             >
               {opt.label}
@@ -139,7 +139,7 @@ export default function LeaguePage() {
           <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
             League not found
           </h1>
-          <Link href="/" className="text-gold text-sm hover:underline">
+          <Link href="/" className="text-white text-sm hover:underline">
             Go back home
           </Link>
         </div>
@@ -153,7 +153,7 @@ export default function LeaguePage() {
       <div className="relative bg-[var(--background)] border-b border-[color:var(--border)] overflow-hidden">
         {/* Background text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
-          <span className="font-display text-[12vw] sm:text-[10vw] font-bold text-black/[0.04] whitespace-nowrap tracking-[-0.03em]">
+          <span className="font-display text-[12vw] sm:text-[10vw] font-bold text-white/[0.04] whitespace-nowrap tracking-[-0.03em]">
             {league.name.toUpperCase()}
           </span>
         </div>
@@ -187,7 +187,7 @@ export default function LeaguePage() {
               {total} kits
             </span>
           </div>
-          <div className="w-16 h-[2px] bg-gold mt-6" />
+          <div className="w-16 h-[2px] bg-brand-green mt-6" />
         </div>
       </div>
 
@@ -232,7 +232,7 @@ export default function LeaguePage() {
                 setSelectedType("all");
                 setPage(1);
               }}
-              className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-medium text-gold hover:text-gold-light transition-colors duration-300 tracking-wide"
+              className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-medium text-white hover:text-white/90 transition-colors duration-300 tracking-wide"
             >
               <X className="w-3 h-3" />
               Clear filters
@@ -249,7 +249,7 @@ export default function LeaguePage() {
         {/* Product Grid */}
         {loading ? (
           <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 text-gold animate-spin" />
+            <Loader2 className="w-6 h-6 text-white animate-spin" />
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-24">
@@ -262,7 +262,7 @@ export default function LeaguePage() {
                 setSelectedType("all");
                 setPage(1);
               }}
-              className="mt-3 text-sm text-gold hover:underline"
+              className="mt-3 text-sm text-white hover:underline"
             >
               Clear filters
             </button>

@@ -43,7 +43,7 @@ function wait(ms: number) {
 
 const kitTypeColors: Record<string, string> = {
   fans: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  player: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  player: "bg-brand-green/10 text-white border-brand-green/25",
   retro: "bg-purple-500/10 text-purple-400 border-purple-500/20",
 };
 
@@ -282,7 +282,7 @@ export default function AdminProductsPage() {
 
           <Link
             href="/admin/products/new"
-            className="flex items-center gap-2 px-4 py-2.5 bg-amber-400 text-black font-semibold text-sm rounded-lg hover:bg-amber-300 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-brand-green text-white font-semibold text-sm rounded-lg hover:bg-brand-green-dark transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Product
@@ -306,7 +306,7 @@ export default function AdminProductsPage() {
           </div>
         )}
         {csvProgress && (
-          <div className="text-xs px-3 py-2 rounded-lg border border-amber-500/25 bg-amber-500/10 text-amber-300">
+          <div className="text-xs px-3 py-2 rounded-lg border border-brand-green/25 bg-brand-green/10 text-white/90">
             {csvProgress}
           </div>
         )}
@@ -324,7 +324,7 @@ export default function AdminProductsPage() {
               setPage(1);
             }}
             placeholder="Search by name or team..."
-            className="w-full pl-10 pr-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/30 transition-colors"
           />
         </div>
         <input
@@ -335,7 +335,7 @@ export default function AdminProductsPage() {
             setPage(1);
           }}
           placeholder="Filter by brand..."
-          className="sm:w-52 px-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors"
+          className="sm:w-52 px-4 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/30 transition-colors"
         />
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-[var(--muted)]" />
@@ -348,7 +348,7 @@ export default function AdminProductsPage() {
               }}
               className={`px-3 py-2 text-xs font-medium uppercase tracking-wider rounded-lg transition-all ${
                 kitTypeFilter === kt
-                  ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
+                  ? "bg-brand-green/10 text-white border border-brand-green/30"
                   : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:text-[var(--foreground)]"
               }`}
             >
@@ -361,7 +361,7 @@ export default function AdminProductsPage() {
       {/* Products Table */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
+          <Loader2 className="w-6 h-6 text-white animate-spin" />
         </div>
       ) : products.length === 0 ? (
         <div className="bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-16 text-center">
@@ -375,7 +375,7 @@ export default function AdminProductsPage() {
           {!search && !kitTypeFilter && (
             <Link
               href="/admin/products/new"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-400 text-black font-semibold text-sm rounded-lg hover:bg-amber-300 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-green text-white font-semibold text-sm rounded-lg hover:bg-brand-green-dark transition-colors"
             >
               <Plus className="w-4 h-4" />
               Add Product
@@ -393,7 +393,7 @@ export default function AdminProductsPage() {
                   products.every((p) => selectedIds.includes(p._id))
                 }
                 onChange={toggleSelectAllOnPage}
-                className="h-4 w-4 rounded border-[color:var(--border)] bg-[var(--surface)] text-amber-400 focus:ring-amber-400/40"
+                className="h-4 w-4 rounded border-[color:var(--border)] bg-[var(--surface)] text-white focus:ring-brand-green/40"
               />
               Select all on page
             </label>
@@ -435,7 +435,7 @@ export default function AdminProductsPage() {
                       type="checkbox"
                       checked={selectedIds.includes(product._id)}
                       onChange={() => toggleSelectOne(product._id)}
-                      className="mt-0.5 h-4 w-4 rounded border-[color:var(--border)] bg-[var(--surface)] text-amber-400 focus:ring-amber-400/40"
+                      className="mt-0.5 h-4 w-4 rounded border-[color:var(--border)] bg-[var(--surface)] text-white focus:ring-brand-green/40"
                     />
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-[var(--foreground)] truncate">
@@ -495,7 +495,7 @@ export default function AdminProductsPage() {
                   </div>
                   <div className="flex gap-1 mt-1">
                     {product.isNewArrival && (
-                      <span className="text-[9px] px-1 bg-amber-400/10 text-amber-400">
+                      <span className="text-[9px] px-1 bg-brand-green/10 text-white">
                         NEW
                       </span>
                     )}

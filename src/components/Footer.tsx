@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
-                <Truck className="w-[18px] h-[18px] text-brand-green" />
+                <Truck className="w-[18px] h-[18px] text-white" />
               </div>
               <div>
                 <p className="text-[13px] font-semibold text-[var(--foreground)]">Worldwide shipping</p>
@@ -25,7 +25,7 @@ export default function Footer() {
             </div>
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
-                <Shield className="w-[18px] h-[18px] text-brand-green" />
+                <Shield className="w-[18px] h-[18px] text-white" />
               </div>
               <div>
                 <p className="text-[13px] font-semibold text-[var(--foreground)]">Quality focused</p>
@@ -36,7 +36,7 @@ export default function Footer() {
             </div>
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
-                <CreditCard className="w-[18px] h-[18px] text-brand-green" />
+                <CreditCard className="w-[18px] h-[18px] text-white" />
               </div>
               <div>
                 <p className="text-[13px] font-semibold text-[var(--foreground)]">Secure payment</p>
@@ -61,7 +61,7 @@ export default function Footer() {
             </p>
             <div className="mt-5 flex items-center gap-2 text-[13px] text-[var(--muted)]">
               <Mail className="w-4 h-4 shrink-0" />
-              <a href="mailto:support@footxi.com" className="hover:text-brand-green transition-colors">
+              <a href="mailto:support@footxi.com" className="hover:text-white transition-colors">
                 support@footxi.com
               </a>
             </div>
@@ -72,7 +72,7 @@ export default function Footer() {
                   href="https://www.instagram.com/footxi.official/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-brand-green hover:border-brand-green/35 transition-colors"
+                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-white hover:border-brand-green/35 transition-colors"
                 >
                   Instagram
                 </a>
@@ -80,7 +80,7 @@ export default function Footer() {
                   href="https://www.tiktok.com/@footxi"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-brand-green hover:border-brand-green/35 transition-colors"
+                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-white hover:border-brand-green/35 transition-colors"
                 >
                   TikTok
                 </a>
@@ -89,7 +89,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-[11px] font-bold text-brand-green mb-4 uppercase tracking-[0.16em]">
+            <h3 className="text-[11px] font-bold text-white mb-4 uppercase tracking-[0.16em]">
               Leagues
             </h3>
             <ul className="space-y-2.5">
@@ -97,7 +97,7 @@ export default function Footer() {
                 <li key={league.slug}>
                   <Link
                     href={`/league/${league.slug}`}
-                    className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors"
+                    className="text-[13px] text-[var(--muted)] hover:text-white transition-colors"
                   >
                     {league.name}
                   </Link>
@@ -107,27 +107,27 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-[11px] font-bold text-brand-green mb-4 uppercase tracking-[0.16em]">
+            <h3 className="text-[11px] font-bold text-white mb-4 uppercase tracking-[0.16em]">
               Shop
             </h3>
             <ul className="space-y-2.5">
               <li>
-                <Link href="/" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
+                <Link href="/" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/search" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
+                <Link href="/search" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
                   Search
                 </Link>
               </li>
               <li>
-                <Link href="/cart" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
+                <Link href="/cart" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
                   Cart
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
+                <Link href="/contact" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
                   Contact
                 </Link>
               </li>
@@ -135,7 +135,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-[11px] font-bold text-brand-green mb-4 uppercase tracking-[0.16em]">
+            <h3 className="text-[11px] font-bold text-white mb-4 uppercase tracking-[0.16em]">
               From price guide
             </h3>
             <ul className="space-y-2.5 text-[13px]">

@@ -231,7 +231,7 @@ export default function AdminOrderDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+        <Loader2 className="w-8 h-8 text-white animate-spin" />
       </div>
     );
   }
@@ -244,7 +244,7 @@ export default function AdminOrderDetailPage() {
           <p className="text-[var(--muted)]">Order not found</p>
           <button
             onClick={() => router.back()}
-            className="mt-4 text-sm text-amber-400"
+            className="mt-4 text-sm text-white"
           >
             Go back
           </button>
@@ -330,7 +330,7 @@ export default function AdminOrderDetailPage() {
                         {item.badges.map((b, j) => (
                           <span
                             key={j}
-                            className="text-[9px] px-1.5 py-0.5 bg-amber-400/10 text-amber-400"
+                            className="text-[9px] px-1.5 py-0.5 bg-brand-green/10 text-white"
                           >
                             {b.name} (+CHF {b.price})
                           </span>
@@ -338,7 +338,7 @@ export default function AdminOrderDetailPage() {
                       </div>
                     )}
                     {item.hasCustomNameNumber && (
-                      <p className="text-[10px] text-amber-400/60 mt-1">
+                      <p className="text-[10px] text-white/60 mt-1">
                         Custom: {item.customName} #{item.customNumber} (+CHF 5)
                       </p>
                     )}
@@ -456,7 +456,7 @@ export default function AdminOrderDetailPage() {
               value={adminNote}
               onChange={(e) => setAdminNote(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2.5 bg-[var(--surface-muted)] rounded-xl border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/30 transition-colors resize-none"
+              className="w-full px-3 py-2.5 bg-[var(--surface-muted)] rounded-xl border border-[color:var(--border)] text-[var(--foreground)] text-sm placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/35 transition-colors resize-none"
               placeholder="Add a note (visible to customer if declined)"
             />
             <button
@@ -497,7 +497,7 @@ export default function AdminOrderDetailPage() {
               <div className="border-t border-[color:var(--border)] pt-2 mt-2">
                 <div className="flex justify-between">
                   <span className="font-semibold text-[var(--foreground)]">Total</span>
-                  <span className="text-lg font-bold text-amber-400">
+                  <span className="text-lg font-bold text-white">
                     CHF {order.total.toFixed(2)}
                   </span>
                 </div>

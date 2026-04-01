@@ -53,24 +53,24 @@ function SuccessContent() {
 
         <div className="bg-[var(--surface)] border border-[color:var(--border)] p-6 mb-8 text-left">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-4 flex items-center gap-2">
-            <Package className="w-4 h-4 text-amber-400" />
+            <Package className="w-4 h-4 text-white" />
             What happens next?
           </h2>
           <div className="space-y-3 text-sm text-[var(--muted)]">
             <div className="flex gap-3">
-              <span className="w-6 h-6 flex-shrink-0 bg-amber-400/10 text-amber-400 flex items-center justify-center text-xs font-bold">
+              <span className="w-6 h-6 flex-shrink-0 bg-brand-green/10 text-[var(--foreground)] flex items-center justify-center text-xs font-bold">
                 1
               </span>
               <p>We&apos;ll review and confirm your order within 24 hours.</p>
             </div>
             <div className="flex gap-3">
-              <span className="w-6 h-6 flex-shrink-0 bg-amber-400/10 text-amber-400 flex items-center justify-center text-xs font-bold">
+              <span className="w-6 h-6 flex-shrink-0 bg-brand-green/10 text-[var(--foreground)] flex items-center justify-center text-xs font-bold">
                 2
               </span>
               <p>Your kits will be prepared and shipped.</p>
             </div>
             <div className="flex gap-3">
-              <span className="w-6 h-6 flex-shrink-0 bg-amber-400/10 text-amber-400 flex items-center justify-center text-xs font-bold">
+              <span className="w-6 h-6 flex-shrink-0 bg-brand-green/10 text-[var(--foreground)] flex items-center justify-center text-xs font-bold">
                 3
               </span>
               <p>Track your order status from your account page.</p>
@@ -82,7 +82,7 @@ function SuccessContent() {
           {orderId && (
             <Link
               href={`/account/orders/${orderId}`}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-amber-400 text-black font-semibold text-sm hover:bg-amber-300 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors"
             >
               View Order
               <ArrowRight className="w-4 h-4" />

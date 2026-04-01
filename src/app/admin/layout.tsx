@@ -86,7 +86,7 @@ export default function AdminLayout({
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+          <Loader2 className="w-8 h-8 text-white animate-spin" />
           <span className="text-xs text-[var(--muted)] tracking-wider uppercase">Loading admin...</span>
         </div>
       </div>
@@ -107,8 +107,8 @@ export default function AdminLayout({
         <div className={`h-16 flex items-center border-b border-[color:var(--border)] ${sidebarOpen ? "px-5 justify-between" : "px-0 justify-center"}`}>
           {sidebarOpen ? (
             <Link href="/admin" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-black" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-green to-brand-green-dark flex items-center justify-center">
+                <Shield className="w-4 h-4 text-white" />
               </div>
               <div>
                 <span className="text-sm font-bold text-[var(--foreground)] tracking-tight">FOOTXI</span>
@@ -116,8 +116,8 @@ export default function AdminLayout({
               </div>
             </Link>
           ) : (
-            <Link href="/admin" className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center">
-              <Shield className="w-4 h-4 text-black" />
+            <Link href="/admin" className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-green to-brand-green-dark flex items-center justify-center">
+              <Shield className="w-4 h-4 text-white" />
             </Link>
           )}
           {sidebarOpen && (
@@ -147,16 +147,16 @@ export default function AdminLayout({
                   sidebarOpen ? "px-3 py-2.5" : "px-0 py-2.5 justify-center"
                 } ${
                   isActive
-                    ? "bg-amber-400/[0.08] text-amber-400"
+                    ? "bg-brand-green/[0.12] text-white"
                     : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                 }`}
               >
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-amber-400" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-brand-green" />
                 )}
-                <Icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-amber-400" : "text-[var(--muted)] group-hover:text-[var(--foreground)]"}`} />
+                <Icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-white" : "text-[var(--muted)] group-hover:text-[var(--foreground)]"}`} />
                 {sidebarOpen && (
-                  <span className={`text-[13px] font-medium ${isActive ? "text-amber-400" : ""}`}>
+                  <span className={`text-[13px] font-medium ${isActive ? "text-white" : ""}`}>
                     {item.label}
                   </span>
                 )}
@@ -264,8 +264,8 @@ export default function AdminLayout({
             <div className="fixed top-[var(--site-header-height)] left-0 z-50 h-[calc(100vh-var(--site-header-height))] w-64 bg-[var(--surface)] border-r border-[color:var(--border)] lg:hidden">
               <div className="h-16 flex items-center justify-between px-5 border-b border-[color:var(--border)]">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center">
-                    <Shield className="w-4 h-4 text-black" />
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-green to-brand-green-dark flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <span className="text-sm font-bold text-[var(--foreground)] tracking-tight">FOOTXI</span>
@@ -292,15 +292,15 @@ export default function AdminLayout({
                       href={item.href}
                       className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
                         isActive
-                          ? "bg-amber-400/[0.08] text-amber-400"
+                          ? "bg-brand-green/[0.12] text-white"
                           : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                       }`}
                     >
                       {isActive && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-amber-400" />
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-brand-green" />
                       )}
-                      <Icon className={`w-[18px] h-[18px] ${isActive ? "text-amber-400" : "text-[var(--muted)]"}`} />
-                      <span className={`text-[13px] font-medium ${isActive ? "text-amber-400" : ""}`}>
+                      <Icon className={`w-[18px] h-[18px] ${isActive ? "text-white" : "text-[var(--muted)]"}`} />
+                      <span className={`text-[13px] font-medium ${isActive ? "text-white" : ""}`}>
                         {item.label}
                       </span>
                     </Link>

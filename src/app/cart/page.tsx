@@ -52,7 +52,7 @@ export default function CartPage() {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-amber-400 text-black font-semibold rounded-lg hover:bg-amber-300 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold rounded-lg hover:bg-brand-green-dark transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Browse Kits
@@ -130,7 +130,7 @@ export default function CartPage() {
                       {item.selectedBadges.map((badge) => (
                         <span
                           key={badge.name}
-                          className="px-2 py-0.5 text-[10px] bg-amber-400/10 text-amber-400 rounded-full"
+                          className="px-2 py-0.5 text-[10px] bg-brand-green/15 text-white rounded-full"
                         >
                           {badge.name}
                         </span>
@@ -193,7 +193,7 @@ export default function CartPage() {
                     onClick={() => setShippingMethod("standard")}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition-all ${
                       shippingMethod === "standard"
-                        ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
+                        ? "bg-brand-green/10 border border-brand-green/30 text-[var(--foreground)]"
                         : "bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--muted)]"
                     }`}
                   >
@@ -206,7 +206,7 @@ export default function CartPage() {
                     onClick={() => setShippingMethod("express")}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition-all ${
                       shippingMethod === "express"
-                        ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
+                        ? "bg-brand-green/10 border border-brand-green/30 text-[var(--foreground)]"
                         : "bg-[var(--surface-muted)] border border-[color:var(--border)] text-[var(--muted)]"
                     }`}
                   >
@@ -256,8 +256,8 @@ export default function CartPage() {
 
               {/* Discount info */}
               {discount === 0 && totalItems < PRICING.discount.tier1.min && (
-                <div className="mt-4 p-3 bg-amber-400/5 border border-amber-400/10 rounded-lg">
-                  <p className="text-xs text-amber-400/80">
+                <div className="mt-4 p-3 bg-brand-green/5 border border-brand-green/15 rounded-lg">
+                  <p className="text-xs text-white/80">
                     Add {PRICING.discount.tier1.min - totalItems} more{" "}
                     {PRICING.discount.tier1.min - totalItems === 1
                       ? "kit"
@@ -270,7 +270,7 @@ export default function CartPage() {
               {/* Checkout */}
               <Link
                 href="/checkout"
-                className="block w-full mt-6 py-4 bg-amber-400 text-black font-semibold rounded-xl hover:bg-amber-300 transition-colors text-center"
+                className="block w-full mt-6 py-4 bg-brand-green text-white font-semibold rounded-xl hover:bg-brand-green-dark transition-colors text-center"
               >
                 Proceed to Checkout
               </Link>
@@ -279,7 +279,7 @@ export default function CartPage() {
                 Contact us at{" "}
                 <a
                   href="mailto:support@footxi.com"
-                  className="text-amber-400/60 hover:text-amber-400"
+                  className="text-white/60 hover:text-white"
                 >
                   support@footxi.com
                 </a>{" "}

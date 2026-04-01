@@ -137,6 +137,8 @@ const FEATURED_EXACT_NAMES = {
   france: "2006 France Away White Fans 1:1 Quality Retro Soccer Jersey",
 } as const;
 
+const FEATURED_KITS_COUNT = 10;
+
 type ProductsResponse =
   | Product[]
   | { products: Product[]; total?: number; totalPages?: number; page?: number };
@@ -231,13 +233,33 @@ async function fetchTrendingMix(): Promise<Product[]> {
   return merged.slice(0, 18);
 }
 
-async function fetchHomepageFeaturedFive(): Promise<Product[]> {
-  const [jExact, bExact, fExact, palList, flaList] = await Promise.all([
+async function fetchHomepageFeaturedKits(): Promise<Product[]> {
+  const [
+    jExact,
+    bExact,
+    fExact,
+    jpinkList,
+    palList,
+    flaList,
+    brazilList,
+    germanyList,
+    argentinaList,
+    madridList,
+    milanList,
+    spainList,
+  ] = await Promise.all([
     fetchProductByExactName(FEATURED_EXACT_NAMES.japan),
     fetchProductByExactName(FEATURED_EXACT_NAMES.barcelona),
     fetchProductByExactName(FEATURED_EXACT_NAMES.france),
+    searchProducts("japan pink", 80),
     searchProducts("palestine", 60),
     searchProducts("flamengo pink", 60),
+    searchProducts("brazil", 50),
+    searchProducts("germany", 50),
+    searchProducts("argentina", 50),
+    searchProducts("real madrid", 50),
+    searchProducts("milan", 50),
+    searchProducts("spain", 50),
   ]);
 
   const out: Product[] = [];
@@ -251,6 +273,10 @@ async function fetchHomepageFeaturedFive(): Promise<Product[]> {
   };
 
   push(jExact);
+  push(
+    jpinkList.find((p) => isMensFootballJersey(p) && /japan/i.test(p.name) && /pink/i.test(p.name)) ??
+      jpinkList.find((p) => isMensFootballJersey(p) && /pink/i.test(p.name))
+  );
   push(bExact);
   push(palList.find((p) => isMensFootballJersey(p) && /palestine/i.test(p.name)));
   push(
@@ -259,14 +285,21 @@ async function fetchHomepageFeaturedFive(): Promise<Product[]> {
     ) ?? flaList.find((p) => isMensFootballJersey(p) && /flamengo/i.test(p.name))
   );
   push(fExact);
+  push(brazilList.find((p) => isMensFootballJersey(p) && /(brazil|brasil)/i.test(p.name)));
+  push(germanyList.find((p) => isMensFootballJersey(p) && /(germany|deutschland)/i.test(p.name)));
+  push(argentinaList.find((p) => isMensFootballJersey(p) && /argentina/i.test(p.name)));
+  push(madridList.find((p) => isMensFootballJersey(p) && /real\s*madrid/i.test(p.name)));
+  push(milanList.find((p) => isMensFootballJersey(p) && /(milan|inter)/i.test(p.name)));
+  push(spainList.find((p) => isMensFootballJersey(p) && /\bspain\b|españa|espana/i.test(p.name)));
 
-  if (out.length >= 5) return out.slice(0, 5);
+  if (out.length >= FEATURED_KITS_COUNT) return out.slice(0, FEATURED_KITS_COUNT);
 
   const pool = (
     await Promise.all([
       searchProducts("japan pink", 40),
-      searchProducts("barcelona retro", 40),
-      searchProducts("france", 40),
+      searchProducts("portugal", 40),
+      searchProducts("netherlands", 40),
+      searchProducts("napoli", 40),
       searchProducts("premier league", 24),
     ])
   )
@@ -274,14 +307,14 @@ async function fetchHomepageFeaturedFive(): Promise<Product[]> {
     .filter(isMensFootballJersey);
   for (const p of pool) {
     push(p);
-    if (out.length >= 5) break;
+    if (out.length >= FEATURED_KITS_COUNT) break;
   }
-  return out.slice(0, 5);
+  return out.slice(0, FEATURED_KITS_COUNT);
 }
 
 function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h3 className="text-[17px] sm:text-xl font-bold uppercase tracking-[0.06em] text-brand-green">{children}</h3>
+    <h3 className="text-[17px] sm:text-xl font-bold uppercase tracking-[0.06em] text-white">{children}</h3>
   );
 }
 
@@ -311,7 +344,7 @@ function ProductTile({
       href={`/product/${getProductId(product)}`}
       className="group rounded-lg border border-[color:var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm hover:shadow-md transition-shadow"
     >
-      <div className="relative aspect-[4/5] bg-white overflow-hidden">
+      <div className="relative aspect-[4/5] bg-[#0c1018] overflow-hidden">
         {product.image ? (
           <img
             src={product.image}
@@ -326,14 +359,14 @@ function ProductTile({
         ) : null}
       </div>
       <div className="p-3 sm:p-3.5 space-y-1.5 sm:space-y-2">
-        <p className="text-[13px] sm:text-[14px] font-bold text-brand-green line-clamp-1">{displayTeam}</p>
+        <p className="text-[13px] sm:text-[14px] font-bold text-white line-clamp-1">{displayTeam}</p>
         <p className="text-[10px] tracking-[0.14em] text-[var(--muted)]">
           {getKitVersionDisplayLabel(product)}
         </p>
         <div className="flex items-center justify-between">
           <p className="text-[17px] sm:text-[19px] font-bold text-[var(--foreground)]">{formatPrice(price)}</p>
           <div className="inline-flex items-center gap-1 text-[11px] text-[var(--muted)]">
-            <Star className="w-3.5 h-3.5 text-brand-green fill-brand-green/90" />
+            <Star className="w-3.5 h-3.5 text-white fill-white/90" />
             {rating}
           </div>
         </div>
@@ -362,7 +395,7 @@ function ProductTile({
 export default function MarketplaceHomepage() {
   const addItem = useCartStore((s) => s.addItem);
   const [bannerIndex, setBannerIndex] = useState(0);
-  const [featuredFive, setFeaturedFive] = useState<Product[]>([]);
+  const [featuredKits, setFeaturedKits] = useState<Product[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -381,9 +414,9 @@ export default function MarketplaceHomepage() {
 
   useEffect(() => {
     async function init() {
-      const homeFeatured = await fetchHomepageFeaturedFive();
-      if (homeFeatured.length >= 5) {
-        setFeaturedFive(homeFeatured.slice(0, 5));
+      const homeFeatured = await fetchHomepageFeaturedKits();
+      if (homeFeatured.length >= FEATURED_KITS_COUNT) {
+        setFeaturedKits(homeFeatured.slice(0, FEATURED_KITS_COUNT));
         return;
       }
 
@@ -394,11 +427,18 @@ export default function MarketplaceHomepage() {
         homeFeatured
           .map((p) => `${p.team} ${p.name}`.toLowerCase())
           .flatMap((txt) => [
+            txt.includes("japan") && txt.includes("pink") ? "japan_pink" : "",
             txt.includes("japan") ? "japan" : "",
             txt.includes("barcelona") ? "barcelona" : "",
             txt.includes("palestine") ? "palestine" : "",
             txt.includes("flamengo") ? "flamengo" : "",
             txt.includes("france") ? "france" : "",
+            txt.includes("brazil") || txt.includes("brasil") ? "brazil" : "",
+            txt.includes("germany") || txt.includes("deutschland") ? "germany" : "",
+            txt.includes("argentina") ? "argentina" : "",
+            txt.includes("real madrid") ? "madrid" : "",
+            /milan|inter/.test(txt) ? "milan" : "",
+            txt.includes("spain") ? "spain" : "",
           ])
           .filter(Boolean)
       );
@@ -406,26 +446,40 @@ export default function MarketplaceHomepage() {
         const id = getProductId(p);
         const txt = `${p.team} ${p.name}`.toLowerCase();
         const key =
-          txt.includes("japan")
-            ? "japan"
-            : txt.includes("barcelona")
-              ? "barcelona"
-              : txt.includes("palestine")
-                ? "palestine"
-                : txt.includes("flamengo")
-                  ? "flamengo"
-                  : txt.includes("france")
-                    ? "france"
-                    : "";
+          txt.includes("japan") && txt.includes("pink")
+            ? "japan_pink"
+            : txt.includes("japan")
+              ? "japan"
+              : txt.includes("barcelona")
+                ? "barcelona"
+                : txt.includes("palestine")
+                  ? "palestine"
+                  : txt.includes("flamengo")
+                    ? "flamengo"
+                    : txt.includes("france")
+                      ? "france"
+                      : txt.includes("brazil") || txt.includes("brasil")
+                        ? "brazil"
+                        : txt.includes("germany") || txt.includes("deutschland")
+                          ? "germany"
+                          : txt.includes("argentina")
+                            ? "argentina"
+                            : txt.includes("real madrid")
+                              ? "madrid"
+                              : /milan|inter/.test(txt)
+                                ? "milan"
+                                : txt.includes("spain")
+                                  ? "spain"
+                                  : "";
         if (!seen.has(id)) {
           if (key && seenCore.has(key)) continue;
           seen.add(id);
           if (key) seenCore.add(key);
           merged.push(p);
         }
-        if (merged.length >= 5) break;
+        if (merged.length >= FEATURED_KITS_COUNT) break;
       }
-      setFeaturedFive(merged.slice(0, 5));
+      setFeaturedKits(merged.slice(0, FEATURED_KITS_COUNT));
     }
     init();
   }, []);
@@ -451,7 +505,7 @@ export default function MarketplaceHomepage() {
   return (
     <div className="bg-[var(--background)]">
       {/* Full-width hero — image + overlay copy */}
-      <section className="relative w-full min-h-[min(50vh,480px)] sm:min-h-[min(54vh,520px)] lg:min-h-[min(56vh,560px)] overflow-hidden border-b border-black/10">
+      <section className="relative w-full min-h-[min(50vh,480px)] sm:min-h-[min(54vh,520px)] lg:min-h-[min(56vh,560px)] overflow-hidden border-b border-white/[0.06]">
         <Link href={HERO_SLIDES[bannerIndex].href} className="block absolute inset-0 z-0">
           <div className="absolute inset-0 z-[1]">
             <Image
@@ -477,7 +531,7 @@ export default function MarketplaceHomepage() {
             <p className="mt-3 max-w-md text-[14px] sm:text-[16px] text-white/90 leading-relaxed">
               {HERO_SLIDES[bannerIndex].subtitle}
             </p>
-            <span className="mt-8 inline-flex items-center rounded-sm border-2 border-white px-7 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-white hover:bg-white hover:text-brand-green transition-colors">
+            <span className="mt-8 inline-flex items-center rounded-sm border-2 border-white px-7 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-white hover:bg-white hover:text-zinc-900 transition-colors">
               Shop collection
             </span>
           </div>
@@ -499,7 +553,7 @@ export default function MarketplaceHomepage() {
         <button
           type="button"
           onClick={goPrevBanner}
-          className="absolute left-2 sm:left-5 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 text-brand-green hover:bg-white flex items-center justify-center shadow-lg"
+          className="absolute left-2 sm:left-5 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 text-zinc-900 hover:bg-white flex items-center justify-center shadow-lg"
           aria-label="Previous slide"
         >
           <ChevronLeft className="w-5 h-5" />
@@ -507,7 +561,7 @@ export default function MarketplaceHomepage() {
         <button
           type="button"
           onClick={goNextBanner}
-          className="absolute right-2 sm:right-5 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 text-brand-green hover:bg-white flex items-center justify-center shadow-lg"
+          className="absolute right-2 sm:right-5 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 text-zinc-900 hover:bg-white flex items-center justify-center shadow-lg"
           aria-label="Next slide"
         >
           <ChevronRight className="w-5 h-5" />
@@ -516,9 +570,9 @@ export default function MarketplaceHomepage() {
 
       <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8 sm:space-y-10">
         <section className="space-y-4">
-          <SectionTitle>Featured 5 Kits</SectionTitle>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
-            {featuredFive.map((p) => (
+          <SectionTitle>Featured kits</SectionTitle>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+            {featuredKits.map((p) => (
               <ProductTile key={getProductId(p)} product={p} onAdd={addQuick} />
             ))}
           </div>
@@ -544,7 +598,7 @@ export default function MarketplaceHomepage() {
                     />
                   ) : null}
                 </div>
-                <p className="mt-1 sm:mt-2 text-[11px] sm:text-[12px] font-semibold text-brand-green line-clamp-1">{league.name}</p>
+                <p className="mt-1 sm:mt-2 text-[11px] sm:text-[12px] font-semibold text-white line-clamp-1">{league.name}</p>
               </Link>
             ))}
           </div>
@@ -560,7 +614,7 @@ export default function MarketplaceHomepage() {
             </div>
             <Link
               href="/league/jersey"
-              className="inline-flex items-center gap-1.5 shrink-0 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.12em] text-brand-green hover:text-brand-green-dark transition-colors group/link"
+              className="inline-flex items-center gap-1.5 shrink-0 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.12em] text-white hover:text-white/90 transition-colors group/link"
             >
               All jerseys
               <ChevronRight className="w-4 h-4 transition-transform group-hover/link:translate-x-0.5" />
@@ -577,21 +631,21 @@ export default function MarketplaceHomepage() {
                   className="group relative flex flex-col rounded-xl border border-[color:var(--border)] bg-[var(--surface)] p-4 sm:p-5 text-left shadow-sm ring-0 ring-transparent transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-green/30 hover:shadow-md hover:ring-1 hover:ring-brand-green/10"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-green/10 text-brand-green transition-colors duration-200 group-hover:bg-brand-green group-hover:text-white">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-green/10 text-white transition-colors duration-200 group-hover:bg-brand-green group-hover:text-white">
                       <Icon className="h-[22px] w-[22px]" strokeWidth={1.75} aria-hidden />
                     </div>
                     <ChevronRight
-                      className="mt-1 h-4 w-4 shrink-0 text-[var(--muted)] opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 group-hover:text-brand-green"
+                      className="mt-1 h-4 w-4 shrink-0 text-[var(--muted)] opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 group-hover:text-white"
                       aria-hidden
                     />
                   </div>
-                  <h3 className="mt-4 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.08em] text-[var(--foreground)] transition-colors group-hover:text-brand-green">
+                  <h3 className="mt-4 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.08em] text-[var(--foreground)] transition-colors group-hover:text-white">
                     {category.label}
                   </h3>
                   <p className="mt-1.5 text-[11px] sm:text-[12px] leading-snug text-[var(--muted)] line-clamp-2">
                     {category.blurb}
                   </p>
-                  <span className="mt-4 text-[10px] font-bold uppercase tracking-wider text-brand-green/80 group-hover:text-brand-green">
+                  <span className="mt-4 text-[10px] font-bold uppercase tracking-wider text-white/80 group-hover:text-white">
                     Shop now
                   </span>
                 </Link>

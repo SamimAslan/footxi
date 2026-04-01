@@ -35,8 +35,6 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true);
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("theme", "light");
   }, []);
 
   useEffect(() => {
@@ -176,7 +174,7 @@ export default function Navbar() {
                           setAccountOpen(false);
                           signOut({ callbackUrl: "/" });
                         }}
-                        className="w-full flex items-center gap-2 px-2.5 py-2 text-[12px] rounded-lg text-red-600 hover:bg-red-50"
+                        className="w-full flex items-center gap-2 px-2.5 py-2 text-[12px] rounded-lg text-red-400 hover:bg-red-950/40"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         Sign out
@@ -201,7 +199,7 @@ export default function Navbar() {
               >
                 <ShoppingBag className="w-5 h-5" />
                 {mounted && totalItems > 0 && (
-                  <span className="absolute top-0 right-0 min-w-[18px] h-[18px] px-1 rounded-full bg-white text-brand-green text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute top-0 right-0 min-w-[18px] h-[18px] px-1 rounded-full bg-white text-zinc-900 text-[10px] font-bold flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
@@ -220,7 +218,7 @@ export default function Navbar() {
       </div>
 
       {/* Tier 3 — white category bar */}
-      <div className="bg-white border-b border-[color:var(--border)] shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+      <div className="bg-[var(--surface)] border-b border-[color:var(--border)] shadow-[0_1px_0_rgba(0,0,0,0.25)]">
         <div className="max-w-[1600px] mx-auto px-2 sm:px-6 lg:px-8">
           <div className="hidden md:flex min-h-[2.75rem] items-center justify-center gap-1 lg:gap-2 py-1 overflow-x-auto hide-scrollbar">
             {MARKET_CATEGORIES.map((item) => (
@@ -230,7 +228,7 @@ export default function Navbar() {
                 className={`shrink-0 px-3 py-2 rounded-full text-[11px] lg:text-[12px] font-bold uppercase tracking-wide transition-colors ${
                   categoryActive(item.slug)
                     ? "bg-brand-green text-white"
-                    : "text-brand-green hover:bg-[var(--surface-muted)]"
+                    : "text-[var(--foreground)] hover:bg-[var(--surface-muted)] hover:text-white"
                 }`}
               >
                 {item.label}
@@ -243,7 +241,9 @@ export default function Navbar() {
                 key={item.slug}
                 href={`/league/${item.slug}`}
                 className={`shrink-0 px-2.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${
-                  categoryActive(item.slug) ? "bg-brand-green text-white" : "text-brand-green bg-[var(--surface-muted)]"
+                  categoryActive(item.slug)
+                    ? "bg-brand-green text-white"
+                    : "text-[var(--foreground)] bg-[var(--surface-muted)] hover:text-white"
                 }`}
               >
                 {item.label}
@@ -254,9 +254,9 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 space-y-3 shadow-lg">
+        <div className="md:hidden border-t border-[color:var(--border)] bg-[var(--surface)] px-4 py-4 space-y-3 shadow-lg">
           <form onSubmit={submitMobileSearch} className="relative flex items-end border-b border-brand-green/30 pb-2">
-            <Search className="w-4 h-4 text-brand-green mb-1 mr-2" />
+            <Search className="w-4 h-4 text-white mb-1 mr-2" />
             <input
               value={mobileQuery}
               onChange={(e) => setMobileQuery(e.target.value)}
@@ -270,7 +270,7 @@ export default function Navbar() {
                 key={item.slug}
                 href={`/league/${item.slug}`}
                 onClick={() => setMobileOpen(false)}
-                className="px-3 py-2.5 rounded-full text-center text-[11px] font-bold uppercase bg-[var(--surface-muted)] text-brand-green"
+                className="px-3 py-2.5 rounded-full text-center text-[11px] font-bold uppercase bg-[var(--surface-muted)] text-[var(--foreground)] hover:text-white"
               >
                 {item.label}
               </Link>

@@ -27,7 +27,7 @@ export default function ContactPage() {
         <div className="text-center mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">
             Get in{" "}
-            <span className="text-amber-400">Touch</span>
+            <span className="text-white">Touch</span>
           </h1>
           <p className="mt-3 text-[var(--muted)] max-w-md mx-auto">
             Have a question about an order or need help? We&apos;re here to help.
@@ -39,14 +39,14 @@ export default function ContactPage() {
           <div className="md:col-span-2 space-y-6">
             <div className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-amber-400/10 flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-amber-400" />
+                <div className="w-10 h-10 rounded-lg bg-brand-green/10 flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-[var(--foreground)]">Email</h3>
                   <a
                     href="mailto:support@footxi.com"
-                    className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
+                    className="text-sm text-white hover:text-white/90 transition-colors"
                   >
                     support@footxi.com
                   </a>
@@ -56,8 +56,8 @@ export default function ContactPage() {
 
             <div className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-amber-400/10 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-amber-400" />
+                <div className="w-10 h-10 rounded-lg bg-brand-green/10 flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-[var(--foreground)]">
@@ -72,8 +72,8 @@ export default function ContactPage() {
 
             <div className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-amber-400/10 flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-amber-400" />
+                <div className="w-10 h-10 rounded-lg bg-brand-green/10 flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-[var(--foreground)]">
@@ -139,7 +139,7 @@ export default function ContactPage() {
                         message: "",
                       });
                     }}
-                    className="mt-6 text-sm text-amber-400 hover:text-amber-300 transition-colors"
+                    className="mt-6 text-sm text-white hover:text-white/90 transition-colors"
                   >
                     Send another message
                   </button>
@@ -158,7 +158,7 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, name: e.target.value })
                         }
-                        className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors"
+                        className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/50 transition-colors"
                         placeholder="John Doe"
                       />
                     </div>
@@ -173,7 +173,7 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors"
+                        className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/50 transition-colors"
                         placeholder="john@example.com"
                       />
                     </div>
@@ -190,7 +190,7 @@ export default function ContactPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, subject: e.target.value })
                       }
-                      className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors"
+                      className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/50 transition-colors"
                       placeholder="Order inquiry, bulk order, etc."
                     />
                   </div>
@@ -206,14 +206,14 @@ export default function ContactPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
                       }
-                      className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors resize-none"
+                      className="w-full px-4 py-3 bg-[var(--surface-muted)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/50 transition-colors resize-none"
                       placeholder="Tell us how we can help..."
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 bg-amber-400 text-black font-semibold rounded-lg hover:bg-amber-300 transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-brand-green text-white font-semibold rounded-lg hover:bg-brand-green-dark transition-colors flex items-center justify-center gap-2"
                   >
                     <Send className="w-4 h-4" />
                     Send Message

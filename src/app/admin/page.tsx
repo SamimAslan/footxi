@@ -38,7 +38,7 @@ interface OrderRow {
 }
 
 const statusColors: Record<string, string> = {
-  awaiting_payment: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  awaiting_payment: "bg-brand-green/10 text-white border-brand-green/25",
   paid: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   accepted: "bg-teal-500/10 text-teal-400 border-teal-500/20",
   shipped: "bg-purple-500/10 text-purple-400 border-purple-500/20",
@@ -48,7 +48,7 @@ const statusColors: Record<string, string> = {
 };
 
 const statusDots: Record<string, string> = {
-  awaiting_payment: "bg-amber-400",
+  awaiting_payment: "bg-brand-green",
   paid: "bg-blue-400",
   accepted: "bg-teal-400",
   shipped: "bg-purple-400",
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
     return (
       <div className="flex items-center justify-center py-32">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-7 h-7 text-amber-400 animate-spin" />
+          <Loader2 className="w-7 h-7 text-white animate-spin" />
           <span className="text-xs text-[var(--muted)] tracking-wider">Loading dashboard...</span>
         </div>
       </div>
@@ -133,9 +133,9 @@ export default function AdminDashboard() {
       label: "Awaiting Action",
       value: stats?.paid || 0,
       icon: Clock,
-      iconBg: "bg-amber-500/10",
-      iconColor: "text-amber-400",
-      valueColor: "text-amber-400",
+      iconBg: "bg-brand-green/10",
+      iconColor: "text-white",
+      valueColor: "text-white",
       trend: null,
     },
     {
@@ -193,8 +193,8 @@ export default function AdminDashboard() {
       subtitle: "Add, edit, or remove jersey listings",
       href: "/admin/products",
       icon: Shirt,
-      iconColor: "text-amber-400",
-      iconBg: "bg-amber-500/10",
+      iconColor: "text-white",
+      iconBg: "bg-brand-green/10",
       count: null,
       countColor: "",
     },
@@ -261,7 +261,7 @@ export default function AdminDashboard() {
                   onClick={() => setTimeRange(range)}
                   className={`px-3 py-1.5 text-[11px] font-medium rounded-md transition-all ${
                     timeRange === range
-                      ? "bg-white text-[var(--foreground)] shadow-sm"
+                      ? "bg-[var(--surface)] text-[var(--foreground)] shadow-sm border border-[color:var(--border)]"
                       : "text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
@@ -284,7 +284,7 @@ export default function AdminDashboard() {
               {[40, 65, 45, 80, 55, 70, 90, 60, 75, 50, 85, 65].map((h, i) => (
                 <div
                   key={i}
-                  className="flex-1 bg-gradient-to-t from-amber-400/20 to-amber-400/5 rounded-t-sm border-t border-amber-400/30"
+                  className="flex-1 bg-gradient-to-t from-brand-green/20 to-brand-green/5 rounded-t-sm border-t border-brand-green/30"
                   style={{ height: `${h}%` }}
                 />
               ))}
@@ -311,7 +311,7 @@ export default function AdminDashboard() {
               <p className="text-[10px] text-[var(--muted)] uppercase tracking-wider mt-0.5">Revenue</p>
             </div>
             <div className="text-center py-3 rounded-xl bg-[var(--surface-muted)] border border-[color:var(--border)]">
-              <p className="text-lg font-bold text-amber-400">
+              <p className="text-lg font-bold text-white">
                 {stats?.paid || 0}
               </p>
               <p className="text-[10px] text-[var(--muted)] uppercase tracking-wider mt-0.5">Awaiting</p>
@@ -322,7 +322,7 @@ export default function AdminDashboard() {
         {/* Right: Quick Actions */}
         <div className="lg:col-span-2 bg-[var(--surface)] rounded-2xl border border-[color:var(--border)] p-5 sm:p-6">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-5 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-green" />
             Quick Actions
           </h2>
 
@@ -371,7 +371,7 @@ export default function AdminDashboard() {
           </h2>
           <Link
             href="/admin/orders"
-            className="flex items-center gap-1.5 text-xs text-[var(--muted)] hover:text-amber-500 transition-colors"
+            className="flex items-center gap-1.5 text-xs text-[var(--muted)] hover:text-white transition-colors"
           >
             View all
             <ArrowRight className="w-3.5 h-3.5" />
@@ -448,7 +448,7 @@ export default function AdminDashboard() {
                   })}
                 </div>
                 <div className="md:col-span-1 flex justify-end">
-                  <ChevronRight className="w-4 h-4 text-[var(--muted)] group-hover:text-amber-500 transition-colors" />
+                  <ChevronRight className="w-4 h-4 text-[var(--muted)] group-hover:text-white transition-colors" />
                 </div>
               </Link>
             ))}

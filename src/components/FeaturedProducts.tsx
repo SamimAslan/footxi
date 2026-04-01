@@ -42,15 +42,15 @@ export default function FeaturedProducts() {
     <section className="relative bg-[var(--background)]">
       <div className="relative pt-28 pb-14 sm:pt-36 sm:pb-20">
         {/* Subtle bg gradient */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/[0.07] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-green/[0.08] via-transparent to-transparent" />
 
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           {/* Header */}
           <div className="flex items-end justify-between mb-12">
             <div>
               <div className="flex items-center gap-3 mb-5">
-                <div className="h-px w-14 bg-gold" />
-                <span className="text-[11px] font-semibold tracking-[0.3em] text-gold uppercase">
+                <div className="h-px w-14 bg-white/40" />
+                <span className="text-[11px] font-semibold tracking-[0.3em] text-white uppercase">
                   Trending Now
                 </span>
               </div>
@@ -62,7 +62,7 @@ export default function FeaturedProducts() {
             </div>
             <Link
               href="/league/fan-made"
-              className="hidden sm:inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[var(--muted)] hover:text-gold transition-colors duration-300 uppercase gold-underline"
+              className="hidden sm:inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[var(--muted)] hover:text-white transition-colors duration-300 uppercase"
             >
               View all
               <ArrowRight className="w-3.5 h-3.5" />
@@ -80,7 +80,7 @@ export default function FeaturedProducts() {
           <div className="mt-12 text-center sm:hidden">
             <Link
               href="/league/fan-made"
-              className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-gold uppercase"
+              className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-white uppercase"
             >
               View all kits
               <ArrowRight className="w-3.5 h-3.5" />

@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-brand-green: #22562d;
-  --color-brand-green-dark: #1a4524;
+  --color-brand-green: #2d6b3a;
+  --color-brand-green-dark: #22562d;
   --color-brand-top: #142a1c;
-  --color-background: #0D0F14;
-  --color-foreground: #F3F4F6;
+  --color-background: #0d0f14;
+  --color-foreground: #e8eaed;
   --color-gold: #F5B800;
   --color-gold-light: #FFD54F;
   --color-gold-dim: #F5B800;
@@ -19,29 +19,19 @@
 }
 
 :root {
-  /* Matches fixed Navbar: top strip + green bar + white category row */
+  /* Matches fixed Navbar: top strip + green bar + category row */
   --site-header-height: 158px;
-  --brand-green: #22562d;
-  --brand-green-dark: #1a4524;
-  --brand-green-hover: #2d6b3a;
-  --brand-top-bar: #142a1c;
-  /* Storefront: white page, forest green accents (classic kit retailer pattern) */
-  --background: #ffffff;
-  --foreground: #1a1a1a;
-  --surface: #ffffff;
-  --surface-muted: #f4f6f4;
-  --muted: #5c6560;
-  --border: rgba(34, 86, 45, 0.12);
-  /*
-    Dark mode removed globally by request.
-    Legacy dark values kept as commented reference only.
-  --background: #0D0F14;
-  --foreground: #F3F4F6;
+  --brand-green: #2d6b3a;
+  --brand-green-dark: #22562d;
+  --brand-green-hover: #3a8550;
+  --brand-top-bar: #0f1612;
+  /* Storefront: dark theme, forest green accents */
+  --background: #0d0f14;
+  --foreground: #e8eaed;
   --surface: #141721;
-  --surface-muted: #1a1d2b;
-  --muted: #9CA3AF;
+  --surface-muted: #1a1f2e;
+  --muted: #9aa3b2;
   --border: rgba(255, 255, 255, 0.08);
-  */
 }
 
 @media (max-width: 767px) {
@@ -69,7 +59,7 @@ body::before {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.012;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
@@ -100,7 +90,7 @@ html {
 
 /* Selection */
 ::selection {
-  background: rgba(34, 86, 45, 0.2);
+  background: rgba(45, 107, 58, 0.45);
   color: var(--foreground);
 }
 
@@ -179,7 +169,7 @@ html {
   left: 0;
   width: 0;
   height: 1px;
-  background: #F5B800;
+  background: var(--brand-green, #2d6b3a);
   transition: width 0.4s ease;
 }
 .gold-underline:hover::after {

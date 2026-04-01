@@ -83,7 +83,7 @@ export default function AccountPage() {
   if (status === "loading" || loading) {
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+        <Loader2 className="w-8 h-8 text-white animate-spin" />
       </div>
     );
   }
@@ -107,7 +107,7 @@ export default function AccountPage() {
         {/* Orders */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
-            <Package className="w-5 h-5 text-amber-400" />
+            <Package className="w-5 h-5 text-white" />
             Your Orders
           </h2>
           <p className="text-sm text-[var(--muted)] mt-1">
@@ -124,7 +124,7 @@ export default function AccountPage() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-amber-400 text-black font-semibold text-sm hover:bg-amber-300 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors"
             >
               Start Shopping
               <ArrowRight className="w-4 h-4" />
@@ -135,7 +135,7 @@ export default function AccountPage() {
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="bg-[var(--surface)] border border-[color:var(--border)] hover:border-gold/30 transition-colors group relative"
+                className="bg-[var(--surface)] border border-[color:var(--border)] hover:border-brand-green/30 transition-colors group relative"
               >
                 <div className="flex items-center">
                   <Link
@@ -187,7 +187,7 @@ export default function AccountPage() {
                         <span className="text-lg font-bold text-[var(--foreground)]">
                           {formatPrice(order.total)}
                         </span>
-                        <ArrowRight className="w-4 h-4 text-[var(--muted)] group-hover:text-amber-400 mt-2 ml-auto transition-colors" />
+                        <ArrowRight className="w-4 h-4 text-[var(--muted)] group-hover:text-white mt-2 ml-auto transition-colors" />
                       </div>
                     </div>
                   </Link>
