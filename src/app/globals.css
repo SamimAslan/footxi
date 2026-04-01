@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-brand-green: #2d6b3a;
-  --color-brand-green-dark: #22562d;
-  --color-brand-top: #142a1c;
-  --color-background: #0d0f14;
-  --color-foreground: #e8eaed;
+  --color-brand-green: #2f5d40;
+  --color-brand-green-dark: #244832;
+  --color-brand-top: #0c0f0d;
+  --color-background: #0c0e12;
+  --color-foreground: #e6e9ee;
   --color-gold: #F5B800;
   --color-gold-light: #FFD54F;
   --color-gold-dim: #F5B800;
@@ -21,17 +21,17 @@
 :root {
   /* Matches fixed Navbar: top strip + green bar + category row */
   --site-header-height: 158px;
-  --brand-green: #2d6b3a;
-  --brand-green-dark: #22562d;
-  --brand-green-hover: #3a8550;
-  --brand-top-bar: #0f1612;
-  /* Storefront: dark theme, forest green accents */
-  --background: #0d0f14;
-  --foreground: #e8eaed;
-  --surface: #141721;
-  --surface-muted: #1a1f2e;
-  --muted: #9aa3b2;
-  --border: rgba(255, 255, 255, 0.08);
+  --brand-green: #2f5d40;
+  --brand-green-dark: #244832;
+  --brand-green-hover: #3a6f4d;
+  --brand-top-bar: #0c0f0d;
+  /* Storefront: neutral dark + muted forest accent */
+  --background: #0c0e12;
+  --foreground: #e6e9ee;
+  --surface: #13161c;
+  --surface-muted: #1a1f27;
+  --muted: #8f97a8;
+  --border: rgba(255, 255, 255, 0.065);
 }
 
 @media (max-width: 767px) {
@@ -47,9 +47,41 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 100% 70% at 0% 0%, rgba(47, 93, 64, 0.045) 0%, transparent 48%),
+    radial-gradient(ellipse 80% 60% at 100% 20%, rgba(47, 93, 64, 0.03) 0%, transparent 42%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 0, 0, 0.2) 0%, transparent 45%);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Keyboard focus — clear, on-brand (mouse clicks don’t show ring) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand-green) 65%, white);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Grain texture overlay */
@@ -90,7 +122,7 @@ html {
 
 /* Selection */
 ::selection {
-  background: rgba(45, 107, 58, 0.45);
+  background: rgba(47, 93, 64, 0.45);
   color: var(--foreground);
 }
 
@@ -181,6 +213,29 @@ html {
   font-family: var(--font-display), var(--font-sans), sans-serif;
 }
 
+/* Hero headline — soft off-white, no neon */
+.text-gradient-hero {
+  background: linear-gradient(165deg, #f8fafc 0%, #e2e8f0 55%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glass panel */
+.glass-panel {
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, white 8%, transparent);
+}
+
+/* Primary control — subtle depth, no colored glow */
+.shadow-glow-mint {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 28px -6px rgba(0, 0, 0, 0.45);
+}
+
 /* Hide scrollbar but keep horizontal scroll */
 .hide-scrollbar {
   -ms-overflow-style: none;
@@ -189,4 +244,38 @@ html {
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Skip to main — visible on keyboard focus only */
+.skip-to-main {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-to-main:focus,
+.skip-to-main:focus-visible {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.25rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  z-index: 99999;
+  top: 1rem;
+  left: 1rem;
+  background: #fff;
+  color: #0d0f14;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }

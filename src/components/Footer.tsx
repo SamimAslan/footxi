@@ -8,13 +8,13 @@ import { useCurrency } from "@/context/CurrencyContext";
 export default function Footer() {
   const { formatPrice } = useCurrency();
   return (
-    <footer className="bg-[var(--surface)] border-t border-[color:var(--border)] mt-auto">
-      <div className="border-b border-[color:var(--border)] bg-[var(--surface-muted)]/60">
+    <footer className="relative mt-auto border-t border-[color:var(--border)] bg-gradient-to-b from-[var(--surface)] to-[#06080f]">
+      <div className="border-b border-[color:var(--border)] bg-[color-mix(in_srgb,var(--surface-muted)_70%,transparent)] backdrop-blur-sm">
         <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
-                <Truck className="w-[18px] h-[18px] text-white" />
+              <div className="w-11 h-11 flex items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 shrink-0">
+                <Truck className="w-[18px] h-[18px] text-[var(--muted)]" />
               </div>
               <div>
                 <p className="text-[13px] font-semibold text-[var(--foreground)]">Worldwide shipping</p>
@@ -24,8 +24,8 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
-                <Shield className="w-[18px] h-[18px] text-white" />
+              <div className="w-11 h-11 flex items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 shrink-0">
+                <Shield className="w-[18px] h-[18px] text-[var(--muted)]" />
               </div>
               <div>
                 <p className="text-[13px] font-semibold text-[var(--foreground)]">Quality focused</p>
@@ -35,8 +35,8 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
-                <CreditCard className="w-[18px] h-[18px] text-white" />
+              <div className="w-11 h-11 flex items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 shrink-0">
+                <CreditCard className="w-[18px] h-[18px] text-[var(--muted)]" />
               </div>
               <div>
                 <p className="text-[13px] font-semibold text-[var(--foreground)]">Secure payment</p>
@@ -136,7 +136,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-[11px] font-bold text-white mb-4 uppercase tracking-[0.16em]">
-              From price guide
+              Starting prices
             </h3>
             <ul className="space-y-2.5 text-[13px]">
               <li className="flex justify-between gap-4">
@@ -171,6 +171,20 @@ export default function Footer() {
               <span>7–15 kits 10% off</span>
             </div>
           </div>
+          <nav
+            className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-[var(--muted)]"
+            aria-label="Legal"
+          >
+            <Link href="/contact" className="hover:text-[var(--foreground)] transition-colors">
+              Privacy & terms
+            </Link>
+            <span className="hidden sm:inline text-[var(--border)]" aria-hidden>
+              |
+            </span>
+            <Link href="/contact" className="hover:text-[var(--foreground)] transition-colors">
+              Contact & support
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>

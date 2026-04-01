@@ -66,25 +66,25 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[var(--background)]">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-[var(--background)]">
       <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <Link href="/" className="inline-block mb-8">
-            <span className="text-3xl font-bold tracking-tight">
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-block" aria-label="FootXI home">
+            <span className="text-3xl font-bold tracking-tight font-display">
               <span className="text-[var(--foreground)]">FOOT</span>
-              <span className="text-white">XI</span>
+              <span className="text-[var(--brand-green)]">XI</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-[var(--foreground)] tracking-tight">
-            Create your account
-          </h1>
-          <p className="text-sm text-[var(--muted)] mt-2">
-            Join FootXI and start shopping premium kits
-          </p>
         </div>
 
-        {/* Form */}
+        <div className="rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] p-6 sm:p-8 shadow-lg shadow-black/10">
+          <h1 className="text-2xl font-bold text-[var(--foreground)] tracking-tight font-display">
+            Create your account
+          </h1>
+          <p className="text-sm text-[var(--muted)] mt-2 mb-8">
+            One account for orders, addresses, and faster checkout.
+          </p>
+
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
             <div className="px-4 py-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
@@ -137,6 +137,7 @@ export default function RegisterPage() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--foreground)]"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -164,7 +165,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brand-green text-white font-semibold text-sm rounded-xl hover:opacity-95 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-glow-mint"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -177,17 +178,16 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center gap-4 my-6">
           <div className="flex-1 h-px bg-[color:var(--border)]" />
           <span className="text-[10px] text-[var(--muted)] uppercase tracking-widest">or</span>
           <div className="flex-1 h-px bg-[color:var(--border)]" />
         </div>
 
-        {/* Google Sign Up */}
         <button
+          type="button"
           onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--surface)] border border-[color:var(--border)] text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:border-brand-green/30 transition-all"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-[var(--surface-muted)] border border-[color:var(--border)] text-sm text-[var(--foreground)] hover:border-brand-green/35 transition-colors"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -209,13 +209,13 @@ export default function RegisterPage() {
           </svg>
           Continue with Google
         </button>
+        </div>
 
-        {/* Footer */}
         <p className="text-center text-sm text-[var(--muted)] mt-8">
           Already have an account?{" "}
           <Link
             href="/auth/login"
-            className="text-white hover:text-white/90 transition-colors"
+            className="font-medium text-[var(--brand-green)] hover:underline"
           >
             Sign in
           </Link>

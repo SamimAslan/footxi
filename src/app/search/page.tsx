@@ -131,7 +131,7 @@ function SearchContent() {
             Home
           </Link>
           <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold text-[var(--foreground)] tracking-[-0.02em]">
-            Search products
+            Find your kit
           </h1>
           <p className="mt-2 text-sm text-[var(--muted)] max-w-2xl">
             Matches the <span className="text-[var(--foreground)] font-medium">product title</span> only
@@ -143,10 +143,12 @@ function SearchContent() {
         <form onSubmit={onSubmit} className="relative max-w-2xl mb-6">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
           <input
-            type="text"
+            type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Jersey title, season, colour, club name in listing…"
+            aria-label="Search product titles"
+            autoComplete="off"
             className="w-full pl-12 pr-4 py-3.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-xl text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40"
           />
         </form>
@@ -164,7 +166,7 @@ function SearchContent() {
                   onClick={() => pushParams({ kitType: opt.value })}
                   className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
                     kitTypeFromUrl === opt.value
-                      ? "bg-brand-green text-white"
+                      ? "bg-brand-green text-white shadow-glow-mint"
                       : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-brand-green/30"
                   }`}
                 >
@@ -177,7 +179,7 @@ function SearchContent() {
               onClick={() => pushParams({ newArrival: !newFromUrl })}
               className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors sm:ml-2 ${
                 newFromUrl
-                  ? "bg-brand-green text-white"
+                  ? "bg-brand-green text-white shadow-glow-mint"
                   : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-brand-green/30"
               }`}
             >
@@ -191,12 +193,33 @@ function SearchContent() {
             <Loader2 className="w-6 h-6 animate-spin text-white" />
           </div>
         ) : normalizedQuery.length < 2 ? (
-          <p className="text-sm text-[var(--muted)]">Type at least 2 characters to search.</p>
+          <div
+            className="rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] px-6 py-10 text-center max-w-lg"
+            role="status"
+          >
+            <p className="text-sm font-medium text-[var(--foreground)]">Start a search</p>
+            <p className="mt-2 text-sm text-[var(--muted)] leading-relaxed">
+              Enter at least two characters. We match words in the product title — try club, season, or colour.
+            </p>
+          </div>
         ) : results.length === 0 ? (
-          <p className="text-sm text-[var(--muted)]">
-            No products found for &ldquo;{normalizedQuery}&rdquo;
-            {kitTypeFromUrl !== "all" || newFromUrl ? " with the current filters" : ""}.
-          </p>
+          <div
+            className="rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] px-6 py-10 max-w-lg"
+            role="status"
+          >
+            <p className="text-sm font-medium text-[var(--foreground)]">No kits match that search</p>
+            <p className="mt-2 text-sm text-[var(--muted)] leading-relaxed">
+              Nothing for &ldquo;{normalizedQuery}&rdquo;
+              {kitTypeFromUrl !== "all" || newFromUrl ? " with the current filters" : ""}. Try fewer words, different
+              spelling, or clear filters.
+            </p>
+            <Link
+              href="/search"
+              className="mt-5 inline-block text-sm font-semibold text-[var(--brand-green)] hover:underline"
+            >
+              Clear and search again
+            </Link>
+          </div>
         ) : (
           <>
             <p className="text-xs text-[var(--muted)] mb-4">
@@ -208,10 +231,15 @@ function SearchContent() {
               ))}
             </div>
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
+              <nav
+                className="flex items-center justify-center gap-2 mt-8"
+                aria-label="Search results pagination"
+              >
                 <button
+                  type="button"
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
+                  aria-label="Previous page"
                   className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Previous
@@ -220,13 +248,15 @@ function SearchContent() {
                   Page {page} of {totalPages}
                 </span>
                 <button
+                  type="button"
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
+                  aria-label="Next page"
                   className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Next
                 </button>
-              </div>
+              </nav>
             )}
           </>
         )}

@@ -22,7 +22,7 @@ export default function CheckoutCancelPage() {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/cart"
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors shadow-glow-mint"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Cart

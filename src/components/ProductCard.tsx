@@ -48,15 +48,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${productId}`}
-      className="group block rounded-2xl bg-[var(--surface)] border border-[color:var(--border)] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.35)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.55)] hover:border-brand-green/40 hover:-translate-y-1 transition-all duration-300 ease-out"
+      className="group block rounded-2xl bg-[var(--surface)] border border-[color:var(--border)] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_18px_44px_-12px_rgba(0,0,0,0.5)] hover:border-[color-mix(in_srgb,var(--brand-green)_30%,transparent)] hover:-translate-y-1 transition-all duration-300 ease-out"
     >
       {/* Image stage */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-[var(--surface-muted)] via-[#12161f] to-[#0a0d12]">
+      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-[#141c28] via-[#0e131c] to-[#06080f]">
         <div
-          className="absolute inset-0 opacity-[0.5] pointer-events-none"
+          className="absolute inset-0 opacity-[0.55] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 85% 70% at 50% 38%, rgba(45, 107, 58, 0.12) 0%, transparent 65%)",
+              "radial-gradient(ellipse 85% 70% at 50% 38%, rgba(47, 93, 64, 0.09) 0%, transparent 65%)",
           }}
         />
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent pointer-events-none" />
@@ -100,7 +100,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Tags */}
         <div className="absolute top-3 left-3 z-[1] flex flex-col gap-1.5">
           {product.isNewArrival && (
-            <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-brand-green text-white tracking-[0.12em] uppercase shadow-sm">
+            <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-brand-green text-white tracking-[0.12em] uppercase shadow-glow-mint">
               New
             </span>
           )}
@@ -145,7 +145,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="mt-3.5 flex items-end justify-between gap-2">
-          <span className="font-display text-lg sm:text-xl font-bold text-white tabular-nums tracking-tight">
+          <span className="font-display text-lg sm:text-xl font-bold text-[var(--foreground)] tabular-nums tracking-tight">
             {formatPrice(price)}
           </span>
         </div>

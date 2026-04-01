@@ -65,9 +65,9 @@ export default function Navbar() {
   const categoryActive = (slug: string) => pathname === `/league/${slug}`;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50">
+    <nav className="fixed top-0 left-0 right-0 z-50" aria-label="Main">
       {/* Tier 1 — dark strip */}
-      <div className="bg-[var(--brand-top-bar)] text-white/90 border-b border-white/[0.06]">
+      <div className="border-b border-white/[0.05] bg-gradient-to-r from-[var(--brand-top-bar)] via-[#050a10] to-[#0a1520] text-white/85">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.12em]">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
@@ -95,22 +95,32 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Tier 2 — forest green + search */}
-      <div className="bg-brand-green border-b border-black/10">
+      {/* Tier 2 — stadium rail + glass search */}
+      <div className="relative border-b border-[color:var(--border)] bg-gradient-to-b from-[#151a18] to-[#0e1210]">
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+          aria-hidden
+        />
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="h-[3.75rem] sm:h-16 flex items-center gap-3 sm:gap-5">
-            <Link href="/" className="shrink-0 flex items-center rounded-md bg-white/10 px-2 py-1 ring-1 ring-white/15">
-              <img src="/logo.png" alt="FOOTXI" className="h-6 sm:h-7 w-auto max-w-[132px] object-contain" />
+            <Link
+              href="/"
+              className="shrink-0 flex items-center rounded-xl bg-white/8 px-2.5 py-1.5 ring-1 ring-white/12 backdrop-blur-sm"
+              aria-label="FootXI home"
+            >
+              <img src="/logo.png" alt="" className="h-6 sm:h-7 w-auto max-w-[132px] object-contain" />
             </Link>
 
             <form onSubmit={submitDesktopSearch} className="hidden md:flex flex-1 max-w-2xl mx-auto">
-              <div className="relative w-full flex items-end border-b border-white/45 focus-within:border-white pb-1">
-                <Search className="w-4 h-4 text-white/70 mb-1 mr-2 shrink-0" />
+              <div className="relative w-full flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-4 py-2 backdrop-blur-md shadow-inner shadow-black/25 focus-within:border-white/22 focus-within:ring-1 focus-within:ring-white/10">
+                <Search className="w-4 h-4 text-white/45 shrink-0" aria-hidden />
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search jersey titles, seasons, keywords in listing…"
-                  className="w-full bg-transparent text-[14px] text-white placeholder:text-white/55 focus:outline-none pb-1"
+                  aria-label="Search products"
+                  autoComplete="off"
+                  className="w-full bg-transparent text-[14px] text-white placeholder:text-white/45 focus:outline-none"
                 />
               </div>
             </form>
@@ -119,9 +129,12 @@ export default function Navbar() {
               {status === "authenticated" ? (
                 <div className="relative hidden sm:block" ref={accountRef}>
                   <button
+                    type="button"
                     onClick={() => setAccountOpen((v) => !v)}
                     className="p-2 rounded-md text-white/90 hover:bg-white/10 flex items-center gap-1"
                     aria-label="Account menu"
+                    aria-expanded={accountOpen}
+                    aria-haspopup="true"
                   >
                     {session?.user?.image ? (
                       <img
@@ -170,6 +183,7 @@ export default function Navbar() {
                         </Link>
                       )}
                       <button
+                        type="button"
                         onClick={() => {
                           setAccountOpen(false);
                           signOut({ callbackUrl: "/" });
@@ -195,7 +209,9 @@ export default function Navbar() {
               <Link
                 href="/cart"
                 className="relative p-2 rounded-md text-white/90 hover:bg-white/10"
-                aria-label="Cart"
+                aria-label={
+                  mounted && totalItems > 0 ? `Shopping cart, ${totalItems} items` : "Shopping cart"
+                }
               >
                 <ShoppingBag className="w-5 h-5" />
                 {mounted && totalItems > 0 && (
@@ -206,9 +222,12 @@ export default function Navbar() {
               </Link>
 
               <button
+                type="button"
                 onClick={() => setMobileOpen((v) => !v)}
                 className="md:hidden p-2 rounded-md text-white/90 hover:bg-white/10"
-                aria-label="Menu"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-nav-panel"
               >
                 {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -217,17 +236,17 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Tier 3 — white category bar */}
-      <div className="bg-[var(--surface)] border-b border-[color:var(--border)] shadow-[0_1px_0_rgba(0,0,0,0.25)]">
+      {/* Tier 3 — glass category rail */}
+      <div className="glass-panel border-b border-[color:var(--border)] shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
         <div className="max-w-[1600px] mx-auto px-2 sm:px-6 lg:px-8">
           <div className="hidden md:flex min-h-[2.75rem] items-center justify-center gap-1 lg:gap-2 py-1 overflow-x-auto hide-scrollbar">
             {MARKET_CATEGORIES.map((item) => (
               <Link
                 key={item.slug}
                 href={`/league/${item.slug}`}
-                className={`shrink-0 px-3 py-2 rounded-full text-[11px] lg:text-[12px] font-bold uppercase tracking-wide transition-colors ${
+                className={`shrink-0 px-3 py-2 rounded-full text-[11px] lg:text-[12px] font-bold uppercase tracking-wide transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color-mix(in_srgb,var(--brand-green)_65%,white)] ${
                   categoryActive(item.slug)
-                    ? "bg-brand-green text-white"
+                    ? "bg-brand-green text-white shadow-glow-mint"
                     : "text-[var(--foreground)] hover:bg-[var(--surface-muted)] hover:text-white"
                 }`}
               >
@@ -240,9 +259,9 @@ export default function Navbar() {
               <Link
                 key={item.slug}
                 href={`/league/${item.slug}`}
-                className={`shrink-0 px-2.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${
+                className={`shrink-0 px-2.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color-mix(in_srgb,var(--brand-green)_65%,white)] ${
                   categoryActive(item.slug)
-                    ? "bg-brand-green text-white"
+                    ? "bg-brand-green text-white shadow-glow-mint"
                     : "text-[var(--foreground)] bg-[var(--surface-muted)] hover:text-white"
                 }`}
               >
@@ -254,13 +273,20 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-[color:var(--border)] bg-[var(--surface)] px-4 py-4 space-y-3 shadow-lg">
+        <div
+          id="mobile-nav-panel"
+          className="md:hidden border-t border-[color:var(--border)] bg-[var(--surface)] px-4 py-4 space-y-3 shadow-lg"
+          role="dialog"
+          aria-label="Mobile menu and search"
+        >
           <form onSubmit={submitMobileSearch} className="relative flex items-end border-b border-brand-green/30 pb-2">
-            <Search className="w-4 h-4 text-white mb-1 mr-2" />
+            <Search className="w-4 h-4 text-[var(--muted)] mb-1 mr-2 shrink-0" aria-hidden />
             <input
               value={mobileQuery}
               onChange={(e) => setMobileQuery(e.target.value)}
               placeholder="Search listing title…"
+              aria-label="Search products"
+              autoComplete="off"
               className="w-full bg-transparent text-[15px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none"
             />
           </form>

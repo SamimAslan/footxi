@@ -77,7 +77,7 @@ export default function CheckoutPage() {
           <p className="text-[var(--muted)] mb-6">Add some kits before checkout</p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold hover:bg-brand-green-dark transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold hover:bg-brand-green-dark transition-colors shadow-glow-mint"
           >
             <ArrowLeft className="w-4 h-4" />
             Browse Kits
@@ -192,7 +192,7 @@ export default function CheckoutPage() {
           {/* Shipping Address Form */}
           <div className="lg:col-span-3">
             <div className="mb-6 flex items-center gap-3">
-              <div className="w-8 h-8 bg-brand-green text-white flex items-center justify-center text-sm font-bold">
+              <div className="w-8 h-8 bg-brand-green text-white flex items-center justify-center text-sm font-bold shadow-glow-mint">
                 1
               </div>
               <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
@@ -302,7 +302,7 @@ export default function CheckoutPage() {
             {/* Pay button */}
             <div className="mt-8">
               <div className="mb-4 flex items-center gap-3">
-                <div className="w-8 h-8 bg-brand-green text-white flex items-center justify-center text-sm font-bold">
+                <div className="w-8 h-8 bg-brand-green text-white flex items-center justify-center text-sm font-bold shadow-glow-mint">
                   2
                 </div>
                 <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
@@ -316,7 +316,7 @@ export default function CheckoutPage() {
               <button
                 onClick={handleCheckout}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-4 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 py-4 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-glow-mint"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

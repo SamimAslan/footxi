@@ -202,7 +202,7 @@ export default function ProductPage() {
                   </span>
                 )}
                 {product.isNewArrival && (
-                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-green text-white rounded-md">
+                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-green text-white rounded-md shadow-glow-mint">
                     New
                   </span>
                 )}
@@ -291,7 +291,7 @@ export default function ProductPage() {
                     onClick={() => setSelectedSize(size)}
                     className={`w-12 h-12 rounded-full text-sm font-bold transition-all ${
                       selectedSize === size
-                        ? "bg-brand-green text-white shadow-sm"
+                        ? "bg-brand-green text-white shadow-glow-mint"
                         : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-brand-green/40 hover:text-white"
                     }`}
                   >
@@ -423,8 +423,8 @@ export default function ProductPage() {
               onClick={handleAddToCart}
               className={`w-full py-4 rounded-full font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-2 shadow-sm ${
                 added
-                  ? "bg-brand-green text-white"
-                  : "bg-brand-green text-white hover:bg-brand-green-dark active:scale-[0.99]"
+                  ? "bg-brand-green text-white shadow-glow-mint"
+                  : "bg-brand-green text-white hover:bg-brand-green-dark active:scale-[0.99] shadow-glow-mint"
               }`}
             >
               {added ? (

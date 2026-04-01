@@ -282,7 +282,7 @@ export default function AdminProductsPage() {
 
           <Link
             href="/admin/products/new"
-            className="flex items-center gap-2 px-4 py-2.5 bg-brand-green text-white font-semibold text-sm rounded-lg hover:bg-brand-green-dark transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-brand-green text-white font-semibold text-sm rounded-lg hover:bg-brand-green-dark transition-colors shadow-glow-mint"
           >
             <Plus className="w-4 h-4" />
             Add Product
@@ -375,7 +375,7 @@ export default function AdminProductsPage() {
           {!search && !kitTypeFilter && (
             <Link
               href="/admin/products/new"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-green text-white font-semibold text-sm rounded-lg hover:bg-brand-green-dark transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-green text-white font-semibold text-sm rounded-lg hover:bg-brand-green-dark transition-colors shadow-glow-mint"
             >
               <Plus className="w-4 h-4" />
               Add Product

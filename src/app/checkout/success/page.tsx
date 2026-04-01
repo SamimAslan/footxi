@@ -82,7 +82,7 @@ function SuccessContent() {
           {orderId && (
             <Link
               href={`/account/orders/${orderId}`}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors shadow-glow-mint"
             >
               View Order
               <ArrowRight className="w-4 h-4" />

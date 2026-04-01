@@ -767,7 +767,7 @@ export default function AdminProductForm({ initialData, isEditing }: Props) {
           <button
             onClick={handleSubmit}
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-glow-mint"
           >
             {saving ? (
               <Loader2 className="w-4 h-4 animate-spin" />

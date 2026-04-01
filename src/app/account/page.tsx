@@ -124,7 +124,7 @@ export default function AccountPage() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold text-sm hover:bg-brand-green-dark transition-colors shadow-glow-mint"
             >
               Start Shopping
               <ArrowRight className="w-4 h-4" />

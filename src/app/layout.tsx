@@ -18,13 +18,17 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0d0f14",
+  themeColor: "#0c0e12",
 };
 
 export const metadata: Metadata = {
-  title: "FootXI - Premium Football Kits",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://footxi.com"),
+  title: {
+    default: "FootXI — Premium football kits",
+    template: "%s · FootXI",
+  },
   description:
-    "Shop premium quality football kits from all major leagues. Fans version, player version, and retro kits. Worldwide shipping.",
+    "Official-style football kits from top leagues and national teams. Clear listings, secure checkout, worldwide shipping.",
   keywords: [
     "football kits",
     "soccer jerseys",
@@ -32,7 +36,25 @@ export const metadata: Metadata = {
     "la liga",
     "serie a",
     "bundesliga",
+    "national team jersey",
   ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "FootXI",
+    title: "FootXI — Premium football kits",
+    description:
+      "Shop quality football jerseys: club and national kits, fans and player editions, retro drops. Worldwide delivery.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FootXI — Premium football kits",
+    description: "Club & national football kits with secure checkout and worldwide shipping.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       { url: "/icon.png?v=4", type: "image/png", sizes: "512x512" },
@@ -54,9 +76,18 @@ export default function RootLayout({
         className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[var(--background)] text-[var(--foreground)]`}
       >
         <Providers>
+          <a href="#main-content" className="skip-to-main">
+            Skip to main content
+          </a>
           <SmoothScroll />
           <Navbar />
-          <main className="min-h-screen pt-[var(--site-header-height)]">{children}</main>
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="min-h-screen pt-[var(--site-header-height)] outline-none"
+          >
+            {children}
+          </main>
           <Footer />
         </Providers>
       </body>

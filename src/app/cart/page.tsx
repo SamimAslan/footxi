@@ -39,23 +39,23 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-20 h-20 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag className="w-8 h-8 text-[var(--muted)]" />
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4 py-16">
+        <div className="w-full max-w-md rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] px-8 py-10 text-center shadow-lg shadow-black/10">
+          <div className="w-16 h-16 rounded-2xl bg-[var(--surface-muted)] border border-[color:var(--border)] flex items-center justify-center mx-auto mb-6">
+            <ShoppingBag className="w-7 h-7 text-[var(--muted)]" aria-hidden />
           </div>
-          <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
+          <h1 className="font-display text-2xl font-bold text-[var(--foreground)] mb-2">
             Your cart is empty
           </h1>
-          <p className="text-[var(--muted)] mb-6">
-            Start by adding some kits to your cart
+          <p className="text-sm text-[var(--muted)] leading-relaxed mb-8">
+            Browse the store and add kits — sizes and options stay saved here until checkout.
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold rounded-lg hover:bg-brand-green-dark transition-colors"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-brand-green text-white font-semibold rounded-xl hover:opacity-95 transition-opacity shadow-glow-mint"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Browse Kits
+            <ArrowLeft className="w-4 h-4 shrink-0" aria-hidden />
+            Browse kits
           </Link>
         </div>
       </div>
@@ -270,7 +270,7 @@ export default function CartPage() {
               {/* Checkout */}
               <Link
                 href="/checkout"
-                className="block w-full mt-6 py-4 bg-brand-green text-white font-semibold rounded-xl hover:bg-brand-green-dark transition-colors text-center"
+                className="block w-full mt-6 py-4 bg-brand-green text-white font-semibold rounded-xl hover:bg-brand-green-dark transition-colors text-center shadow-glow-mint"
               >
                 Proceed to Checkout
               </Link>
