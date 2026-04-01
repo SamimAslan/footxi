@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import {
   Activity,
   ArrowRight,
@@ -19,6 +19,9 @@ import {
   Shirt,
   Star,
   Trophy,
+  Truck,
+  Shield,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -149,6 +152,14 @@ const FEATURED_EXACT_NAMES = {
 } as const;
 
 const FEATURED_KITS_COUNT = 10;
+
+const FEATURED_SIDEBAR_SHORTCUTS = [
+  { label: "Retro kits", href: "/league/retro-kits", hint: "Throwbacks & classics" },
+  { label: "National teams", href: "/league/international-teams", hint: "Country shirts" },
+  { label: "Japan & specials", href: "/search?q=japan", hint: "Limited looks" },
+  { label: "New arrivals", href: "/search?q=jersey&new=1", hint: "Recently listed" },
+  { label: "Fan-made drops", href: "/league/fan-made", hint: "Supporter editions" },
+] as const;
 
 type ProductsResponse =
   | Product[]
@@ -323,28 +334,16 @@ async function fetchHomepageFeaturedKits(): Promise<Product[]> {
   return out.slice(0, FEATURED_KITS_COUNT);
 }
 
-function SectionTitle({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex items-center gap-4">
-      <span
-        className="h-11 w-1 shrink-0 rounded-full bg-gradient-to-b from-[var(--brand-green)] to-[var(--brand-green-dark)] opacity-90"
-        aria-hidden
-      />
-      <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white">
-        {children}
-      </h3>
-    </div>
-  );
-}
-
 function ProductTile({
   product,
   badge,
   onAdd,
+  variant = "default",
 }: {
   product: Product;
   badge?: string;
   onAdd: (p: Product) => void;
+  variant?: "default" | "spotlight";
 }) {
   const { formatPrice } = useCurrency();
   const price = getProductBasePrice(product);
@@ -358,17 +357,27 @@ function ProductTile({
     return () => clearTimeout(timer);
   }, [justAdded]);
 
+  const spotlight = variant === "spotlight";
+
   return (
     <Link
       href={`/product/${getProductId(product)}`}
-      className="group rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-[color-mix(in_srgb,var(--brand-green)_35%,transparent)] hover:shadow-[0_12px_36px_-10px_rgba(0,0,0,0.4)] hover:-translate-y-0.5"
+      className="group flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] shadow-[0_4px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-[color-mix(in_srgb,var(--brand-green)_35%,transparent)] hover:shadow-[0_12px_36px_-10px_rgba(0,0,0,0.4)] hover:-translate-y-0.5"
     >
-      <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-b from-[#161b22] via-[var(--surface)] to-[var(--background)]">
+      <div
+        className={`relative flex shrink-0 items-center justify-center overflow-hidden bg-gradient-to-b from-[#161b22] via-[var(--surface)] to-[var(--background)] ${
+          spotlight
+            ? "h-[clamp(200px,42vw,300px)] sm:h-[clamp(220px,38vw,320px)] lg:h-[clamp(240px,32vw,340px)]"
+            : "h-[clamp(150px,38vw,200px)] sm:h-[clamp(160px,34vw,220px)] lg:h-[200px]"
+        }`}
+      >
         {product.image ? (
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.04]"
+            className={`max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03] ${
+              spotlight ? "p-1.5 sm:p-2" : "p-1 sm:p-1.5"
+            }`}
           />
         ) : null}
         {badge ? (
@@ -377,17 +386,23 @@ function ProductTile({
           </span>
         ) : null}
       </div>
-      <div className="p-3 sm:p-3.5 space-y-1.5 sm:space-y-2">
-        <p className="text-[13px] sm:text-[14px] font-bold text-white line-clamp-1">{displayTeam}</p>
+      <div className={`flex min-h-0 flex-1 flex-col space-y-1.5 ${spotlight ? "p-3 sm:p-4" : "p-2.5 sm:p-3"}`}>
+        <p
+          className={`font-bold text-white line-clamp-2 ${spotlight ? "font-display text-base sm:text-lg leading-snug" : "text-[13px] sm:text-[14px] line-clamp-1"}`}
+        >
+          {displayTeam}
+        </p>
         <p className="text-[10px] tracking-[0.14em] text-[var(--muted)]">
           {getKitVersionDisplayLabel(product)}
         </p>
-        <div className="flex items-center justify-between">
-          <p className="text-[17px] sm:text-[19px] font-bold font-display text-[var(--foreground)] tabular-nums">
+        <div className="flex items-center justify-between gap-2">
+          <p
+            className={`font-bold font-display text-[var(--foreground)] tabular-nums ${spotlight ? "text-lg sm:text-xl" : "text-[16px] sm:text-[17px]"}`}
+          >
             {formatPrice(price)}
           </p>
-          <div className="inline-flex items-center gap-1 text-[11px] text-[var(--muted)]">
-            <Star className="w-3.5 h-3.5 text-white fill-white/90" />
+          <div className={`inline-flex shrink-0 items-center gap-1 text-[var(--muted)] ${spotlight ? "text-[11px]" : "text-[11px]"}`}>
+            <Star className={`text-white fill-white/90 ${spotlight ? "h-3.5 w-3.5" : "h-3.5 w-3.5"}`} />
             {rating}
           </div>
         </div>
@@ -397,7 +412,7 @@ function ProductTile({
             onAdd(product);
             setJustAdded(true);
           }}
-          className={`w-full h-9 sm:h-10 rounded-full text-[11px] font-bold uppercase tracking-wide transition-all duration-200 active:scale-[0.98] ${
+          className={`mt-auto w-full rounded-full font-bold uppercase tracking-wide transition-all duration-200 active:scale-[0.98] ${spotlight ? "h-10 text-[11px] sm:h-11 sm:text-xs" : "h-9 text-[11px]"} ${
             justAdded
               ? "bg-brand-green text-white shadow-glow-mint"
               : "bg-brand-green text-white hover:bg-brand-green-dark shadow-glow-mint"
@@ -611,104 +626,237 @@ export default function MarketplaceHomepage() {
         />
       </section>
 
-      <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pt-4 pb-10 sm:pt-6 sm:pb-14 space-y-10 sm:space-y-14">
-        <section className="space-y-4">
-          <SectionTitle>Featured kits</SectionTitle>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
-            {featuredKits.map((p) => (
-              <ProductTile key={getProductId(p)} product={p} onAdd={addQuick} />
-            ))}
+      {/* ——— Below hero: editorial layout (not a flat product grid) ——— */}
+      <div className="pb-14 sm:pb-20">
+        {/* Featured — magazine block + bento */}
+        <section className="relative border-y border-[color:var(--border)] bg-[color-mix(in_srgb,var(--surface)_35%,var(--background))] py-12 sm:py-16 lg:py-20">
+          <span
+            className="pointer-events-none absolute right-2 top-6 select-none font-display text-[clamp(5rem,18vw,12rem)] font-bold leading-none text-white/[0.04] sm:right-8 lg:top-10"
+            aria-hidden
+          >
+            01
+          </span>
+          <div className="relative mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
+            <header className="mb-10 max-w-2xl lg:mb-14">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[var(--muted)]">
+                Curated picks
+              </p>
+              <h2 className="mt-3 font-display text-[clamp(2.25rem,5.5vw,3.75rem)] font-bold leading-[0.98] tracking-tight text-white">
+                Featured kits
+              </h2>
+              <p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--muted)]">
+                One lead piece, then a tight pair and the rest in a clean row — same stock, less “catalog wall”.
+              </p>
+              <Link
+                href="/search"
+                className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-white/80 transition hover:text-white"
+              >
+                Browse everything
+                <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
+              </Link>
+            </header>
+
+            {featuredKits.length > 0 ? (
+              <div className="space-y-8 lg:space-y-10">
+                {featuredKits.length === 1 ? (
+                  <div className="mx-auto max-w-lg lg:max-w-2xl">
+                    <ProductTile product={featuredKits[0]} onAdd={addQuick} variant="spotlight" />
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-12 lg:gap-6">
+                      <div className="lg:col-span-5">
+                        <ProductTile product={featuredKits[0]} onAdd={addQuick} variant="spotlight" />
+                      </div>
+                      <div className="flex flex-col gap-4 lg:col-span-3 lg:gap-6">
+                        {featuredKits.slice(1, 3).map((p) => (
+                          <ProductTile key={getProductId(p)} product={p} onAdd={addQuick} />
+                        ))}
+                      </div>
+                      <aside className="relative hidden h-full min-h-0 flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-gradient-to-b from-[var(--surface-muted)]/55 via-[var(--surface)] to-[var(--background)] p-6 sm:p-7 lg:col-span-4 lg:flex">
+                        <div
+                          className="pointer-events-none absolute -right-6 top-1/2 -translate-y-1/2 font-display text-[8rem] font-bold leading-none text-white/[0.04] sm:text-[9rem]"
+                          aria-hidden
+                        >
+                          FX
+                        </div>
+
+                        <div className="relative">
+                          <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--brand-green)]">
+                            <Sparkles className="h-3.5 w-3.5 opacity-80" aria-hidden />
+                            From the edit
+                          </p>
+                          <p className="mt-4 font-display text-lg leading-snug text-white sm:text-xl">
+                            Retro grails, national drops, and club staples — we rotate this row as new lines land.
+                          </p>
+                          <p className="mt-3 text-[13px] leading-relaxed text-[var(--muted)]">
+                            Use the shortcuts below to skip straight into the aisles that match how you browse.
+                          </p>
+                        </div>
+
+                        <nav
+                          className="relative mt-8 flex flex-1 flex-col border-t border-[color:var(--border)] pt-6 min-h-[200px]"
+                          aria-label="Quick shop links"
+                        >
+                          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+                            Shortcuts
+                          </p>
+                          <ul className="mt-4 flex flex-1 flex-col gap-1">
+                            {FEATURED_SIDEBAR_SHORTCUTS.map((item) => (
+                              <li key={item.href}>
+                                <Link
+                                  href={item.href}
+                                  className="group flex items-center justify-between gap-3 rounded-xl border border-transparent px-3 py-2.5 transition hover:border-[color:var(--border)] hover:bg-[var(--background)]/60"
+                                >
+                                  <span>
+                                    <span className="block text-[13px] font-semibold text-white group-hover:text-white">
+                                      {item.label}
+                                    </span>
+                                    <span className="mt-0.5 block text-[11px] text-[var(--muted)]">{item.hint}</span>
+                                  </span>
+                                  <ChevronRight
+                                    className="h-4 w-4 shrink-0 text-[var(--muted)] opacity-60 transition group-hover:translate-x-0.5 group-hover:opacity-100 group-hover:text-white"
+                                    aria-hidden
+                                  />
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </nav>
+
+                        <div className="relative mt-6 space-y-3 border-t border-[color:var(--border)] pt-6">
+                          <div className="flex gap-3 text-[12px] leading-snug text-[var(--muted)]">
+                            <Truck className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-green)]/80" aria-hidden />
+                            <span>Worldwide shipping — rates and times at checkout.</span>
+                          </div>
+                          <div className="flex gap-3 text-[12px] leading-snug text-[var(--muted)]">
+                            <Shield className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-green)]/80" aria-hidden />
+                            <span>Clear listings: fans, player, and retro called out on each product.</span>
+                          </div>
+                        </div>
+
+                        <div className="relative mt-auto flex items-center justify-between gap-3 border-t border-[color:var(--border)] pt-6">
+                          <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--muted)]">
+                            FootXI edit
+                          </p>
+                          <Link
+                            href="/search"
+                            className="text-[11px] font-semibold text-white/70 underline-offset-4 transition hover:text-white hover:underline"
+                          >
+                            Full catalogue
+                          </Link>
+                        </div>
+                      </aside>
+                    </div>
+                    {featuredKits.length > 3 ? (
+                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+                        {featuredKits.slice(3).map((p) => (
+                          <ProductTile key={getProductId(p)} product={p} onAdd={addQuick} />
+                        ))}
+                      </div>
+                    ) : null}
+                  </>
+                )}
+              </div>
+            ) : null}
           </div>
         </section>
 
-        <section className="space-y-4">
-          <SectionTitle>Browse by league</SectionTitle>
-          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3">
+        {/* Leagues — horizontal filmstrip */}
+        <section className="mx-auto max-w-[1600px] px-4 pt-12 sm:px-6 sm:pt-16 lg:px-10">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[var(--muted)]">Competitions</p>
+              <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                Browse by league
+              </h2>
+            </div>
+            <span className="hidden text-[10px] font-medium uppercase tracking-widest text-[var(--muted)] sm:block">
+              Scroll →
+            </span>
+          </div>
+          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-3 pt-1 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
             {leagueCards.map((league) => (
               <Link
                 key={league.slug}
                 href={`/league/${league.slug}`}
-                className="group rounded-2xl border border-[color:var(--border)] bg-gradient-to-b from-[var(--surface-muted)]/90 to-[var(--surface)] p-2.5 sm:p-3.5 text-center shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:border-[color-mix(in_srgb,var(--brand-green)_30%,transparent)] hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-8px_rgba(0,0,0,0.35)]"
+                className="snap-start shrink-0 w-[108px] sm:w-[120px] flex flex-col items-center gap-3 rounded-3xl border border-[color:var(--border)] bg-[var(--surface)] px-3 py-5 text-center shadow-sm transition hover:border-white/12 hover:bg-[var(--surface-muted)]"
               >
-                <div className="h-10 sm:h-14 flex items-center justify-center">
+                <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[color:var(--border)] bg-[var(--background)] p-2">
                   {league.logo ? (
                     <img
                       src={league.logo}
-                      alt={league.name}
-                      className={`object-contain ${
-                        league.slug === "international-teams" ? "max-h-10 sm:max-h-14" : "max-h-8 sm:max-h-11"
+                      alt=""
+                      className={`max-h-full max-w-full object-contain ${
+                        league.slug === "international-teams" ? "scale-110" : ""
                       }`}
                     />
                   ) : null}
                 </div>
-                <p className="mt-1 sm:mt-2 text-[11px] sm:text-[12px] font-semibold text-white/95 line-clamp-1 group-hover:text-white transition-colors">
+                <span className="text-[10px] font-semibold leading-tight text-white/90 line-clamp-2 min-h-[2.5em]">
                   {league.name}
-                </p>
+                </span>
               </Link>
             ))}
           </div>
         </section>
 
-        <section className="space-y-6 pb-10 sm:pb-14">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between border-b border-[color:var(--border)] pb-5">
-            <div className="max-w-2xl">
-              <SectionTitle>Shop by category</SectionTitle>
-              <p className="mt-2 text-[13px] sm:text-[14px] leading-relaxed text-[var(--muted)]">
-                Browse the same departments as our top navigation — jerseys first, then outerwear, kids, and crossover sports.
-              </p>
-            </div>
-            <Link
-              href="/league/jersey"
-              className="inline-flex items-center gap-1.5 shrink-0 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.12em] text-white hover:text-white/90 transition-colors group/link"
-            >
-              All jerseys
-              <ChevronRight className="w-4 h-4 transition-transform group-hover/link:translate-x-0.5" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 auto-rows-fr">
-            {HOMEPAGE_CATEGORIES.map((category, index) => {
-              const Icon = CATEGORY_ICONS[category.slug];
-              const featured = index === 0;
-              return (
+        {/* Categories — sticky editorial column + staggered grid */}
+        <section className="mt-14 border-t border-[color:var(--border)] pt-14 sm:mt-16 sm:pt-16">
+          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
+            <div className="xl:grid xl:grid-cols-12 xl:items-start xl:gap-14">
+              <div className="xl:sticky xl:top-[calc(var(--site-header-height)+1.25rem)] xl:col-span-4 xl:self-start">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[var(--muted)]">Directory</p>
+                <h2 className="mt-3 max-w-xs font-display text-[clamp(2rem,4vw,2.75rem)] font-bold leading-[1.05] tracking-tight text-white">
+                  Shop by category
+                </h2>
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--muted)]">
+                  Same departments as the nav — jerseys, layers, kids, and crossover sports — laid out so you can scan in one pass.
+                </p>
                 <Link
-                  key={category.slug}
-                  href={`/league/${category.slug}`}
-                  className={`group relative flex flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-gradient-to-br from-[var(--surface-muted)]/80 via-[var(--surface)] to-[#0a0c10] p-4 sm:p-5 text-left shadow-[0_4px_24px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--brand-green)_35%,transparent)] hover:shadow-[0_14px_40px_-12px_rgba(0,0,0,0.35)] ${
-                    featured ? "lg:col-span-2 lg:p-6 lg:min-h-[168px]" : ""
-                  }`}
+                  href="/league/jersey"
+                  className="group mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-white/85 transition hover:text-white"
                 >
-                  <div
-                    className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-green/5 blur-2xl opacity-80 transition-opacity duration-500 group-hover:opacity-100"
-                    aria-hidden
-                  />
-                  <div className="relative flex items-start justify-between gap-3">
-                    <div
-                      className={`flex shrink-0 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--brand-green)_12%,transparent)] text-[var(--muted)] ring-1 ring-[color:var(--border)] transition-all duration-300 group-hover:bg-[var(--brand-green)] group-hover:text-white group-hover:ring-transparent group-hover:shadow-glow-mint ${featured ? "h-14 w-14" : "h-12 w-12"}`}
-                    >
-                      <Icon className={featured ? "h-6 w-6" : "h-[22px] w-[22px]"} strokeWidth={1.75} aria-hidden />
-                    </div>
-                    <ChevronRight
-                      className="mt-1 h-4 w-4 shrink-0 text-[var(--muted)] opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 group-hover:text-white/80"
-                      aria-hidden
-                    />
-                  </div>
-                  <h3
-                    className={`mt-4 font-bold uppercase tracking-[0.1em] text-[var(--foreground)] transition-colors group-hover:text-white ${featured ? "text-sm sm:text-base" : "text-[12px] sm:text-[13px]"}`}
-                  >
-                    {category.label}
-                  </h3>
-                  <p
-                    className={`mt-1.5 leading-snug text-[var(--muted)] ${featured ? "text-xs sm:text-sm line-clamp-3" : "text-[11px] sm:text-[12px] line-clamp-2"}`}
-                  >
-                    {category.blurb}
-                  </p>
-                  <span className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--muted)] group-hover:text-white/70">
-                    Shop now →
-                  </span>
+                  All jerseys
+                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
                 </Link>
-              );
-            })}
+              </div>
+
+              <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 xl:col-span-8 xl:mt-0">
+                {HOMEPAGE_CATEGORIES.map((category, index) => {
+                  const Icon = CATEGORY_ICONS[category.slug];
+                  const stagger = index % 2 === 1;
+                  return (
+                    <Link
+                      key={category.slug}
+                      href={`/league/${category.slug}`}
+                      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-gradient-to-br from-[var(--surface-muted)]/70 via-[var(--surface)] to-[#0a0c10] p-5 text-left shadow-md transition duration-300 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--brand-green)_30%,transparent)] hover:shadow-lg sm:min-h-[148px] ${stagger ? "sm:mt-8 xl:mt-10" : ""}`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--brand-green)_10%,transparent)] text-[var(--muted)] ring-1 ring-[color:var(--border)] transition duration-300 group-hover:bg-[var(--brand-green)] group-hover:text-white group-hover:ring-transparent">
+                          <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+                        </div>
+                        <span
+                          className="font-display text-3xl font-bold tabular-nums text-white/[0.07] transition group-hover:text-white/[0.11]"
+                          aria-hidden
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <h3 className="mt-4 text-[13px] font-bold uppercase tracking-[0.12em] text-[var(--foreground)] group-hover:text-white">
+                        {category.label}
+                      </h3>
+                      <p className="mt-2 text-[12px] leading-relaxed text-[var(--muted)] line-clamp-2 sm:line-clamp-3">
+                        {category.blurb}
+                      </p>
+                      <span className="mt-auto pt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--muted)] group-hover:text-white/60">
+                        Enter →
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </section>
       </div>
