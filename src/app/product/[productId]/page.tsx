@@ -2,7 +2,15 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getProductBasePrice, Badge, PRICING, Product, getProductId } from "@/data/products";
+import {
+  getProductBasePrice,
+  getEffectiveKitType,
+  getKitVersionDisplayLabel,
+  Badge,
+  PRICING,
+  Product,
+  getProductId,
+} from "@/data/products";
 import { useCartStore } from "@/store/cart";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getDisplayTeamName } from "@/lib/productDisplay";
@@ -28,7 +36,6 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedKitType, setSelectedKitType] = useState<"fans" | "player" | "retro">("fans");
   const [quantity, setQuantity] = useState(1);
   const [selectedBadges, setSelectedBadges] = useState<Badge[]>([]);
   const [hasCustom, setHasCustom] = useState(false);
@@ -54,31 +61,22 @@ export default function ProductPage() {
     fetchProduct();
   }, [productId]);
 
-  useEffect(() => {
-    if (!product) return;
-    if (product.type === "retro") {
-      setSelectedKitType("retro");
-    } else if (selectedKitType === "retro") {
-      setSelectedKitType("fans");
-    }
-  }, [product, selectedKitType]);
-
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <Loader2 className="w-8 h-8 text-brand-green animate-spin" />
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
             Product not found
           </h1>
-          <Link href="/" className="text-amber-400 text-sm hover:underline">
+          <Link href="/" className="text-sm font-semibold text-brand-green hover:text-brand-green-dark hover:underline">
             Go back home
           </Link>
         </div>
@@ -87,11 +85,8 @@ export default function ProductPage() {
   }
 
   const sizes = product.sizes || ["S", "M", "L", "XL", "XXL"];
-  const availableKitTypes =
-    product.type === "retro"
-      ? (["retro"] as const)
-      : (["fans", "player"] as const);
-  const basePrice = getProductBasePrice(product, selectedKitType);
+  const effectiveKitType = getEffectiveKitType(product);
+  const basePrice = getProductBasePrice(product);
 
   const toggleBadge = (badge: Badge) => {
     setSelectedBadges((prev) => {
@@ -113,7 +108,7 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     addItem({
       product,
-      selectedKitType,
+      selectedKitType: effectiveKitType,
       quantity,
       selectedBadges,
       customName: hasCustom ? customName : "",
@@ -133,21 +128,23 @@ export default function ProductPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Breadcrumb */}
-      <div className="bg-[var(--surface)] border-b border-[color:var(--border)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 text-xs text-[var(--muted)] flex-wrap">
-            <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
+      <div className="bg-[var(--surface-muted)]/80 border-b border-[color:var(--border)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
+          <div className="flex items-center gap-2 text-[11px] sm:text-xs text-[var(--muted)] flex-wrap uppercase tracking-[0.06em] font-medium">
+            <Link href="/" className="hover:text-brand-green transition-colors">
               Home
             </Link>
-            <ChevronRight className="w-3 h-3" />
+            <ChevronRight className="w-3 h-3 shrink-0 opacity-50" />
             <Link
               href={`/league/${product.leagueSlug}`}
-              className="hover:text-[var(--foreground)] transition-colors"
+              className="hover:text-brand-green transition-colors"
             >
               {product.league}
             </Link>
-            <ChevronRight className="w-3 h-3" />
-            <span className="text-[var(--foreground)]">{displayTeam}</span>
+            <ChevronRight className="w-3 h-3 shrink-0 opacity-50" />
+            <span className="text-[var(--foreground)] font-semibold normal-case tracking-normal">
+              {displayTeam}
+            </span>
           </div>
         </div>
       </div>
@@ -156,7 +153,7 @@ export default function ProductPage() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image */}
           <div className="relative">
-            <div className="aspect-square bg-white rounded-2xl border border-[color:var(--border)] overflow-hidden flex items-center justify-center">
+            <div className="aspect-square bg-white rounded-xl border border-[color:var(--border)] shadow-sm overflow-hidden flex items-center justify-center">
               {hasRealImage ? (
                 <div className="w-full h-full p-8 sm:p-10 flex items-center justify-center">
                   <img
@@ -166,11 +163,11 @@ export default function ProductPage() {
                   />
                 </div>
               ) : (
-                <svg viewBox="0 0 120 150" className="w-56 h-72 opacity-80">
+                <svg viewBox="0 0 120 150" className="w-56 h-72 opacity-90">
                   <path
                     d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z"
-                    className="fill-slate-300"
-                    stroke="rgba(251,191,36,0.15)"
+                    className="fill-slate-200"
+                    stroke="rgba(34, 86, 45, 0.12)"
                     strokeWidth="1.5"
                   />
                   <text
@@ -194,19 +191,19 @@ export default function ProductPage() {
 
               {/* Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
-                {selectedKitType === "retro" && (
-                  <span className="px-3 py-1 text-xs font-semibold bg-amber-400/20 text-amber-400 rounded-full backdrop-blur-sm">
-                    RETRO
+                {effectiveKitType === "retro" && (
+                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-green/12 text-brand-green rounded-md">
+                    Retro
                   </span>
                 )}
-                {selectedKitType === "player" && (
-                  <span className="px-3 py-1 text-xs font-semibold bg-black/10 text-slate-700 rounded-full backdrop-blur-sm">
-                    PLAYER VERSION
+                {effectiveKitType === "player" && (
+                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-[var(--surface-muted)] text-[var(--foreground)] border border-[color:var(--border)] rounded-md">
+                    Player
                   </span>
                 )}
                 {product.isNewArrival && (
-                  <span className="px-3 py-1 text-xs font-semibold bg-amber-400 text-black rounded-full">
-                    NEW
+                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-green text-white rounded-md">
+                    New
                   </span>
                 )}
               </div>
@@ -219,8 +216,8 @@ export default function ProductPage() {
                   onClick={() => setShowBack(false)}
                   className={`w-16 h-16 rounded-lg border overflow-hidden transition-all ${
                     !showBack
-                      ? "border-amber-400 ring-1 ring-amber-400/30"
-                      : "border-[color:var(--border)] hover:border-gold/30"
+                      ? "border-brand-green ring-2 ring-brand-green/20"
+                      : "border-[color:var(--border)] hover:border-brand-green/40"
                   }`}
                 >
                   <img
@@ -233,8 +230,8 @@ export default function ProductPage() {
                   onClick={() => setShowBack(true)}
                   className={`w-16 h-16 rounded-lg border overflow-hidden transition-all ${
                     showBack
-                      ? "border-amber-400 ring-1 ring-amber-400/30"
-                      : "border-[color:var(--border)] hover:border-gold/30"
+                      ? "border-brand-green ring-2 ring-brand-green/20"
+                      : "border-[color:var(--border)] hover:border-brand-green/40"
                   }`}
                 >
                   <img
@@ -250,30 +247,26 @@ export default function ProductPage() {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-medium text-amber-400 uppercase tracking-wider">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <span className="text-[11px] font-bold text-brand-green uppercase tracking-[0.12em]">
                   {product.league}
                 </span>
                 <span className="text-[var(--muted)]">&bull;</span>
-                <span className="text-xs text-[var(--muted)] uppercase tracking-wider">
+                <span className="text-[11px] text-[var(--muted)] uppercase tracking-[0.1em] font-semibold">
                   {product.type} kit
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)]">
+              <h1 className="text-2xl sm:text-3xl lg:text-[2rem] font-bold text-[var(--foreground)] leading-tight tracking-tight">
                 {product.name}
               </h1>
               <p className="mt-1 text-[var(--muted)]">
-                {selectedKitType === "fans"
-                  ? "Fans Version"
-                  : selectedKitType === "player"
-                  ? "Player Version"
-                  : "Retro Kit"}
+                {getKitVersionDisplayLabel(product)}
               </p>
             </div>
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-[var(--foreground)]">
+              <span className="text-3xl font-bold text-brand-green">
                 {formatPrice(totalPrice())}
               </span>
               {(hasCustom || selectedBadges.length > 0 || quantity > 1) && (
@@ -286,42 +279,20 @@ export default function ProductPage() {
             {/* Divider */}
             <div className="border-t border-[color:var(--border)]" />
 
-            {/* Kit Version */}
-            <div>
-              <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">Version</h3>
-              <div className="flex gap-2">
-                {availableKitTypes.map((kitType) => (
-                  <button
-                    key={kitType}
-                    onClick={() => setSelectedKitType(kitType)}
-                    className={`px-4 h-11 rounded-lg text-sm font-medium transition-all ${
-                      selectedKitType === kitType
-                        ? "bg-amber-400 text-black"
-                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-gold/30"
-                    }`}
-                  >
-                    {kitType === "fans"
-                      ? `Fans (${formatPrice(getProductBasePrice(product, "fans"))})`
-                      : kitType === "player"
-                      ? `Player (${formatPrice(getProductBasePrice(product, "player"))})`
-                      : `Retro (${formatPrice(getProductBasePrice(product, "retro"))})`}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Size */}
             <div>
-              <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">Size</h3>
-              <div className="flex gap-2">
+              <h3 className="text-xs font-bold text-[var(--foreground)] uppercase tracking-[0.1em] mb-3">
+                Size
+              </h3>
+              <div className="flex flex-wrap gap-2">
                 {sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`w-12 h-12 rounded-lg text-sm font-medium transition-all ${
+                    className={`w-12 h-12 rounded-full text-sm font-bold transition-all ${
                       selectedSize === size
-                        ? "bg-amber-400 text-black"
-                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-gold/30"
+                        ? "bg-brand-green text-white shadow-sm"
+                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-brand-green/40 hover:text-brand-green"
                     }`}
                   >
                     {size}
@@ -332,20 +303,24 @@ export default function ProductPage() {
 
             {/* Quantity */}
             <div>
-              <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">Quantity</h3>
+              <h3 className="text-xs font-bold text-[var(--foreground)] uppercase tracking-[0.1em] mb-3">
+                Quantity
+              </h3>
               <div className="flex items-center gap-3">
                 <button
+                  type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-lg bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-brand-green transition-colors"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="w-12 text-center text-[var(--foreground)] font-medium">
+                <span className="w-12 text-center text-[var(--foreground)] font-bold tabular-nums">
                   {quantity}
                 </span>
                 <button
+                  type="button"
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-lg bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-brand-green transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -355,9 +330,9 @@ export default function ProductPage() {
             {/* Arm Badges */}
             {product.badges && product.badges.length > 0 && (
               <div>
-                <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">
-                  Arm Badges{" "}
-                  <span className="text-[var(--muted)] font-normal">
+                <h3 className="text-xs font-bold text-[var(--foreground)] uppercase tracking-[0.1em] mb-3">
+                  Arm badges{" "}
+                  <span className="text-[var(--muted)] font-semibold normal-case tracking-normal">
                     ({formatPrice(PRICING.badgePrice)} each)
                   </span>
                 </h3>
@@ -370,19 +345,19 @@ export default function ProductPage() {
                       <button
                         key={badge.name}
                         onClick={() => toggleBadge(badge)}
-                        className={`flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm transition-all ${
+                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm transition-all ${
                           isSelected
-                            ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
-                            : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:border-gold/30"
+                            ? "bg-brand-green/8 border border-brand-green/35 text-[var(--foreground)]"
+                            : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:border-brand-green/35"
                         }`}
                       >
                         <span className="flex items-center gap-2">
                           {isSelected && (
-                            <Check className="w-4 h-4 text-amber-400" />
+                            <Check className="w-4 h-4 text-brand-green shrink-0" />
                           )}
                           {badge.name}
                         </span>
-                        <span className={isSelected ? "text-amber-400" : ""}>
+                        <span className={isSelected ? "text-brand-green font-semibold" : ""}>
                           +{formatPrice(badge.price)}
                         </span>
                       </button>
@@ -396,17 +371,17 @@ export default function ProductPage() {
             <div>
               <button
                 onClick={() => setHasCustom(!hasCustom)}
-                className={`flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm transition-all ${
+                className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm transition-all ${
                   hasCustom
-                    ? "bg-amber-400/10 border border-amber-400/30 text-[var(--foreground)]"
-                    : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:border-gold/30"
+                    ? "bg-brand-green/8 border border-brand-green/35 text-[var(--foreground)]"
+                    : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:border-brand-green/35"
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  {hasCustom && <Check className="w-4 h-4 text-amber-400" />}
-                  Custom Name & Number
+                  {hasCustom && <Check className="w-4 h-4 text-brand-green shrink-0" />}
+                  Custom name & number
                 </span>
-                <span className={hasCustom ? "text-amber-400" : ""}>
+                <span className={hasCustom ? "text-brand-green font-semibold" : ""}>
                   +{formatPrice(PRICING.customNameNumber)}
                 </span>
               </button>
@@ -422,7 +397,7 @@ export default function ProductPage() {
                       value={customName}
                       onChange={(e) => setCustomName(e.target.value)}
                       placeholder="e.g. MESSI"
-                      className="w-full px-3 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors"
+                      className="w-full px-3 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green/20 transition-colors"
                     />
                   </div>
                   <div>
@@ -435,7 +410,7 @@ export default function ProductPage() {
                       onChange={(e) => setCustomNumber(e.target.value)}
                       placeholder="e.g. 10"
                       maxLength={3}
-                      className="w-full px-3 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-amber-400/50 transition-colors"
+                      className="w-full px-3 py-2.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green/20 transition-colors"
                     />
                   </div>
                 </div>
@@ -444,11 +419,12 @@ export default function ProductPage() {
 
             {/* Add to Cart */}
             <button
+              type="button"
               onClick={handleAddToCart}
-              className={`w-full py-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
+              className={`w-full py-4 rounded-full font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-2 shadow-sm ${
                 added
-                  ? "bg-green-500 text-white"
-                  : "bg-amber-400 text-black hover:bg-amber-300"
+                  ? "bg-brand-green text-white"
+                  : "bg-brand-green text-white hover:bg-brand-green-dark active:scale-[0.99]"
               }`}
             >
               {added ? (
@@ -467,21 +443,22 @@ export default function ProductPage() {
             {/* Go to cart link */}
             {added && (
               <button
+                type="button"
                 onClick={() => router.push("/cart")}
-                className="w-full py-3 rounded-xl font-medium text-sm border border-[color:var(--border)] text-[var(--foreground)] hover:bg-black/[0.03] transition-colors"
+                className="w-full py-3 rounded-full font-semibold text-sm border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors"
               >
-                View Cart
+                View cart
               </button>
             )}
 
             {/* Trust signals */}
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <Truck className="w-4 h-4 text-amber-400/60" />
+            <div className="rounded-xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 px-4 py-3 grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-2 text-[11px] text-[var(--muted)]">
+                <Truck className="w-4 h-4 text-brand-green shrink-0" />
                 Worldwide shipping
               </div>
-              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <Shield className="w-4 h-4 text-amber-400/60" />
+              <div className="flex items-center gap-2 text-[11px] text-[var(--muted)]">
+                <Shield className="w-4 h-4 text-brand-green shrink-0" />
                 Quality guaranteed
               </div>
             </div>

@@ -1,6 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Product, Badge, PRICING, getProductBasePrice, getProductId } from "@/data/products";
+import {
+  Product,
+  Badge,
+  PRICING,
+  getProductBasePrice,
+  getEffectiveKitType,
+} from "@/data/products";
 
 export interface CartItem {
   product: Product;
@@ -36,7 +42,11 @@ export const useCartStore = create<CartStore>()(
       shippingMethod: "standard",
 
       addItem: (item) => {
-        set((state) => ({ items: [...state.items, item] }));
+        const normalized: CartItem = {
+          ...item,
+          selectedKitType: getEffectiveKitType(item.product),
+        };
+        set((state) => ({ items: [...state.items, normalized] }));
       },
 
       removeItem: (index) => {
@@ -62,8 +72,7 @@ export const useCartStore = create<CartStore>()(
       },
 
       getItemPrice: (item) => {
-        const kitType = item.selectedKitType || item.product.kitType;
-        let price = getProductBasePrice(item.product, kitType);
+        let price = getProductBasePrice(item.product);
         if (item.hasCustomNameNumber) {
           price += PRICING.customNameNumber;
         }

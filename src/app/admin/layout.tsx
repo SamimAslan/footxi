@@ -99,7 +99,7 @@ export default function AdminLayout({
     <div className="min-h-screen bg-[var(--background)]">
       {/* ===== SIDEBAR (Desktop) ===== */}
       <aside
-        className={`fixed top-28 left-0 z-40 h-[calc(100vh-7rem)] bg-[var(--surface)] border-r border-[color:var(--border)] transition-all duration-300 ease-in-out hidden lg:flex flex-col ${
+        className={`fixed top-[var(--site-header-height)] left-0 z-40 h-[calc(100vh-var(--site-header-height))] bg-[var(--surface)] border-r border-[color:var(--border)] transition-all duration-300 ease-in-out hidden lg:flex flex-col ${
           sidebarOpen ? "w-60" : "w-[68px]"
         }`}
       >
@@ -194,7 +194,7 @@ export default function AdminLayout({
         }`}
       >
         {/* ===== TOPBAR ===== */}
-        <header className="sticky top-28 z-30 h-16 bg-[color:color-mix(in_srgb,var(--background)_86%,white)] backdrop-blur-xl border-b border-[color:var(--border)]">
+        <header className="sticky top-[var(--site-header-height)] z-30 h-16 bg-[color:color-mix(in_srgb,var(--background)_86%,white)] backdrop-blur-xl border-b border-[color:var(--border)]">
           <div className="h-full px-4 sm:px-6 flex items-center justify-between gap-4">
             {/* Left: Mobile menu + Breadcrumbs */}
             <div className="flex items-center gap-3">
@@ -261,7 +261,7 @@ export default function AdminLayout({
               className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
-            <div className="fixed top-28 left-0 z-50 h-[calc(100vh-7rem)] w-64 bg-[var(--surface)] border-r border-[color:var(--border)] lg:hidden">
+            <div className="fixed top-[var(--site-header-height)] left-0 z-50 h-[calc(100vh-var(--site-header-height))] w-64 bg-[var(--surface)] border-r border-[color:var(--border)] lg:hidden">
               <div className="h-16 flex items-center justify-between px-5 border-b border-[color:var(--border)]">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center">

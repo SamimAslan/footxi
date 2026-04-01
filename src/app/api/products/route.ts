@@ -20,6 +20,10 @@ const COLLECTION_REGEX: Record<string, RegExp> = {
   "nba-nfl": /\bnba\b|\bnfl\b/i,
 };
 
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
@@ -44,7 +48,7 @@ export async function GET(req: NextRequest) {
       } else if (league === "retro-kits") {
         filter.kitType = "retro";
       } else if (league === "international-teams") {
-        filter.$or = [
+        const internationalOr = [
           { leagueSlug: { $in: getLeagueAliasSlugs("international-teams") } },
           { extraCategories: "international-teams" },
           { league: { $regex: INTERNATIONAL_MARKER_REGEX } },
@@ -52,6 +56,23 @@ export async function GET(req: NextRequest) {
           { team: { $regex: INTERNATIONAL_COUNTRY_REGEX } },
           { name: { $regex: INTERNATIONAL_COUNTRY_REGEX } },
         ];
+        if (team) {
+          const trimmed = team.trim();
+          const tokens = trimmed.split(/\s+/).filter(Boolean);
+          const countryMatch: Record<string, unknown>[] = [
+            { team: { $regex: `^${escapeRegex(trimmed)}$`, $options: "i" } },
+          ];
+          if (tokens.length > 0) {
+            countryMatch.push({
+              $and: tokens.map((tok) => ({
+                name: { $regex: escapeRegex(tok), $options: "i" },
+              })),
+            });
+          }
+          filter.$and = [{ $or: internationalOr }, { $or: countryMatch }];
+        } else {
+          filter.$or = internationalOr;
+        }
       } else if (league === "super-lig") {
         filter.$or = [
           { leagueSlug: { $in: getLeagueAliasSlugs("super-lig") } },
@@ -79,7 +100,9 @@ export async function GET(req: NextRequest) {
         ];
       }
     }
-    if (team) filter.team = team;
+    if (team && league !== "international-teams") {
+      filter.team = team;
+    }
     if (featured === "true") filter.isFeatured = true;
     if (kitType && kitType !== "all") filter.kitType = kitType;
 

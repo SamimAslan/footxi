@@ -336,6 +336,28 @@ export function getBasePrice(kitType: Product["kitType"]): number {
   return PRICING[kitType];
 }
 
+/**
+ * Fans vs player vs retro for pricing and UI. Listing title/team are checked for
+ * "fans" / "player" when the product is not retro; otherwise DB kitType is used.
+ */
+export function getEffectiveKitType(product: Product): Product["kitType"] {
+  if (product.type === "retro" || product.kitType === "retro") {
+    return "retro";
+  }
+  const haystack = `${product.name || ""} ${product.team || ""}`.toLowerCase();
+  if (/\bplayer\b/.test(haystack)) return "player";
+  if (/\bfan\b|\bfans\b/.test(haystack)) return "fans";
+  return product.kitType;
+}
+
+/** Storefront line under title: "Fans" | "Player" | "Retro" */
+export function getKitVersionDisplayLabel(product: Product): string {
+  const t = getEffectiveKitType(product);
+  if (t === "fans") return "Fans";
+  if (t === "player") return "Player";
+  return "Retro";
+}
+
 export function getProductBasePrice(
   product: Product,
   selectedKitType?: Product["kitType"]
@@ -343,5 +365,6 @@ export function getProductBasePrice(
   if (typeof product.priceOverride === "number" && Number.isFinite(product.priceOverride)) {
     return product.priceOverride;
   }
-  return getBasePrice(selectedKitType || product.kitType);
+  const kt = selectedKitType ?? getEffectiveKitType(product);
+  return getBasePrice(kt);
 }

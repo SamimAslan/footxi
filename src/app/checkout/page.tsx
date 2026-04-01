@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cart";
-import { getProductBasePrice, PRICING } from "@/data/products";
+import {
+  getProductBasePrice,
+  getEffectiveKitType,
+  getKitVersionDisplayLabel,
+  PRICING,
+} from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
 import Link from "next/link";
 import {
@@ -99,8 +104,8 @@ export default function CheckoutPage() {
 
     try {
       const orderItems = items.map((item) => {
-        const kitType = item.selectedKitType || item.product.kitType;
-        let unitPrice = getProductBasePrice(item.product, kitType);
+        const kitType = getEffectiveKitType(item.product);
+        let unitPrice = getProductBasePrice(item.product);
         if (item.hasCustomNameNumber) unitPrice += PRICING.customNameNumber;
         for (const badge of item.selectedBadges) {
           unitPrice += badge.price;
@@ -359,8 +364,8 @@ export default function CheckoutPage() {
                         {item.product.team}
                       </p>
                       <p className="text-[10px] text-[var(--muted)]">
-                        {(item.selectedKitType || item.product.kitType).toUpperCase()} &middot; Size{" "}
-                        {item.size} &middot; x{item.quantity}
+                        {getKitVersionDisplayLabel(item.product)} &middot; Size {item.size} &middot; x
+                        {item.quantity}
                       </p>
                     </div>
                   </div>

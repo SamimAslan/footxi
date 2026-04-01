@@ -2,6 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
 
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Split query into tokens; each token must appear in `name` (AND). No league/team-only matches. */
+function buildNameSearchFilter(q: string): Record<string, unknown> {
+  const tokens = q
+    .trim()
+    .split(/\s+/)
+    .map((t) => t.trim())
+    .filter((t) => t.length > 0);
+
+  if (tokens.length === 0) {
+    return { _id: null }; // impossible match
+  }
+
+  const nameClauses = tokens.map((token) => ({
+    name: { $regex: escapeRegex(token), $options: "i" },
+  }));
+
+  return { $and: nameClauses };
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -12,21 +35,28 @@ export async function GET(req: NextRequest) {
     const limitParam = parseInt(searchParams.get("limit") || "8", 10);
     const limit = Number.isFinite(limitParam) ? Math.min(Math.max(limitParam, 1), 80) : 8;
 
+    const kitType = searchParams.get("kitType") || "";
+    const newOnly = searchParams.get("new") === "1" || searchParams.get("newArrival") === "true";
+
     if (q.trim().length < 2) {
+      if (paginated) {
+        return NextResponse.json({ products: [], total: 0, page: 1, totalPages: 1 });
+      }
       return NextResponse.json([]);
     }
 
     await connectDB();
 
-    const baseFilter = {
-      isActive: true,
-      $or: [
-        { name: { $regex: q, $options: "i" } },
-        { team: { $regex: q, $options: "i" } },
-        { league: { $regex: q, $options: "i" } },
-        { type: { $regex: q, $options: "i" } },
-      ],
-    };
+    const andClauses: Record<string, unknown>[] = [{ isActive: true }, buildNameSearchFilter(q)];
+
+    if (kitType && ["fans", "player", "retro"].includes(kitType)) {
+      andClauses.push({ kitType });
+    }
+    if (newOnly) {
+      andClauses.push({ isNewArrival: true });
+    }
+
+    const baseFilter = { $and: andClauses };
 
     if (paginated) {
       const total = await ProductModel.countDocuments(baseFilter);
@@ -45,23 +75,16 @@ export async function GET(req: NextRequest) {
     }
 
     const products = await ProductModel.find(baseFilter)
-      .limit(Math.max(20, limit * 3))
+      .sort({ createdAt: -1, _id: -1 })
+      .limit(limit)
       .lean();
 
-    // Compact quick-search mode (navbar): keep small, deduped preview list.
-    const seen = new Set<string>();
-    const unique = [];
-    for (const p of products) {
-      const key = `${p.team}-${p.type}-${p.kitType}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        unique.push(p);
-      }
-      if (unique.length >= limit) break;
-    }
-    return NextResponse.json(unique);
+    return NextResponse.json(products);
   } catch (error) {
     console.error("Search error:", error);
-    return NextResponse.json([], { status: 500 });
+    return NextResponse.json(
+      { products: [], total: 0, page: 1, totalPages: 1 },
+      { status: 500 }
+    );
   }
 }

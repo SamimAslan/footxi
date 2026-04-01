@@ -8,47 +8,40 @@ import { useCurrency } from "@/context/CurrencyContext";
 export default function Footer() {
   const { formatPrice } = useCurrency();
   return (
-    <footer className="bg-[#0A0C10] border-t border-white/[0.04]">
-      {/* Trust Bar */}
-      <div className="border-b border-white/[0.04]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 flex items-center justify-center border border-white/[0.06] bg-white/[0.02]">
-                <Truck className="w-[18px] h-[18px] text-gold" />
+    <footer className="bg-[var(--surface)] border-t border-[color:var(--border)] mt-auto">
+      <div className="border-b border-[color:var(--border)] bg-[var(--surface-muted)]/60">
+        <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
+                <Truck className="w-[18px] h-[18px] text-brand-green" />
               </div>
               <div>
-                <p className="text-[13px] font-medium text-[#F3F4F6]">
-                  Worldwide Shipping
-                </p>
-                <p className="text-[11px] text-[#9CA3AF]/60">
-                  Express & Standard delivery
+                <p className="text-[13px] font-semibold text-[var(--foreground)]">Worldwide shipping</p>
+                <p className="text-[12px] text-[var(--muted)] mt-0.5 leading-snug">
+                  Express and standard delivery options at checkout.
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 flex items-center justify-center border border-white/[0.06] bg-white/[0.02]">
-                <Shield className="w-[18px] h-[18px] text-gold" />
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
+                <Shield className="w-[18px] h-[18px] text-brand-green" />
               </div>
               <div>
-                <p className="text-[13px] font-medium text-[#F3F4F6]">
-                  Quality Guaranteed
-                </p>
-                <p className="text-[11px] text-[#9CA3AF]/60">
-                  Premium quality kits
+                <p className="text-[13px] font-semibold text-[var(--foreground)]">Quality focused</p>
+                <p className="text-[12px] text-[var(--muted)] mt-0.5 leading-snug">
+                  Carefully sourced kits and clear product details.
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 flex items-center justify-center border border-white/[0.06] bg-white/[0.02]">
-                <CreditCard className="w-[18px] h-[18px] text-gold" />
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface)] shrink-0">
+                <CreditCard className="w-[18px] h-[18px] text-brand-green" />
               </div>
               <div>
-                <p className="text-[13px] font-medium text-[#F3F4F6]">
-                  Secure Payment
-                </p>
-                <p className="text-[11px] text-[#9CA3AF]/60">
-                  Safe & encrypted checkout
+                <p className="text-[13px] font-semibold text-[var(--foreground)]">Secure payment</p>
+                <p className="text-[12px] text-[var(--muted)] mt-0.5 leading-snug">
+                  Encrypted checkout with trusted providers.
                 </p>
               </div>
             </div>
@@ -56,37 +49,30 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-14">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="inline-block">
               <img src="/logo.png" alt="FOOTXI" className="h-7 w-auto" />
             </Link>
-            <p className="mt-4 text-[13px] text-[#9CA3AF]/60 leading-relaxed">
-              Premium football kits from all major leagues. Fans version, player
-              version, and retro kits available.
+            <p className="mt-4 text-[13px] text-[var(--muted)] leading-relaxed max-w-sm">
+              Premium football kits from major leagues. Fans, player, and retro kits — built for supporters who want a
+              clear, simple shop experience.
             </p>
-            <div className="mt-5 flex items-center gap-2 text-[13px] text-[#9CA3AF]/60">
-              <Mail className="w-4 h-4" />
-              <a
-                href="mailto:support@footxi.com"
-                className="hover:text-gold transition-colors duration-300"
-              >
+            <div className="mt-5 flex items-center gap-2 text-[13px] text-[var(--muted)]">
+              <Mail className="w-4 h-4 shrink-0" />
+              <a href="mailto:support@footxi.com" className="hover:text-brand-green transition-colors">
                 support@footxi.com
               </a>
             </div>
             <div className="mt-5">
-              <p className="text-[11px] font-semibold text-[#F3F4F6] uppercase tracking-[0.2em]">
-                Follow Us
-              </p>
-              <div className="mt-3 flex items-center gap-3">
+              <p className="text-[11px] font-semibold text-[var(--foreground)] uppercase tracking-[0.16em]">Follow</p>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <a
                   href="https://www.instagram.com/footxi.official/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 border border-white/[0.08] text-[12px] text-[#9CA3AF]/70 hover:text-[#F3F4F6] hover:border-gold/30 transition-all duration-300"
+                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-brand-green hover:border-brand-green/35 transition-colors"
                 >
                   Instagram
                 </a>
@@ -94,7 +80,7 @@ export default function Footer() {
                   href="https://www.tiktok.com/@footxi"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 border border-white/[0.08] text-[12px] text-[#9CA3AF]/70 hover:text-[#F3F4F6] hover:border-gold/30 transition-all duration-300"
+                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-brand-green hover:border-brand-green/35 transition-colors"
                 >
                   TikTok
                 </a>
@@ -102,17 +88,16 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Leagues */}
           <div>
-            <h3 className="text-[11px] font-semibold text-[#F3F4F6] mb-5 uppercase tracking-[0.2em]">
+            <h3 className="text-[11px] font-bold text-brand-green mb-4 uppercase tracking-[0.16em]">
               Leagues
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {leagues.slice(0, 6).map((league) => (
                 <li key={league.slug}>
                   <Link
                     href={`/league/${league.slug}`}
-                    className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
+                    className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors"
                   >
                     {league.name}
                   </Link>
@@ -121,92 +106,69 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h3 className="text-[11px] font-semibold text-[#F3F4F6] mb-5 uppercase tracking-[0.2em]">
-              Quick Links
+            <h3 className="text-[11px] font-bold text-brand-green mb-4 uppercase tracking-[0.16em]">
+              Shop
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               <li>
-                <Link
-                  href="/"
-                  className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
-                >
+                <Link href="/" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/cart"
-                  className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
-                >
+                <Link href="/search" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
+                  Search
+                </Link>
+              </li>
+              <li>
+                <Link href="/cart" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
                   Cart
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/contact"
-                  className="text-[13px] text-[#9CA3AF]/50 hover:text-[#F3F4F6] transition-colors duration-300"
-                >
-                  Contact Us
+                <Link href="/contact" className="text-[13px] text-[var(--muted)] hover:text-brand-green transition-colors">
+                  Contact
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Pricing Info */}
           <div>
-            <h3 className="text-[11px] font-semibold text-[#F3F4F6] mb-5 uppercase tracking-[0.2em]">
-              Pricing
+            <h3 className="text-[11px] font-bold text-brand-green mb-4 uppercase tracking-[0.16em]">
+              From price guide
             </h3>
-            <ul className="space-y-3 text-[13px]">
-              <li className="flex justify-between">
-                <span className="text-[#9CA3AF]/50">Fans Version</span>
-                <span className="text-[#F3F4F6]">
-                  {formatPrice(PRICING.fans)}
-                </span>
+            <ul className="space-y-2.5 text-[13px]">
+              <li className="flex justify-between gap-4">
+                <span className="text-[var(--muted)]">Fans version</span>
+                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.fans)}</span>
               </li>
-              <li className="flex justify-between">
-                <span className="text-[#9CA3AF]/50">Player Version</span>
-                <span className="text-[#F3F4F6]">
-                  {formatPrice(PRICING.player)}
-                </span>
+              <li className="flex justify-between gap-4">
+                <span className="text-[var(--muted)]">Player version</span>
+                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.player)}</span>
               </li>
-              <li className="flex justify-between">
-                <span className="text-[#9CA3AF]/50">Retro Kit</span>
-                <span className="text-[#F3F4F6]">
-                  {formatPrice(PRICING.retro)}
-                </span>
+              <li className="flex justify-between gap-4">
+                <span className="text-[var(--muted)]">Retro kit</span>
+                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.retro)}</span>
               </li>
-              <li className="flex justify-between">
-                <span className="text-[#9CA3AF]/50">Custom Name/No.</span>
-                <span className="text-[#F3F4F6]">
-                  +{formatPrice(PRICING.customNameNumber)}
-                </span>
+              <li className="flex justify-between gap-4">
+                <span className="text-[var(--muted)]">Custom name/no.</span>
+                <span className="font-medium text-[var(--foreground)] tabular-nums">+{formatPrice(PRICING.customNameNumber)}</span>
               </li>
-              <li className="flex justify-between">
-                <span className="text-[#9CA3AF]/50">Arm Badge</span>
-                <span className="text-[#F3F4F6]">
-                  {formatPrice(PRICING.badgePrice)}
-                </span>
+              <li className="flex justify-between gap-4">
+                <span className="text-[var(--muted)]">Arm badge</span>
+                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.badgePrice)}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-14 pt-8 border-t border-white/[0.04]">
+        <div className="mt-12 pt-8 border-t border-[color:var(--border)]">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-[11px] text-[#9CA3AF]/30 tracking-wide">
-              &copy; {new Date().getFullYear()} FootXI. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              <span className="text-[11px] text-[#9CA3AF]/30 tracking-wide">
-                3-6 kits: 5% off
-              </span>
-              <span className="text-[11px] text-[#9CA3AF]/30 tracking-wide">
-                7-15 kits: 10% off
-              </span>
+            <p className="text-[11px] text-[var(--muted)]">&copy; {new Date().getFullYear()} FootXI. All rights reserved.</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[11px] text-[var(--muted)]">
+              <span>Bulk: 3–6 kits 5% off</span>
+              <span>7–15 kits 10% off</span>
             </div>
           </div>
         </div>

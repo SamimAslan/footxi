@@ -7,6 +7,8 @@ import { Loader2, Search } from "lucide-react";
 import { Product, getProductId } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
+type KitFilter = "all" | "fans" | "player" | "retro";
+
 export default function SearchPage() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-[var(--background)]" />}>
@@ -19,6 +21,9 @@ function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
+  const kitTypeFromUrl = (searchParams.get("kitType") || "all") as KitFilter;
+  const newFromUrl = searchParams.get("new") === "1";
+
   const [query, setQuery] = useState(initialQuery);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Product[]>([]);
@@ -34,6 +39,10 @@ function SearchContent() {
   }, [initialQuery]);
 
   useEffect(() => {
+    setPage(1);
+  }, [kitTypeFromUrl, newFromUrl]);
+
+  useEffect(() => {
     async function runSearch() {
       if (normalizedQuery.length < 2) {
         setResults([]);
@@ -41,11 +50,16 @@ function SearchContent() {
       }
       setLoading(true);
       try {
-        const res = await fetch(
-          `/api/products/search?q=${encodeURIComponent(
-            normalizedQuery
-          )}&paginated=true&page=${page}&limit=24`
-        );
+        const params = new URLSearchParams({
+          q: normalizedQuery,
+          paginated: "true",
+          page: String(page),
+          limit: "24",
+        });
+        if (kitTypeFromUrl !== "all") params.set("kitType", kitTypeFromUrl);
+        if (newFromUrl) params.set("new", "1");
+
+        const res = await fetch(`/api/products/search?${params.toString()}`);
         if (!res.ok) {
           setResults([]);
           setTotal(0);
@@ -70,15 +84,44 @@ function SearchContent() {
       }
     }
     runSearch();
-  }, [normalizedQuery, page]);
+  }, [normalizedQuery, page, kitTypeFromUrl, newFromUrl]);
+
+  const pushParams = (next: { kitType?: KitFilter; newArrival?: boolean }) => {
+    const qStable =
+      normalizedQuery.length >= 2 ? normalizedQuery : (searchParams.get("q") || "").trim();
+    if (qStable.length < 2) return;
+
+    const p = new URLSearchParams();
+    p.set("q", qStable);
+
+    const kt = next.kitType !== undefined ? next.kitType : kitTypeFromUrl;
+    if (kt !== "all") p.set("kitType", kt);
+
+    const nw = next.newArrival !== undefined ? next.newArrival : newFromUrl;
+    if (nw) p.set("new", "1");
+
+    setPage(1);
+    router.replace(`/search?${p.toString()}`);
+  };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const q = query.trim();
     if (q.length < 2) return;
+    const p = new URLSearchParams();
+    p.set("q", q);
+    if (kitTypeFromUrl !== "all") p.set("kitType", kitTypeFromUrl);
+    if (newFromUrl) p.set("new", "1");
     setPage(1);
-    router.push(`/search?q=${encodeURIComponent(q)}`);
+    router.push(`/search?${p.toString()}`);
   };
+
+  const kitOptions: { value: KitFilter; label: string }[] = [
+    { value: "all", label: "All versions" },
+    { value: "fans", label: "Fans" },
+    { value: "player", label: "Player" },
+    { value: "retro", label: "Retro" },
+  ];
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -88,37 +131,76 @@ function SearchContent() {
             Home
           </Link>
           <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold text-[var(--foreground)] tracking-[-0.02em]">
-            Search Products
+            Search products
           </h1>
+          <p className="mt-2 text-sm text-[var(--muted)] max-w-2xl">
+            Matches the <span className="text-[var(--foreground)] font-medium">product title</span> only
+            (listing text). Use several words together — e.g. <span className="italic">france pink</span> or{" "}
+            <span className="italic">2008 barcelona retro</span> — all words must appear in the title.
+          </p>
         </div>
 
-        <form onSubmit={onSubmit} className="relative max-w-2xl mb-8">
+        <form onSubmit={onSubmit} className="relative max-w-2xl mb-6">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search teams, leagues, kits..."
+            placeholder="Jersey title, season, colour, club name in listing…"
             className="w-full pl-12 pr-4 py-3.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-xl text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-gold/35"
           />
         </form>
+
+        {normalizedQuery.length >= 2 && (
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center mb-8 pb-6 border-b border-[color:var(--border)]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--muted)] shrink-0">
+              Filters
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {kitOptions.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => pushParams({ kitType: opt.value })}
+                  className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                    kitTypeFromUrl === opt.value
+                      ? "bg-gold text-[#141414]"
+                      : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-gold/25"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => pushParams({ newArrival: !newFromUrl })}
+              className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors sm:ml-2 ${
+                newFromUrl
+                  ? "bg-gold text-[#141414]"
+                  : "bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-gold/25"
+              }`}
+            >
+              New arrivals only
+            </button>
+          </div>
+        )}
 
         {loading ? (
           <div className="py-16 flex items-center justify-center">
             <Loader2 className="w-6 h-6 animate-spin text-gold" />
           </div>
         ) : normalizedQuery.length < 2 ? (
-          <p className="text-sm text-[var(--muted)]">
-            Type at least 2 characters to search.
-          </p>
+          <p className="text-sm text-[var(--muted)]">Type at least 2 characters to search.</p>
         ) : results.length === 0 ? (
           <p className="text-sm text-[var(--muted)]">
-            No products found for &ldquo;{normalizedQuery}&rdquo;.
+            No products found for &ldquo;{normalizedQuery}&rdquo;
+            {kitTypeFromUrl !== "all" || newFromUrl ? " with the current filters" : ""}.
           </p>
         ) : (
           <>
             <p className="text-xs text-[var(--muted)] mb-4">
-              {total} results
+              {total} result{total !== 1 ? "s" : ""}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7">
               {results.map((product) => (

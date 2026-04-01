@@ -48,7 +48,11 @@ function DropdownFilter({
         <ChevronDown className="w-3.5 h-3.5" />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-56 max-h-[50vh] overflow-y-auto bg-[var(--surface)] border border-[color:var(--border)] shadow-2xl shadow-black/20 py-1 z-50">
+        <div
+          data-lenis-prevent
+          className="absolute top-full left-0 mt-1 w-56 max-h-[50vh] overflow-y-auto overscroll-y-contain bg-[var(--surface)] border border-[color:var(--border)] shadow-2xl shadow-black/20 py-1 z-50 touch-pan-y"
+          onWheel={(e) => e.stopPropagation()}
+        >
           {options.map((opt) => (
             <button
               key={opt.value}

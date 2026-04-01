@@ -13,7 +13,9 @@ const currencyList: { code: CurrencyCode; flagUrl: string }[] = [
   { code: "TRY", flagUrl: "https://flagcdn.com/w40/tr.png" },
 ];
 
-export default function CurrencySelector() {
+type Variant = "default" | "onDark";
+
+export default function CurrencySelector({ variant = "default" }: { variant?: Variant }) {
   const { currencyCode, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -30,11 +32,17 @@ export default function CurrencySelector() {
 
   const current = currencyList.find((c) => c.code === currencyCode) || currencyList[0];
 
+  const isDark = variant === "onDark";
+
   return (
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-[var(--foreground)] border border-[color:var(--border)] rounded-md hover:bg-[var(--surface-muted)] transition-all bg-[var(--surface)]"
+        className={
+          isDark
+            ? "flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-white/95 border border-white/25 rounded-md hover:bg-white/10 transition-colors"
+            : "flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-[var(--foreground)] border border-[color:var(--border)] rounded-md hover:bg-[var(--surface-muted)] transition-all bg-[var(--surface)]"
+        }
       >
         <img
           src={current.flagUrl}
@@ -47,7 +55,11 @@ export default function CurrencySelector() {
       </button>
 
       {open && (
-        <div className="absolute top-full right-0 mt-1.5 w-44 bg-[var(--surface)] border border-[color:var(--border)] rounded-lg shadow-[0_10px_26px_rgba(0,0,0,0.14)] py-1 z-50">
+        <div
+          className={`absolute top-full right-0 mt-1.5 w-44 border rounded-lg shadow-[0_10px_26px_rgba(0,0,0,0.14)] py-1 z-[60] ${
+            isDark ? "bg-[var(--surface)] border-[color:var(--border)]" : "bg-[var(--surface)] border-[color:var(--border)]"
+          }`}
+        >
           {currencyList.map((item) => {
             const info = CURRENCIES[item.code];
             const isActive = item.code === currencyCode;
@@ -59,9 +71,7 @@ export default function CurrencySelector() {
                   setOpen(false);
                 }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors ${
-                  isActive
-                    ? "text-[#111] bg-[#F5B301]/20"
-                    : "text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
+                  isActive ? "text-[var(--foreground)] bg-brand-green/10" : "text-[var(--foreground)] hover:bg-[var(--surface-muted)]"
                 }`}
               >
                 <img

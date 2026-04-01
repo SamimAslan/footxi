@@ -52,7 +52,7 @@ export default function RootLayout({
         <Providers>
           <SmoothScroll />
           <Navbar />
-          <main className="min-h-screen pt-28">{children}</main>
+          <main className="min-h-screen pt-[var(--site-header-height)]">{children}</main>
           <Footer />
         </Providers>
       </body>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCartStore } from "@/store/cart";
-import { PRICING } from "@/data/products";
+import { PRICING, getKitVersionDisplayLabel } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
 import Link from "next/link";
 import {
@@ -114,12 +114,7 @@ export default function CartPage() {
                           {item.product.name}
                         </h3>
                         <p className="text-xs text-[var(--muted)] mt-0.5">
-                          {(item.selectedKitType || item.product.kitType) === "fans"
-                            ? "Fans Version"
-                            : (item.selectedKitType || item.product.kitType) === "player"
-                            ? "Player Version"
-                            : "Retro Kit"}{" "}
-                          &middot; Size {item.size}
+                          {getKitVersionDisplayLabel(item.product)} &middot; Size {item.size}
                         </p>
                       </div>
                       <button

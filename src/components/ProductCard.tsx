@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { PRICING, Product, getProductBasePrice, getProductId } from "@/data/products";
+import { ArrowRight, Truck } from "lucide-react";
+import {
+  PRICING,
+  Product,
+  getProductBasePrice,
+  getProductId,
+  getEffectiveKitType,
+} from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getDisplayTeamName } from "@/lib/productDisplay";
 
@@ -27,7 +34,7 @@ function getEstimatedDeliveryWindow(): string {
   const fmt = (d: Date) =>
     d.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
 
-  return `${fmt(minDate)} - ${fmt(maxDate)}`;
+  return `${fmt(minDate)} – ${fmt(maxDate)}`;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -36,84 +43,117 @@ export default function ProductCard({ product }: ProductCardProps) {
   const productId = getProductId(product);
   const estimatedDelivery = getEstimatedDeliveryWindow();
   const displayTeam = getDisplayTeamName(product);
+  const effectiveKit = getEffectiveKitType(product);
 
   return (
     <Link
       href={`/product/${productId}`}
-      className="group block bg-[var(--surface)] border border-[color:var(--border)] overflow-hidden hover:border-gold/[0.25] hover:shadow-[0_10px_30px_rgba(245,184,0,0.08)] transition-all duration-500"
+      className="group block rounded-2xl bg-[var(--surface)] border border-[color:var(--border)] overflow-hidden shadow-[0_1px_2px_rgba(34,86,45,0.05),0_4px_12px_-4px_rgba(34,86,45,0.08)] hover:shadow-[0_16px_48px_-12px_rgba(34,86,45,0.2)] hover:border-brand-green/35 hover:-translate-y-1 transition-all duration-300 ease-out"
     >
-      {/* Image */}
-      <div className="relative aspect-[3/4] bg-white overflow-hidden">
-          {product.image && product.image.startsWith("http") ? (
+      {/* Image stage */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-[var(--surface-muted)] via-white to-[#e8ece9]">
+        <div
+          className="absolute inset-0 opacity-[0.35] pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 85% 70% at 50% 38%, rgba(34, 86, 45, 0.06) 0%, transparent 65%)",
+          }}
+        />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/[0.04] to-transparent pointer-events-none" />
+
+        {product.image && product.image.startsWith("http") ? (
           <>
-            <div className="absolute inset-0 flex items-center justify-center p-6">
+            <div className="absolute inset-0 flex items-center justify-center p-5 sm:p-6">
               <img
                 src={product.image}
                 alt={product.name}
-                className={`max-w-full max-h-full object-contain scale-[1.04] transition-all duration-700 group-hover:scale-[1.08] ${
+                className={`max-w-[92%] max-h-[92%] w-auto h-auto object-contain transition-all duration-700 ease-out drop-shadow-[0_10px_28px_rgba(34,86,45,0.14)] group-hover:drop-shadow-[0_16px_40px_rgba(34,86,45,0.22)] scale-[1.02] group-hover:scale-[1.07] ${
                   product.backImage ? "group-hover:opacity-0" : ""
                 }`}
               />
             </div>
             {product.backImage && (
-              <div className="absolute inset-0 flex items-center justify-center p-6">
+              <div className="absolute inset-0 flex items-center justify-center p-5 sm:p-6">
                 <img
                   src={product.backImage}
                   alt={`${product.name} back`}
-                  className="max-w-full max-h-full object-contain scale-[1.04] opacity-0 group-hover:opacity-100 group-hover:scale-[1.08] transition-all duration-700"
+                  className="max-w-[92%] max-h-[92%] w-auto h-auto object-contain opacity-0 group-hover:opacity-100 scale-[1.02] group-hover:scale-[1.07] transition-all duration-700 ease-out drop-shadow-[0_10px_28px_rgba(34,86,45,0.14)] group-hover:drop-shadow-[0_16px_40px_rgba(34,86,45,0.22)]"
                 />
               </div>
             )}
           </>
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-display text-4xl font-bold text-black/[0.08]">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+            <div
+              className="absolute inset-0 opacity-50"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 45%, rgba(34, 86, 45, 0.08) 0%, transparent 55%)",
+              }}
+            />
+            <span className="relative font-display text-4xl sm:text-5xl font-bold tracking-tight text-brand-green/[0.18]">
               {displayTeam.substring(0, 3).toUpperCase()}
             </span>
           </div>
         )}
 
         {/* Tags */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+        <div className="absolute top-3 left-3 z-[1] flex flex-col gap-1.5">
           {product.isNewArrival && (
-            <span className="px-2.5 py-1 text-[9px] font-bold bg-gold text-[#0D0F14] tracking-[0.1em]">
-              NEW
+            <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-brand-green text-white tracking-[0.12em] uppercase shadow-sm">
+              New
             </span>
           )}
-          {product.kitType === "player" && (
-            <span className="px-2.5 py-1 text-[9px] font-bold bg-black/[0.06] text-[#334155] backdrop-blur-sm tracking-[0.1em]">
-              PLAYER
+          {effectiveKit === "player" && (
+            <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-white/90 text-[#334155] border border-[color:var(--border)] shadow-sm tracking-[0.12em] backdrop-blur-sm">
+              Player
             </span>
           )}
-          {product.kitType === "retro" && (
-            <span className="px-2.5 py-1 text-[9px] font-bold bg-gold/[0.1] text-gold backdrop-blur-sm tracking-[0.1em]">
-              RETRO
+          {effectiveKit === "retro" && (
+            <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-brand-green/12 text-brand-green border border-brand-green/20 tracking-[0.12em] uppercase backdrop-blur-sm">
+              Retro
             </span>
           )}
         </div>
 
-        {/* Hover glow border */}
-        <div className="absolute inset-0 border border-gold/0 group-hover:border-gold/[0.08] transition-all duration-700 pointer-events-none" />
-
-        {/* Top accent */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 border border-brand-green/0 group-hover:border-brand-green/20 transition-all duration-500 pointer-events-none rounded-t-2xl" />
+        <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-brand-green/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
       {/* Info */}
-      <div className="p-5 bg-[var(--surface)] border-t border-[color:var(--border)]">
-        <h3 className="font-display text-[15px] font-semibold text-[var(--foreground)] group-hover:text-[var(--foreground)] transition-colors duration-300 tracking-tight">
-          {displayTeam}
-        </h3>
-        <p className="text-[10px] text-[var(--muted)] mt-1 tracking-[0.15em] uppercase">
-          {product.type} Kit
-        </p>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="font-display text-lg font-bold text-[var(--foreground)]">
+      <div className="relative p-4 sm:p-5 bg-[var(--surface)] border-t border-[color:var(--border)]">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <h3 className="font-display text-[15px] sm:text-base font-semibold text-[var(--foreground)] tracking-tight leading-snug line-clamp-2 group-hover:text-brand-green transition-colors duration-300">
+              {displayTeam}
+            </h3>
+            {product.league ? (
+              <p className="text-[10px] text-[var(--muted)] mt-1 tracking-wide line-clamp-1">
+                {product.league}
+              </p>
+            ) : null}
+            <p className="text-[10px] text-[var(--muted)] mt-1 tracking-[0.14em] uppercase font-medium">
+              {product.type} kit
+            </p>
+          </div>
+          <span
+            className="flex-shrink-0 mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--border)] bg-[var(--surface-muted)]/60 text-brand-green opacity-40 translate-x-0 supports-[hover:hover]:opacity-0 supports-[hover:hover]:translate-x-1 supports-[hover:hover]:group-hover:opacity-100 supports-[hover:hover]:group-hover:translate-x-0 transition-all duration-300"
+            aria-hidden
+          >
+            <ArrowRight className="w-4 h-4" strokeWidth={2.25} />
+          </span>
+        </div>
+
+        <div className="mt-3.5 flex items-end justify-between gap-2">
+          <span className="font-display text-lg sm:text-xl font-bold text-brand-green tabular-nums tracking-tight">
             {formatPrice(price)}
           </span>
         </div>
-        <p className="mt-2 text-[10px] text-[var(--muted)] tracking-[0.08em] uppercase">
-          Estimated delivery: {estimatedDelivery}
+
+        <p className="mt-3 flex items-center gap-1.5 text-[10px] text-[var(--muted)] tracking-[0.06em]">
+          <Truck className="w-3.5 h-3.5 shrink-0 text-brand-green/70" strokeWidth={2} />
+          <span className="uppercase font-medium">Est. delivery</span>
+          <span className="font-normal normal-case tracking-normal">{estimatedDelivery}</span>
         </p>
       </div>
     </Link>
