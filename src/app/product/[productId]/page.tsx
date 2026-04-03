@@ -24,6 +24,7 @@ import {
   Minus,
   Plus,
   Loader2,
+  Lock,
 } from "lucide-react";
 
 export default function ProductPage() {
@@ -451,15 +452,27 @@ export default function ProductPage() {
               </button>
             )}
 
-            {/* Trust signals */}
-            <div className="rounded-xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 px-4 py-3 grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2 text-[11px] text-[var(--muted)]">
-                <Truck className="w-4 h-4 text-white shrink-0" />
-                Worldwide shipping
+            {/* Trust signals — decision point */}
+            <div className="grid gap-3 rounded-xl border border-[color:var(--border)] bg-[var(--surface-muted)]/40 px-4 py-4 sm:grid-cols-2">
+              <div className="flex gap-2 text-[11px] leading-snug text-[var(--muted)]">
+                <Truck className="mt-0.5 h-4 w-4 shrink-0 text-white/80" aria-hidden />
+                <span>
+                  Est. delivery{" "}
+                  <span className="font-medium text-[var(--foreground)]">{PRICING.cargo.standard.days} days</span>{" "}
+                  (standard). Full options at checkout.
+                </span>
               </div>
-              <div className="flex items-center gap-2 text-[11px] text-[var(--muted)]">
-                <Shield className="w-4 h-4 text-white shrink-0" />
-                Quality guaranteed
+              <div className="flex gap-2 text-[11px] leading-snug text-[var(--muted)]">
+                <Lock className="mt-0.5 h-4 w-4 shrink-0 text-white/80" aria-hidden />
+                <span>Secure checkout — encrypted payment.</span>
+              </div>
+              <div className="flex gap-2 text-[11px] leading-snug text-[var(--muted)] sm:col-span-2">
+                <Shield className="mt-0.5 h-4 w-4 shrink-0 text-white/80" aria-hidden />
+                <span>
+                  Bulk savings: {PRICING.discount.tier1.min}–{PRICING.discount.tier1.max} kits{" "}
+                  {PRICING.discount.tier1.percent}% off; {PRICING.discount.tier2.min}+ kits{" "}
+                  {PRICING.discount.tier2.percent}% off — applied in cart.
+                </span>
               </div>
             </div>
           </div>

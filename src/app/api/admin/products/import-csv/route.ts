@@ -76,6 +76,7 @@ function inferType(name: string): "home" | "away" | "third" | "retro" {
 function inferKitType(name: string, type: "home" | "away" | "third" | "retro"): "fans" | "player" | "retro" {
   if (type === "retro") return "retro";
   const n = name.toLowerCase();
+  if (/\bf1\b|formula\s*1|formula one/i.test(n)) return "player";
   if (n.includes("player")) return "player";
   if (n.includes("fan")) return "fans";
   return "fans";

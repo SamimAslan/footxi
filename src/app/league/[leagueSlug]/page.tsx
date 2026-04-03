@@ -4,7 +4,8 @@ import { useParams } from "next/navigation";
 import { getLeagueBySlug, Product } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
-import { ChevronRight, ChevronDown, Loader2, X } from "lucide-react";
+import { ChevronRight, ChevronDown, X } from "lucide-react";
+import PLPGridSkeleton from "@/components/PLPGridSkeleton";
 import { useState, useMemo, useEffect, useRef } from "react";
 
 function DropdownFilter({
@@ -12,11 +13,13 @@ function DropdownFilter({
   value,
   options,
   onChange,
+  disabled,
 }: {
   label: string;
   value: string;
   options: { value: string; label: string }[];
   onChange: (val: string) => void;
+  disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -37,8 +40,12 @@ function DropdownFilter({
   return (
     <div className="relative" ref={ref}>
       <button
-        onClick={() => setOpen(!open)}
+        type="button"
+        disabled={disabled}
+        onClick={() => !disabled && setOpen(!open)}
         className={`flex items-center gap-2 px-4 py-2.5 text-[12px] font-medium tracking-wide border transition-all duration-300 ${
+          disabled ? "cursor-not-allowed opacity-45" : ""
+        } ${
           value !== "all"
             ? "border-brand-green/35 text-white bg-brand-green/10"
             : "border-[color:var(--border)] text-[var(--muted)] hover:border-brand-green/25 hover:text-[var(--foreground)]"
@@ -55,6 +62,7 @@ function DropdownFilter({
         >
           {options.map((opt) => (
             <button
+              type="button"
               key={opt.value}
               onClick={() => {
                 onChange(opt.value);
@@ -174,18 +182,23 @@ export default function LeaguePage() {
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-[var(--foreground)] tracking-[-0.03em]">
             {league.name}
           </h1>
-          <div className="flex items-center gap-3 mt-3">
-            <span className="text-[13px] text-[var(--muted)]">
-              {league.country}
-            </span>
-            <span className="w-1 h-1 rounded-full bg-[color:var(--border)]" />
-            <span className="text-[13px] text-[var(--muted)]">
-              {filterTeams.length} teams
-            </span>
-            <span className="w-1 h-1 rounded-full bg-[color:var(--border)]" />
-            <span className="text-[13px] text-[var(--muted)]">
-              {total} kits
-            </span>
+          <div className="mt-3 flex min-h-[1.25rem] flex-wrap items-center gap-3">
+            <span className="text-[13px] text-[var(--muted)]">{league.country}</span>
+            {loading ? (
+              <>
+                <span className="h-1 w-1 rounded-full bg-[color:var(--border)]" aria-hidden />
+                <span className="inline-flex items-center gap-2 text-[13px] text-[var(--muted)]">
+                  <span className="inline-block h-3 w-28 animate-pulse rounded bg-[var(--surface-muted)]" />
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="h-1 w-1 rounded-full bg-[color:var(--border)]" aria-hidden />
+                <span className="text-[13px] text-[var(--muted)]">{filterTeams.length} teams</span>
+                <span className="h-1 w-1 rounded-full bg-[color:var(--border)]" aria-hidden />
+                <span className="text-[13px] font-medium text-[var(--foreground)]">{total} kits</span>
+              </>
+            )}
           </div>
           <div className="w-16 h-[2px] bg-brand-green mt-6" />
         </div>
@@ -197,6 +210,7 @@ export default function LeaguePage() {
           <DropdownFilter
             label="All Teams"
             value={selectedTeam}
+            disabled={loading}
             options={[
               { value: "all", label: "All Teams" },
               ...filterTeams.map((t) => ({ value: t, label: t })),
@@ -206,6 +220,7 @@ export default function LeaguePage() {
           <DropdownFilter
             label="All Types"
             value={selectedType}
+            disabled={loading}
             options={[
               { value: "all", label: "All Types" },
               { value: "fans", label: "Fans Version" },
@@ -217,6 +232,7 @@ export default function LeaguePage() {
           <DropdownFilter
             label="Sort by"
             value={sortBy}
+            disabled={loading}
             options={[
               { value: "default", label: "Default" },
               { value: "name", label: "Name A-Z" },
@@ -227,6 +243,7 @@ export default function LeaguePage() {
 
           {activeFilterCount > 0 && (
             <button
+              type="button"
               onClick={() => {
                 setSelectedTeam("all");
                 setSelectedType("all");
@@ -240,32 +257,46 @@ export default function LeaguePage() {
           )}
 
           <div className="ml-auto hidden sm:block">
-            <span className="text-[12px] text-[var(--muted)] tracking-wide">
-              {loading ? "Loading..." : `${total} kits`}
+            <span className="text-[12px] tracking-wide text-[var(--muted)]">
+              {loading ? "Updating results…" : `${total} in this view`}
             </span>
           </div>
         </div>
 
         {/* Product Grid */}
         {loading ? (
-          <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 text-white animate-spin" />
-          </div>
+          <PLPGridSkeleton count={8} />
         ) : products.length === 0 ? (
-          <div className="text-center py-24">
-            <p className="text-[var(--muted)]">
-              No kits found with these filters
+          <div className="rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] px-6 py-16 text-center">
+            <p className="font-display text-lg font-semibold text-[var(--foreground)]">No kits in this view</p>
+            <p className="mx-auto mt-2 max-w-md text-sm text-[var(--muted)]">
+              Try clearing filters or browse another league — stock updates regularly.
             </p>
-            <button
-              onClick={() => {
-                setSelectedTeam("all");
-                setSelectedType("all");
-                setPage(1);
-              }}
-              className="mt-3 text-sm text-white hover:underline"
-            >
-              Clear filters
-            </button>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedTeam("all");
+                  setSelectedType("all");
+                  setPage(1);
+                }}
+                className="rounded-full bg-brand-green px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white"
+              >
+                Clear filters
+              </button>
+              <Link
+                href="/"
+                className="rounded-full border border-[color:var(--border)] px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--foreground)]"
+              >
+                Back to home
+              </Link>
+              <Link
+                href="/contact"
+                className="text-sm font-medium text-[var(--muted)] underline-offset-4 hover:text-white hover:underline"
+              >
+                Contact support
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7">
@@ -278,6 +309,7 @@ export default function LeaguePage() {
         {totalPages > 1 && !loading && (
           <div className="flex items-center justify-center gap-2 mt-10">
             <button
+              type="button"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
               className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-40 disabled:cursor-not-allowed"
@@ -288,6 +320,7 @@ export default function LeaguePage() {
               Page {page} of {totalPages}
             </span>
             <button
+              type="button"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
               className="px-4 py-2 text-xs rounded-lg bg-[var(--surface)] border border-[color:var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-40 disabled:cursor-not-allowed"

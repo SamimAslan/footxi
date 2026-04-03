@@ -4,11 +4,19 @@ import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
 import {
   getLeagueAliasSlugs,
+  getFootballJerseyHubLeagueSlugs,
   INTERNATIONAL_COUNTRY_REGEX,
   INTERNATIONAL_MARKER_REGEX,
   isShopCategorySlug,
   isTurkishTeam,
+  UNIVERSITY_CLUB_REGEX,
 } from "@/lib/productTaxonomy";
+
+const F1_TITLE_REGEX = /f1|formula\s*1|formula one/i;
+const NBA_NFL_REGEX = /\bnba\b|\bnfl\b/i;
+
+/** Collection slugs that are not football kits (Jersey hub excludes these). */
+const NON_FOOTBALL_KIT_LEAGUE_SLUGS = ["f1", "nba-nfl", "windbreaker", "tracksuit", "hoody", "jackets"] as const;
 
 const COLLECTION_REGEX: Record<string, RegExp> = {
   jersey: /jersey/i,
@@ -56,6 +64,13 @@ export async function GET(req: NextRequest) {
           { team: { $regex: INTERNATIONAL_COUNTRY_REGEX } },
           { name: { $regex: INTERNATIONAL_COUNTRY_REGEX } },
         ];
+        const excludeUniversityClubs = {
+          $nor: [
+            { name: { $regex: UNIVERSITY_CLUB_REGEX } },
+            { team: { $regex: UNIVERSITY_CLUB_REGEX } },
+            { league: { $regex: UNIVERSITY_CLUB_REGEX } },
+          ],
+        };
         if (team) {
           const trimmed = team.trim();
           const tokens = trimmed.split(/\s+/).filter(Boolean);
@@ -69,9 +84,9 @@ export async function GET(req: NextRequest) {
               })),
             });
           }
-          filter.$and = [{ $or: internationalOr }, { $or: countryMatch }];
+          filter.$and = [{ $or: internationalOr }, { $or: countryMatch }, excludeUniversityClubs];
         } else {
-          filter.$or = internationalOr;
+          filter.$and = [{ $or: internationalOr }, excludeUniversityClubs];
         }
       } else if (league === "super-lig") {
         filter.$or = [
@@ -82,9 +97,33 @@ export async function GET(req: NextRequest) {
         filter.leagueSlug = { $in: getLeagueAliasSlugs("others") };
       } else if (league === "f1") {
         filter.$or = [
-          { name: { $regex: /f1|formula\s*1|formula one/i } },
-          { team: { $regex: /f1|formula\s*1|formula one/i } },
-          { league: { $regex: /f1|formula\s*1|formula one/i } },
+          { name: { $regex: F1_TITLE_REGEX } },
+          { team: { $regex: F1_TITLE_REGEX } },
+          { league: { $regex: F1_TITLE_REGEX } },
+        ];
+      } else if (league === "jersey") {
+        // All football-related kits in one place: same inventory as leagues + international + others + fan-made + retro + kids (minus F1 / NBA / NFL / outerwear).
+        const footballSlugs = getFootballJerseyHubLeagueSlugs();
+        filter.$and = [
+          {
+            $or: [
+              { leagueSlug: { $in: footballSlugs } },
+              { shopCategory: "jersey" },
+              { extraCategories: "jersey" },
+            ],
+          },
+          {
+            $nor: [
+              { name: { $regex: F1_TITLE_REGEX } },
+              { team: { $regex: F1_TITLE_REGEX } },
+              { league: { $regex: F1_TITLE_REGEX } },
+              { name: { $regex: NBA_NFL_REGEX } },
+              { team: { $regex: NBA_NFL_REGEX } },
+              { league: { $regex: NBA_NFL_REGEX } },
+              { shopCategory: { $in: ["nba-nfl", "windbreaker", "tracksuit", "jackets", "hoody"] } },
+              { leagueSlug: { $in: [...NON_FOOTBALL_KIT_LEAGUE_SLUGS] } },
+            ],
+          },
         ];
       } else if (isShopCategorySlug(league)) {
         filter.$or = [

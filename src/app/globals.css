@@ -19,8 +19,8 @@
 }
 
 :root {
-  /* Matches fixed Navbar: top strip + green bar + category row */
-  --site-header-height: 158px;
+  /* Matches fixed Navbar: utility strip + main row (no third category rail) */
+  --site-header-height: 112px;
   --brand-green: #2f5d40;
   --brand-green-dark: #244832;
   --brand-green-hover: #3a6f4d;
@@ -34,24 +34,19 @@
   --border: rgba(255, 255, 255, 0.065);
 }
 
-@media (max-width: 767px) {
-  :root {
-    --site-header-height: 150px;
-  }
-}
-
 @media (max-width: 639px) {
   :root {
-    --site-header-height: 168px;
+    /* Utility may wrap on small screens */
+    --site-header-height: 128px;
   }
 }
 
 body {
   background-color: var(--background);
   background-image:
-    radial-gradient(ellipse 100% 70% at 0% 0%, rgba(47, 93, 64, 0.045) 0%, transparent 48%),
-    radial-gradient(ellipse 80% 60% at 100% 20%, rgba(47, 93, 64, 0.03) 0%, transparent 42%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 0, 0, 0.2) 0%, transparent 45%);
+    radial-gradient(ellipse 100% 70% at 0% 0%, rgba(47, 93, 64, 0.02) 0%, transparent 48%),
+    radial-gradient(ellipse 80% 60% at 100% 20%, rgba(47, 93, 64, 0.015) 0%, transparent 42%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 0, 0, 0.18) 0%, transparent 45%);
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
@@ -68,6 +63,11 @@ body {
 :focus-visible {
   outline: 2px solid color-mix(in srgb, var(--brand-green) 65%, white);
   outline-offset: 2px;
+}
+
+/* Search inputs use component-level focus (no green outline) */
+.site-search-input:focus-visible {
+  outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -91,7 +91,7 @@ body::before {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
@@ -278,4 +278,19 @@ html {
   font-weight: 600;
   border-radius: 0.5rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Homepage below hero — light boutique storefront (scoped tokens) */
+.home-storefront {
+  --store-bg: #f4f3f0;
+  --store-surface: #ffffff;
+  --store-muted-bg: #eceae6;
+  --store-text: #1a1d24;
+  --store-text-secondary: #5c6370;
+  --store-border: rgba(26, 29, 36, 0.1);
+  --store-cta: #1a1d24;
+  --store-cta-hover: #2d323c;
+  --store-accent-gold: #c9a227;
+  background-color: var(--store-bg);
+  color: var(--store-text);
 }

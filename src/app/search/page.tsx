@@ -6,6 +6,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, Search } from "lucide-react";
 import { Product, getProductId } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+import PLPGridSkeleton from "@/components/PLPGridSkeleton";
+
+const TRENDING_QUERIES = [
+  { label: "Brazil", q: "brazil" },
+  { label: "Japan", q: "japan" },
+  { label: "Retro Barcelona", q: "barcelona retro" },
+  { label: "Milan", q: "milan" },
+  { label: "France national", q: "france" },
+  { label: "Premier League", q: "premier" },
+] as const;
 
 type KitFilter = "all" | "fans" | "player" | "retro";
 
@@ -140,18 +150,42 @@ function SearchContent() {
           </p>
         </div>
 
-        <form onSubmit={onSubmit} className="relative max-w-2xl mb-6">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
+        <form onSubmit={onSubmit} className="relative mb-6 max-w-3xl">
+          <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--muted)]" />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Jersey title, season, colour, club name in listing…"
+            placeholder="Search by club, season, retro, league, or product title…"
             aria-label="Search product titles"
             autoComplete="off"
-            className="w-full pl-12 pr-4 py-3.5 bg-[var(--surface)] border border-[color:var(--border)] rounded-xl text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-brand-green/40"
+            className="site-search-input w-full rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] py-4 pl-14 pr-4 text-base text-[var(--foreground)] shadow-sm placeholder:text-[var(--muted)] focus:border-[color:var(--border)] focus:outline-none sm:py-5 sm:text-lg"
           />
         </form>
+
+        <div className="mb-10">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Popular searches</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {TRENDING_QUERIES.map(({ label, q }) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => {
+                  setQuery(q);
+                  setPage(1);
+                  const p = new URLSearchParams();
+                  p.set("q", q);
+                  if (kitTypeFromUrl !== "all") p.set("kitType", kitTypeFromUrl);
+                  if (newFromUrl) p.set("new", "1");
+                  router.push(`/search?${p.toString()}`);
+                }}
+                className="rounded-full border border-[color:var(--border)] bg-[var(--surface-muted)]/80 px-4 py-2 text-xs font-medium text-[var(--foreground)] transition hover:border-brand-green/35 hover:bg-[var(--surface)]"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {normalizedQuery.length >= 2 && (
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center mb-8 pb-6 border-b border-[color:var(--border)]">
@@ -188,9 +222,11 @@ function SearchContent() {
           </div>
         )}
 
-        {loading ? (
-          <div className="py-16 flex items-center justify-center">
-            <Loader2 className="w-6 h-6 animate-spin text-white" />
+        {loading && normalizedQuery.length >= 2 ? (
+          <PLPGridSkeleton count={8} />
+        ) : loading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-6 w-6 animate-spin text-white" />
           </div>
         ) : normalizedQuery.length < 2 ? (
           <div

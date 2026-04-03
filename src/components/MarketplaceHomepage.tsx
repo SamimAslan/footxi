@@ -7,34 +7,28 @@ import {
   Activity,
   ArrowRight,
   Baby,
-  Check,
   ChevronLeft,
   ChevronRight,
+  CircleCheck,
   CloudRainWind,
   Gauge,
   Goal,
   History,
   Layers,
   Palette,
+  Search,
   Shirt,
-  Star,
   Trophy,
-  Truck,
-  Shield,
-  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import {
   Product,
-  getProductBasePrice,
   getProductId,
-  getKitVersionDisplayLabel,
-  getEffectiveKitType,
   leagues,
 } from "@/data/products";
-import { useCurrency } from "@/context/CurrencyContext";
-import { useCartStore } from "@/store/cart";
-import { getDisplayTeamName } from "@/lib/productDisplay";
+import HomeTrustBand from "@/components/HomeTrustBand";
+import HomeFaqTeaser from "@/components/HomeFaqTeaser";
+import PremiumHomeProductCard from "@/components/PremiumHomeProductCard";
 
 /**
  * Hero: `imagePosition` = object-position for object-cover (France = top-weighted).
@@ -143,6 +137,19 @@ const CATEGORY_ICONS: Record<(typeof HOMEPAGE_CATEGORIES)[number]["slug"], Lucid
   "fan-made": Palette,
 };
 
+const CATEGORY_TILE_STYLE: Record<(typeof HOMEPAGE_CATEGORIES)[number]["slug"], string> = {
+  jersey: "from-zinc-200 via-stone-100 to-zinc-50",
+  windbreaker: "from-slate-300 via-slate-200 to-zinc-100",
+  jackets: "from-neutral-300 via-stone-200 to-zinc-50",
+  hoody: "from-zinc-300 via-neutral-200 to-stone-50",
+  tracksuit: "from-stone-300 via-zinc-200 to-neutral-50",
+  kids: "from-amber-100/90 via-orange-50 to-stone-50",
+  "nba-nfl": "from-orange-200/80 via-amber-100 to-zinc-50",
+  f1: "from-red-200/70 via-zinc-200 to-zinc-50",
+  "retro-kits": "from-amber-200/60 via-yellow-50 to-stone-50",
+  "fan-made": "from-emerald-200/50 via-teal-50 to-zinc-50",
+};
+
 /** Pinned featured jerseys (exact DB product name / listing title). */
 const FEATURED_EXACT_NAMES = {
   japan: "24/25 Japan Special Edition Fans 1:1 Quality Soccer Jersey",
@@ -153,13 +160,27 @@ const FEATURED_EXACT_NAMES = {
 
 const FEATURED_KITS_COUNT = 10;
 
-const FEATURED_SIDEBAR_SHORTCUTS = [
-  { label: "Retro kits", href: "/league/retro-kits", hint: "Throwbacks & classics" },
-  { label: "National teams", href: "/league/international-teams", hint: "Country shirts" },
-  { label: "Japan & specials", href: "/search?q=japan", hint: "Limited looks" },
-  { label: "New arrivals", href: "/search?q=jersey&new=1", hint: "Recently listed" },
-  { label: "Fan-made drops", href: "/league/fan-made", hint: "Supporter editions" },
+const SHOP_INTENT_LINKS = [
+  { label: "All kits", href: "/league/jersey" },
+  { label: "Retro kits", href: "/league/retro-kits" },
+  { label: "New arrivals", href: "/search?q=kit&new=1" },
+  { label: "National teams", href: "/league/international-teams" },
+  { label: "Fan made", href: "/league/fan-made" },
+  { label: "Kids", href: "/league/kids" },
+  { label: "Tracksuits", href: "/league/tracksuit" },
+  { label: "Search by club", href: "/search" },
 ] as const;
+
+const LEAGUE_TAGLINES: Record<string, string> = {
+  "premier-league": "Big clubs, current season & throwbacks",
+  "la-liga": "Spanish giants and derby kits",
+  "serie-a": "Calcio home, away & special editions",
+  bundesliga: "Bundesliga staples and fan favourites",
+  "ligue-1": "Ligue 1 clubs and limited looks",
+  "super-lig": "Süper Lig clubs and Istanbul colours",
+  "international-teams": "Country shirts & tournament editions",
+  others: "European clubs outside the big five",
+};
 
 type ProductsResponse =
   | Product[]
@@ -334,104 +355,41 @@ async function fetchHomepageFeaturedKits(): Promise<Product[]> {
   return out.slice(0, FEATURED_KITS_COUNT);
 }
 
-function ProductTile({
-  product,
-  badge,
-  onAdd,
-  variant = "default",
-}: {
-  product: Product;
-  badge?: string;
-  onAdd: (p: Product) => void;
-  variant?: "default" | "spotlight";
-}) {
-  const { formatPrice } = useCurrency();
-  const price = getProductBasePrice(product);
-  const displayTeam = getDisplayTeamName(product);
-  const rating = (4.3 + ((displayTeam.length + price) % 6) / 10).toFixed(1);
-  const [justAdded, setJustAdded] = useState(false);
+const HOME_LEAGUE_SLUGS = [
+  "premier-league",
+  "la-liga",
+  "serie-a",
+  "bundesliga",
+  "ligue-1",
+  "super-lig",
+  "international-teams",
+  "others",
+] as const;
 
-  useEffect(() => {
-    if (!justAdded) return;
-    const timer = setTimeout(() => setJustAdded(false), 1000);
-    return () => clearTimeout(timer);
-  }, [justAdded]);
-
-  const spotlight = variant === "spotlight";
-
-  return (
-    <Link
-      href={`/product/${getProductId(product)}`}
-      className="group flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] shadow-[0_4px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-[color-mix(in_srgb,var(--brand-green)_35%,transparent)] hover:shadow-[0_12px_36px_-10px_rgba(0,0,0,0.4)] hover:-translate-y-0.5"
-    >
-      <div
-        className={`relative flex shrink-0 items-center justify-center overflow-hidden bg-gradient-to-b from-[#161b22] via-[var(--surface)] to-[var(--background)] ${
-          spotlight
-            ? "h-[clamp(200px,42vw,300px)] sm:h-[clamp(220px,38vw,320px)] lg:h-[clamp(240px,32vw,340px)]"
-            : "h-[clamp(150px,38vw,200px)] sm:h-[clamp(160px,34vw,220px)] lg:h-[200px]"
-        }`}
-      >
-        {product.image ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            className={`max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03] ${
-              spotlight ? "p-1.5 sm:p-2" : "p-1 sm:p-1.5"
-            }`}
-          />
-        ) : null}
-        {badge ? (
-          <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider bg-brand-green text-white shadow-glow-mint">
-            {badge}
-          </span>
-        ) : null}
-      </div>
-      <div className={`flex min-h-0 flex-1 flex-col space-y-1.5 ${spotlight ? "p-3 sm:p-4" : "p-2.5 sm:p-3"}`}>
-        <p
-          className={`font-bold text-white line-clamp-2 ${spotlight ? "font-display text-base sm:text-lg leading-snug" : "text-[13px] sm:text-[14px] line-clamp-1"}`}
-        >
-          {displayTeam}
-        </p>
-        <p className="text-[10px] tracking-[0.14em] text-[var(--muted)]">
-          {getKitVersionDisplayLabel(product)}
-        </p>
-        <div className="flex items-center justify-between gap-2">
-          <p
-            className={`font-bold font-display text-[var(--foreground)] tabular-nums ${spotlight ? "text-lg sm:text-xl" : "text-[16px] sm:text-[17px]"}`}
-          >
-            {formatPrice(price)}
-          </p>
-          <div className={`inline-flex shrink-0 items-center gap-1 text-[var(--muted)] ${spotlight ? "text-[11px]" : "text-[11px]"}`}>
-            <Star className={`text-white fill-white/90 ${spotlight ? "h-3.5 w-3.5" : "h-3.5 w-3.5"}`} />
-            {rating}
-          </div>
-        </div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            onAdd(product);
-            setJustAdded(true);
-          }}
-          className={`mt-auto w-full rounded-full font-bold uppercase tracking-wide transition-all duration-200 active:scale-[0.98] ${spotlight ? "h-10 text-[11px] sm:h-11 sm:text-xs" : "h-9 text-[11px]"} ${
-            justAdded
-              ? "bg-brand-green text-white shadow-glow-mint"
-              : "bg-brand-green text-white hover:bg-brand-green-dark shadow-glow-mint"
-          }`}
-        >
-          <span className="inline-flex items-center justify-center gap-1.5">
-            {justAdded ? <Check className="w-3.5 h-3.5" /> : null}
-            {justAdded ? "Added" : "Add to cart"}
-          </span>
-        </button>
-      </div>
-    </Link>
-  );
-}
+const WHY_FOOTXI = [
+  {
+    title: "Real product photos",
+    body: "Listings use our own imagery where provided — so you know what the kit looks like before you buy.",
+  },
+  {
+    title: "Clear version labels",
+    body: "Fans, player, and retro are called out on every product. No guessing which edition you are getting.",
+  },
+  {
+    title: "Worldwide tracked delivery",
+    body: "Shipping options and timelines are shown at checkout, with tracked services where available.",
+  },
+  {
+    title: "Support when you need it",
+    body: "Questions on sizing, custom names, or your order? We aim to respond within 24 hours.",
+  },
+] as const;
 
 export default function MarketplaceHomepage() {
-  const addItem = useCartStore((s) => s.addItem);
   const [bannerIndex, setBannerIndex] = useState(0);
   const [featuredKits, setFeaturedKits] = useState<Product[]>([]);
+  const [justInKits, setJustInKits] = useState<Product[]>([]);
+  const [leagueTotals, setLeagueTotals] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -450,7 +408,14 @@ export default function MarketplaceHomepage() {
 
   useEffect(() => {
     async function init() {
-      const homeFeatured = await fetchHomepageFeaturedKits();
+      const [homeFeatured, newestPack] = await Promise.all([
+        fetchHomepageFeaturedKits(),
+        fetchProducts(
+          new URLSearchParams({ league: "jersey", page: "1", limit: "12", sort: "newest" })
+        ),
+      ]);
+      setJustInKits(newestPack.items.filter(isMensFootballJersey).slice(0, 8));
+
       if (homeFeatured.length >= FEATURED_KITS_COUNT) {
         setFeaturedKits(homeFeatured.slice(0, FEATURED_KITS_COUNT));
         return;
@@ -520,30 +485,35 @@ export default function MarketplaceHomepage() {
     init();
   }, []);
 
-  const addQuick = (p: Product) => {
-    addItem({
-      product: p,
-      selectedKitType: getEffectiveKitType(p),
-      quantity: 1,
-      selectedBadges: [],
-      customName: "",
-      customNumber: "",
-      hasCustomNameNumber: false,
-      size: "M",
-    });
-  };
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const entries = await Promise.all(
+        HOME_LEAGUE_SLUGS.map(async (slug) => {
+          try {
+            const r = await fetch(`/api/products?league=${slug}&page=1&limit=1`);
+            const d = (await r.json()) as { total?: number };
+            return [slug, typeof d.total === "number" ? d.total : 0] as const;
+          } catch {
+            return [slug, 0] as const;
+          }
+        })
+      );
+      if (!cancelled) setLeagueTotals(Object.fromEntries(entries));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-
-  const leagueCards = leagues.filter((l) =>
-    ["premier-league", "la-liga", "serie-a", "bundesliga", "ligue-1", "super-lig", "international-teams", "others"].includes(l.slug)
-  );
+  const leagueCards = leagues.filter((l) => HOME_LEAGUE_SLUGS.includes(l.slug as (typeof HOME_LEAGUE_SLUGS)[number]));
 
   return (
     <div className="bg-[var(--background)]">
       {/* Hero — muted accents */}
       <section className="relative w-full min-h-[min(58vh,520px)] sm:min-h-[min(62vh,580px)] lg:min-h-[min(64vh,640px)] overflow-hidden">
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-24 bg-gradient-to-t from-[var(--background)] to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-36 bg-gradient-to-t from-[#07080a] via-[#0c0e12]/95 to-transparent sm:h-40"
           aria-hidden
         />
         <Link href={HERO_SLIDES[bannerIndex].href} className="group block absolute inset-0 z-0">
@@ -584,9 +554,6 @@ export default function MarketplaceHomepage() {
               {HERO_SLIDES[bannerIndex].cta}
               <ArrowRight className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2.5} aria-hidden />
             </span>
-            <p className="mt-4 text-[11px] sm:text-[12px] text-white/45 max-w-sm">
-              Tap anywhere on the hero — same destination as the button.
-            </p>
           </div>
         </Link>
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
@@ -620,242 +587,236 @@ export default function MarketplaceHomepage() {
           <ChevronRight className="w-5 h-5" />
         </button>
         <div
-          className="pointer-events-none absolute bottom-0 left-0 right-0 z-[12] h-[clamp(3rem,8vw,5rem)] bg-[var(--background)]"
+          className="pointer-events-none absolute bottom-0 left-0 right-0 z-[12] h-[clamp(3.5rem,9vw,6rem)] bg-gradient-to-b from-[#050607] via-[#0c0e12] to-[#f4f3f0]"
           style={{ clipPath: "polygon(0 40%, 100% 0, 100% 100%, 0 100%)" }}
           aria-hidden
         />
       </section>
 
-      {/* ——— Below hero: editorial layout (not a flat product grid) ——— */}
-      <div className="pb-14 sm:pb-20">
-        {/* Featured — magazine block + bento */}
-        <section className="relative border-y border-[color:var(--border)] bg-[color-mix(in_srgb,var(--surface)_35%,var(--background))] py-12 sm:py-16 lg:py-20">
-          <span
-            className="pointer-events-none absolute right-2 top-6 select-none font-display text-[clamp(5rem,18vw,12rem)] font-bold leading-none text-white/[0.04] sm:right-8 lg:top-10"
-            aria-hidden
-          >
-            01
-          </span>
-          <div className="relative mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
-            <header className="mb-10 max-w-2xl lg:mb-14">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[var(--muted)]">
-                Curated picks
+      <div className="home-storefront">
+        <HomeTrustBand />
+
+        {/* Shop by intent */}
+        <section className="border-b border-[var(--store-border)] bg-[var(--store-bg)]">
+          <div className="mx-auto max-w-[1600px] px-4 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-[var(--store-text)] sm:text-3xl">Shop faster</h2>
+            <p className="mt-2 max-w-xl text-[15px] text-[var(--store-text-secondary)]">
+              Browse by type, league, or latest drops — one tap each.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {SHOP_INTENT_LINKS.map((link) => (
+                <Link
+                  key={link.href + link.label}
+                  href={link.href}
+                  className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-2xl border border-[var(--store-border)] bg-[var(--store-surface)] px-5 py-3 text-[14px] font-semibold text-[var(--store-text)] shadow-[0_2px_12px_rgba(26,29,36,0.06)] transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-[0_12px_32px_-8px_rgba(26,29,36,0.12)]"
+                >
+                  {link.label === "Search by club" ? <Search className="h-4 w-4 opacity-60" aria-hidden /> : null}
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Best sellers */}
+        <section className="bg-[var(--store-bg)]">
+          <div className="mx-auto max-w-[1600px] px-4 py-14 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--store-text-secondary)]">
+                  Best sellers
+                </p>
+                <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-[var(--store-text)] sm:text-3xl">
+                  Popular right now
+                </h2>
+                <p className="mt-2 max-w-lg text-sm text-[var(--store-text-secondary)]">
+                  Same quality story on every card — open any kit for full details and checkout.
+                </p>
+              </div>
+              <Link
+                href="/league/jersey"
+                className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-[var(--store-text)] underline-offset-4 hover:underline"
+              >
+                Shop all football kits
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </div>
+            {featuredKits.length > 0 ? (
+              <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:grid-cols-5">
+                {featuredKits.map((p) => (
+                  <PremiumHomeProductCard key={getProductId(p)} product={p} />
+                ))}
+              </div>
+            ) : (
+              <p className="mt-10 rounded-[22px] border border-[var(--store-border)] bg-[var(--store-surface)] px-4 py-10 text-center text-sm text-[var(--store-text-secondary)]">
+                Loading picks… browse by league below if this takes a moment.
               </p>
-              <h2 className="mt-3 font-display text-[clamp(2.25rem,5.5vw,3.75rem)] font-bold leading-[0.98] tracking-tight text-white">
-                Featured kits
-              </h2>
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--muted)]">
-                One lead piece, then a tight pair and the rest in a clean row — same stock, less “catalog wall”.
+            )}
+          </div>
+        </section>
+
+        {/* New arrivals — editorial split */}
+        {justInKits.length > 0 ? (
+          <section className="border-y border-[var(--store-border)] bg-[var(--store-surface)]">
+            <div className="mx-auto max-w-[1600px] px-4 py-14 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--store-accent-gold)]">
+                    Latest additions
+                  </p>
+                  <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-[var(--store-text)] sm:text-3xl">
+                    New arrivals
+                  </h2>
+                  <p className="mt-2 text-sm text-[var(--store-text-secondary)]">Fresh football jerseys just added to the catalogue.</p>
+                </div>
+                <Link
+                  href="/search?q=kit&new=1"
+                  className="text-sm font-semibold text-[var(--store-text)] underline-offset-4 hover:underline"
+                >
+                  View all new →
+                </Link>
+              </div>
+              <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+                <div className="lg:min-h-0">
+                  <PremiumHomeProductCard product={justInKits[0]} size="large" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {justInKits.slice(1, 5).map((p) => (
+                    <PremiumHomeProductCard key={getProductId(p)} product={p} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {/* Leagues */}
+        <section className="bg-[var(--store-bg)]">
+          <div className="mx-auto max-w-[1600px] px-4 py-14 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-[var(--store-text)] sm:text-3xl">Shop by league</h2>
+            <p className="mt-2 max-w-xl text-sm text-[var(--store-text-secondary)]">
+              Competition hubs with filters and the same premium cards as the rest of the store.
+            </p>
+            <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+              {leagueCards.map((league) => {
+                const total = leagueTotals[league.slug];
+                const line = LEAGUE_TAGLINES[league.slug] ?? "Club and national kits";
+                return (
+                  <Link
+                    key={league.slug}
+                    href={`/league/${league.slug}`}
+                    className="group relative flex flex-col overflow-hidden rounded-[22px] border border-[var(--store-border)] bg-[var(--store-surface)] p-5 shadow-[0_4px_20px_rgba(26,29,36,0.05)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_-12px_rgba(26,29,36,0.1)]"
+                  >
+                    <div
+                      className="pointer-events-none absolute inset-0 opacity-[0.07]"
+                      style={{
+                        backgroundImage: `radial-gradient(circle at 80% 20%, #1a1d24 0%, transparent 55%)`,
+                      }}
+                      aria-hidden
+                    />
+                    <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--store-border)] bg-[var(--store-muted-bg)] transition-transform duration-300 group-hover:scale-105">
+                      {league.logo ? (
+                        <img
+                          src={league.logo}
+                          alt=""
+                          className={`max-h-[80%] max-w-[80%] object-contain ${league.slug === "international-teams" ? "scale-110" : ""}`}
+                        />
+                      ) : null}
+                    </div>
+                    <span className="relative mt-5 text-lg font-bold text-[var(--store-text)]">{league.name}</span>
+                    <span className="relative mt-2 text-[13px] leading-snug text-[var(--store-text-secondary)]">{line}</span>
+                    <span className="relative mt-3 text-[12px] font-medium tabular-nums text-[var(--store-text-secondary)]">
+                      {typeof total === "number" && total > 0 ? `${total} kits` : "Browse collection"}
+                    </span>
+                    <span className="relative mt-4 text-[12px] font-semibold text-[var(--store-text)] underline-offset-2 group-hover:underline">
+                      View collection →
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Categories */}
+        <section className="border-t border-[var(--store-border)] bg-[var(--store-surface)]">
+          <div className="mx-auto max-w-[1600px] px-4 py-14 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-[var(--store-text)] sm:text-3xl">Shop by category</h2>
+            <p className="mt-2 text-sm text-[var(--store-text-secondary)]">Layers, kids, and crossover sports — each aisle has its own filter set.</p>
+            <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {HOMEPAGE_CATEGORIES.map((category) => {
+                const Icon = CATEGORY_ICONS[category.slug];
+                const grad = CATEGORY_TILE_STYLE[category.slug];
+                return (
+                  <Link
+                    key={category.slug}
+                    href={`/league/${category.slug}`}
+                    className="group flex flex-col overflow-hidden rounded-[22px] border border-[var(--store-border)] bg-[var(--store-surface)] shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <div
+                      className={`relative flex aspect-[5/3] items-center justify-center bg-gradient-to-br ${grad} overflow-hidden`}
+                    >
+                      <Icon
+                        className="h-14 w-14 text-[#1a1d24]/25 transition-transform duration-300 group-hover:scale-110"
+                        strokeWidth={1.25}
+                        aria-hidden
+                      />
+                    </div>
+                    <div className="p-4 sm:p-5">
+                      <span className="text-[15px] font-bold text-[var(--store-text)]">{category.label}</span>
+                      <p className="mt-2 line-clamp-2 text-[12px] leading-relaxed text-[var(--store-text-secondary)]">{category.blurb}</p>
+                      <span className="mt-4 inline-flex text-[12px] font-semibold text-[var(--store-text)]">
+                        Explore {category.label.toLowerCase()} →
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Why FootXI */}
+        <section className="border-t border-[var(--store-border)] bg-[var(--store-bg)]">
+          <div className="mx-auto max-w-[1600px] px-4 py-14 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+            <h2 className="text-center font-display text-2xl font-bold tracking-tight text-[var(--store-text)] sm:text-3xl">
+              Why shop with FootXI
+            </h2>
+            <p className="mx-auto mt-3 max-w-lg text-center text-sm text-[var(--store-text-secondary)]">
+              We are not a random listing wall — we are set up like a real football store.
+            </p>
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+              {WHY_FOOTXI.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-[22px] border border-[var(--store-border)] bg-[var(--store-surface)] p-6 shadow-[0_2px_16px_rgba(26,29,36,0.04)]"
+                >
+                  <CircleCheck className="h-6 w-6 text-[var(--store-text)]" strokeWidth={1.5} aria-hidden />
+                  <h3 className="mt-4 text-[16px] font-bold text-[var(--store-text)]">{item.title}</h3>
+                  <p className="mt-2 text-[13px] leading-relaxed text-[var(--store-text-secondary)]">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <HomeFaqTeaser />
+
+        {/* Search CTA */}
+        <section className="border-t border-[var(--store-border)] bg-[var(--store-bg)] pb-16 pt-12 sm:pb-20">
+          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
+            <div className="rounded-[24px] border border-[var(--store-border)] bg-[var(--store-surface)] px-6 py-12 text-center shadow-[0_8px_40px_-12px_rgba(26,29,36,0.08)] sm:px-12 sm:py-14">
+              <h2 className="font-display text-xl font-bold text-[var(--store-text)] sm:text-2xl">Find your kit</h2>
+              <p className="mx-auto mt-2 max-w-md text-sm text-[var(--store-text-secondary)]">
+                Search by club, season, retro, or league — every word must appear in the product title.
               </p>
               <Link
                 href="/search"
-                className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-white/80 transition hover:text-white"
+                className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--store-cta)] px-10 py-4 text-sm font-semibold text-white transition hover:bg-[var(--store-cta-hover)]"
               >
-                Browse everything
-                <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
+                <Search className="h-4 w-4" aria-hidden />
+                Open search
               </Link>
-            </header>
-
-            {featuredKits.length > 0 ? (
-              <div className="space-y-8 lg:space-y-10">
-                {featuredKits.length === 1 ? (
-                  <div className="mx-auto max-w-lg lg:max-w-2xl">
-                    <ProductTile product={featuredKits[0]} onAdd={addQuick} variant="spotlight" />
-                  </div>
-                ) : (
-                  <>
-                    <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-12 lg:gap-6">
-                      <div className="lg:col-span-5">
-                        <ProductTile product={featuredKits[0]} onAdd={addQuick} variant="spotlight" />
-                      </div>
-                      <div className="flex flex-col gap-4 lg:col-span-3 lg:gap-6">
-                        {featuredKits.slice(1, 3).map((p) => (
-                          <ProductTile key={getProductId(p)} product={p} onAdd={addQuick} />
-                        ))}
-                      </div>
-                      <aside className="relative hidden h-full min-h-0 flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-gradient-to-b from-[var(--surface-muted)]/55 via-[var(--surface)] to-[var(--background)] p-6 sm:p-7 lg:col-span-4 lg:flex">
-                        <div
-                          className="pointer-events-none absolute -right-6 top-1/2 -translate-y-1/2 font-display text-[8rem] font-bold leading-none text-white/[0.04] sm:text-[9rem]"
-                          aria-hidden
-                        >
-                          FX
-                        </div>
-
-                        <div className="relative">
-                          <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--brand-green)]">
-                            <Sparkles className="h-3.5 w-3.5 opacity-80" aria-hidden />
-                            From the edit
-                          </p>
-                          <p className="mt-4 font-display text-lg leading-snug text-white sm:text-xl">
-                            Retro grails, national drops, and club staples — we rotate this row as new lines land.
-                          </p>
-                          <p className="mt-3 text-[13px] leading-relaxed text-[var(--muted)]">
-                            Use the shortcuts below to skip straight into the aisles that match how you browse.
-                          </p>
-                        </div>
-
-                        <nav
-                          className="relative mt-8 flex flex-1 flex-col border-t border-[color:var(--border)] pt-6 min-h-[200px]"
-                          aria-label="Quick shop links"
-                        >
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
-                            Shortcuts
-                          </p>
-                          <ul className="mt-4 flex flex-1 flex-col gap-1">
-                            {FEATURED_SIDEBAR_SHORTCUTS.map((item) => (
-                              <li key={item.href}>
-                                <Link
-                                  href={item.href}
-                                  className="group flex items-center justify-between gap-3 rounded-xl border border-transparent px-3 py-2.5 transition hover:border-[color:var(--border)] hover:bg-[var(--background)]/60"
-                                >
-                                  <span>
-                                    <span className="block text-[13px] font-semibold text-white group-hover:text-white">
-                                      {item.label}
-                                    </span>
-                                    <span className="mt-0.5 block text-[11px] text-[var(--muted)]">{item.hint}</span>
-                                  </span>
-                                  <ChevronRight
-                                    className="h-4 w-4 shrink-0 text-[var(--muted)] opacity-60 transition group-hover:translate-x-0.5 group-hover:opacity-100 group-hover:text-white"
-                                    aria-hidden
-                                  />
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </nav>
-
-                        <div className="relative mt-6 space-y-3 border-t border-[color:var(--border)] pt-6">
-                          <div className="flex gap-3 text-[12px] leading-snug text-[var(--muted)]">
-                            <Truck className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-green)]/80" aria-hidden />
-                            <span>Worldwide shipping — rates and times at checkout.</span>
-                          </div>
-                          <div className="flex gap-3 text-[12px] leading-snug text-[var(--muted)]">
-                            <Shield className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-green)]/80" aria-hidden />
-                            <span>Clear listings: fans, player, and retro called out on each product.</span>
-                          </div>
-                        </div>
-
-                        <div className="relative mt-auto flex items-center justify-between gap-3 border-t border-[color:var(--border)] pt-6">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--muted)]">
-                            FootXI edit
-                          </p>
-                          <Link
-                            href="/search"
-                            className="text-[11px] font-semibold text-white/70 underline-offset-4 transition hover:text-white hover:underline"
-                          >
-                            Full catalogue
-                          </Link>
-                        </div>
-                      </aside>
-                    </div>
-                    {featuredKits.length > 3 ? (
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
-                        {featuredKits.slice(3).map((p) => (
-                          <ProductTile key={getProductId(p)} product={p} onAdd={addQuick} />
-                        ))}
-                      </div>
-                    ) : null}
-                  </>
-                )}
-              </div>
-            ) : null}
-          </div>
-        </section>
-
-        {/* Leagues — horizontal filmstrip */}
-        <section className="mx-auto max-w-[1600px] px-4 pt-12 sm:px-6 sm:pt-16 lg:px-10">
-          <div className="mb-6 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[var(--muted)]">Competitions</p>
-              <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                Browse by league
-              </h2>
-            </div>
-            <span className="hidden text-[10px] font-medium uppercase tracking-widest text-[var(--muted)] sm:block">
-              Scroll →
-            </span>
-          </div>
-          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-3 pt-1 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
-            {leagueCards.map((league) => (
-              <Link
-                key={league.slug}
-                href={`/league/${league.slug}`}
-                className="snap-start shrink-0 w-[108px] sm:w-[120px] flex flex-col items-center gap-3 rounded-3xl border border-[color:var(--border)] bg-[var(--surface)] px-3 py-5 text-center shadow-sm transition hover:border-white/12 hover:bg-[var(--surface-muted)]"
-              >
-                <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[color:var(--border)] bg-[var(--background)] p-2">
-                  {league.logo ? (
-                    <img
-                      src={league.logo}
-                      alt=""
-                      className={`max-h-full max-w-full object-contain ${
-                        league.slug === "international-teams" ? "scale-110" : ""
-                      }`}
-                    />
-                  ) : null}
-                </div>
-                <span className="text-[10px] font-semibold leading-tight text-white/90 line-clamp-2 min-h-[2.5em]">
-                  {league.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Categories — sticky editorial column + staggered grid */}
-        <section className="mt-14 border-t border-[color:var(--border)] pt-14 sm:mt-16 sm:pt-16">
-          <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
-            <div className="xl:grid xl:grid-cols-12 xl:items-start xl:gap-14">
-              <div className="xl:sticky xl:top-[calc(var(--site-header-height)+1.25rem)] xl:col-span-4 xl:self-start">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[var(--muted)]">Directory</p>
-                <h2 className="mt-3 max-w-xs font-display text-[clamp(2rem,4vw,2.75rem)] font-bold leading-[1.05] tracking-tight text-white">
-                  Shop by category
-                </h2>
-                <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--muted)]">
-                  Same departments as the nav — jerseys, layers, kids, and crossover sports — laid out so you can scan in one pass.
-                </p>
-                <Link
-                  href="/league/jersey"
-                  className="group mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-white/85 transition hover:text-white"
-                >
-                  All jerseys
-                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                </Link>
-              </div>
-
-              <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 xl:col-span-8 xl:mt-0">
-                {HOMEPAGE_CATEGORIES.map((category, index) => {
-                  const Icon = CATEGORY_ICONS[category.slug];
-                  const stagger = index % 2 === 1;
-                  return (
-                    <Link
-                      key={category.slug}
-                      href={`/league/${category.slug}`}
-                      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-gradient-to-br from-[var(--surface-muted)]/70 via-[var(--surface)] to-[#0a0c10] p-5 text-left shadow-md transition duration-300 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--brand-green)_30%,transparent)] hover:shadow-lg sm:min-h-[148px] ${stagger ? "sm:mt-8 xl:mt-10" : ""}`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--brand-green)_10%,transparent)] text-[var(--muted)] ring-1 ring-[color:var(--border)] transition duration-300 group-hover:bg-[var(--brand-green)] group-hover:text-white group-hover:ring-transparent">
-                          <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
-                        </div>
-                        <span
-                          className="font-display text-3xl font-bold tabular-nums text-white/[0.07] transition group-hover:text-white/[0.11]"
-                          aria-hidden
-                        >
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <h3 className="mt-4 text-[13px] font-bold uppercase tracking-[0.12em] text-[var(--foreground)] group-hover:text-white">
-                        {category.label}
-                      </h3>
-                      <p className="mt-2 text-[12px] leading-relaxed text-[var(--muted)] line-clamp-2 sm:line-clamp-3">
-                        {category.blurb}
-                      </p>
-                      <span className="mt-auto pt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--muted)] group-hover:text-white/60">
-                        Enter →
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </section>

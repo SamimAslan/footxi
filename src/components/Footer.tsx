@@ -1,190 +1,172 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Truck, Shield, CreditCard } from "lucide-react";
+import { Mail, ShieldCheck, Truck, LifeBuoy } from "lucide-react";
 import { leagues, PRICING } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
+
+const MAIN_LEAGUES = leagues.filter((l) =>
+  ["premier-league", "la-liga", "serie-a", "bundesliga", "ligue-1", "super-lig", "international-teams"].includes(
+    l.slug
+  )
+);
 
 export default function Footer() {
   const { formatPrice } = useCurrency();
   return (
-    <footer className="relative mt-auto border-t border-[color:var(--border)] bg-gradient-to-b from-[var(--surface)] to-[#06080f]">
-      <div className="border-b border-[color:var(--border)] bg-[color-mix(in_srgb,var(--surface-muted)_70%,transparent)] backdrop-blur-sm">
-        <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
-            <div className="flex items-start gap-3">
-              <div className="w-11 h-11 flex items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 shrink-0">
-                <Truck className="w-[18px] h-[18px] text-[var(--muted)]" />
-              </div>
-              <div>
-                <p className="text-[13px] font-semibold text-[var(--foreground)]">Worldwide shipping</p>
-                <p className="text-[12px] text-[var(--muted)] mt-0.5 leading-snug">
-                  Express and standard delivery options at checkout.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-11 h-11 flex items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 shrink-0">
-                <Shield className="w-[18px] h-[18px] text-[var(--muted)]" />
-              </div>
-              <div>
-                <p className="text-[13px] font-semibold text-[var(--foreground)]">Quality focused</p>
-                <p className="text-[12px] text-[var(--muted)] mt-0.5 leading-snug">
-                  Carefully sourced kits and clear product details.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-11 h-11 flex items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[var(--surface-muted)]/50 shrink-0">
-                <CreditCard className="w-[18px] h-[18px] text-[var(--muted)]" />
-              </div>
-              <div>
-                <p className="text-[13px] font-semibold text-[var(--foreground)]">Secure payment</p>
-                <p className="text-[12px] text-[var(--muted)] mt-0.5 leading-snug">
-                  Encrypted checkout with trusted providers.
-                </p>
-              </div>
-            </div>
-          </div>
+    <footer className="mt-auto border-t border-zinc-200/90 bg-[#f0efec] text-[#1a1d24]">
+      <div className="border-b border-zinc-200/80 bg-white/80">
+        <div className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-center gap-x-10 gap-y-3 px-4 py-4 text-[12px] font-medium text-[#5c6370] sm:justify-between sm:px-8">
+          <span className="inline-flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-[#1a1d24]" aria-hidden />
+            Secure payment
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <Truck className="h-4 w-4 text-[#1a1d24]" aria-hidden />
+            Tracked shipping options
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <LifeBuoy className="h-4 w-4 text-[#1a1d24]" aria-hidden />
+            Product support
+          </span>
         </div>
       </div>
 
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="md:col-span-1">
+      <div className="mx-auto max-w-[1500px] px-4 py-12 sm:px-8 sm:py-14">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-4">
             <Link href="/" className="inline-block">
-              <img src="/logo.png" alt="FOOTXI" className="h-7 w-auto" />
+              <img src="/logo.png" alt="FootXI" className="h-8 w-auto opacity-90" />
             </Link>
-            <p className="mt-4 text-[13px] text-[var(--muted)] leading-relaxed max-w-sm">
-              Premium football kits from major leagues. Fans, player, and retro kits — built for supporters who want a
-              clear, simple shop experience.
+            <p className="mt-4 max-w-sm text-[14px] leading-relaxed text-[#5c6370]">
+              Boutique-style football kits — clear listings, real photos, and straightforward checkout. Built for fans
+              who want a serious shop, not a random listing wall.
             </p>
-            <div className="mt-5 flex items-center gap-2 text-[13px] text-[var(--muted)]">
-              <Mail className="w-4 h-4 shrink-0" />
-              <a href="mailto:support@footxi.com" className="hover:text-white transition-colors">
-                support@footxi.com
+            <div className="mt-5 flex flex-wrap gap-2">
+              <a
+                href="https://www.instagram.com/footxi.official/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-[12px] font-medium text-[#1a1d24] transition hover:border-zinc-300"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://www.tiktok.com/@footxi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-[12px] font-medium text-[#1a1d24] transition hover:border-zinc-300"
+              >
+                TikTok
               </a>
             </div>
-            <div className="mt-5">
-              <p className="text-[11px] font-semibold text-[var(--foreground)] uppercase tracking-[0.16em]">Follow</p>
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <a
-                  href="https://www.instagram.com/footxi.official/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-white hover:border-brand-green/35 transition-colors"
-                >
-                  Instagram
-                </a>
-                <a
-                  href="https://www.tiktok.com/@footxi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 rounded-lg border border-[color:var(--border)] text-[12px] text-[var(--muted)] hover:text-white hover:border-brand-green/35 transition-colors"
-                >
-                  TikTok
-                </a>
-              </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-5">
+            <div>
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a1d24]">Shop</h3>
+              <ul className="mt-4 space-y-2.5">
+                <li>
+                  <Link href="/league/jersey" className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]">
+                    All kits
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/search" className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]">
+                    Search
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cart" className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]">
+                    Cart
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/league/retro-kits" className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]">
+                    Retro
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a1d24]">Leagues</h3>
+              <ul className="mt-4 space-y-2.5">
+                {MAIN_LEAGUES.map((league) => (
+                  <li key={league.slug}>
+                    <Link
+                      href={`/league/${league.slug}`}
+                      className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]"
+                    >
+                      {league.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a1d24]">Help & policies</h3>
+              <ul className="mt-4 space-y-2.5">
+                <li>
+                  <Link href="/contact" className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]">
+                    Contact & support
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]">
+                    Shipping & returns info
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="text-[13px] text-[#5c6370] transition hover:text-[#1a1d24]">
+                    Privacy & terms
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div>
-            <h3 className="text-[11px] font-bold text-white mb-4 uppercase tracking-[0.16em]">
-              Leagues
-            </h3>
-            <ul className="space-y-2.5">
-              {leagues.slice(0, 6).map((league) => (
-                <li key={league.slug}>
-                  <Link
-                    href={`/league/${league.slug}`}
-                    className="text-[13px] text-[var(--muted)] hover:text-white transition-colors"
-                  >
-                    {league.name}
-                  </Link>
-                </li>
+          <div className="rounded-2xl border border-zinc-200 bg-white p-6 lg:col-span-3">
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a1d24]">From price guide</p>
+            <ul className="mt-4 space-y-2 text-[13px]">
+              <li className="flex justify-between gap-4">
+                <span className="text-[#5c6370]">Fans</span>
+                <span className="font-semibold tabular-nums text-[#1a1d24]">{formatPrice(PRICING.fans)}</span>
+              </li>
+              <li className="flex justify-between gap-4">
+                <span className="text-[#5c6370]">Player</span>
+                <span className="font-semibold tabular-nums text-[#1a1d24]">{formatPrice(PRICING.player)}</span>
+              </li>
+              <li className="flex justify-between gap-4">
+                <span className="text-[#5c6370]">Retro</span>
+                <span className="font-semibold tabular-nums text-[#1a1d24]">{formatPrice(PRICING.retro)}</span>
+              </li>
+              <li className="flex justify-between gap-4">
+                <span className="text-[#5c6370]">Name / number</span>
+                <span className="font-semibold tabular-nums text-[#1a1d24]">+{formatPrice(PRICING.customNameNumber)}</span>
+              </li>
+            </ul>
+            <p className="mt-4 text-[11px] leading-relaxed text-[#5c6370]">
+              Bulk: 3–6 kits 5% off · 7–15 kits 10% off — applied in cart.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2 border-t border-zinc-100 pt-5">
+              {["Visa", "MC", "Amex"].map((x) => (
+                <span key={x} className="rounded border border-zinc-200 px-2 py-0.5 text-[10px] font-semibold text-[#5c6370]">
+                  {x}
+                </span>
               ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-[11px] font-bold text-white mb-4 uppercase tracking-[0.16em]">
-              Shop
-            </h3>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/search" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
-                  Search
-                </Link>
-              </li>
-              <li>
-                <Link href="/cart" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
-                  Cart
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-[13px] text-[var(--muted)] hover:text-white transition-colors">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-[11px] font-bold text-white mb-4 uppercase tracking-[0.16em]">
-              Starting prices
-            </h3>
-            <ul className="space-y-2.5 text-[13px]">
-              <li className="flex justify-between gap-4">
-                <span className="text-[var(--muted)]">Fans version</span>
-                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.fans)}</span>
-              </li>
-              <li className="flex justify-between gap-4">
-                <span className="text-[var(--muted)]">Player version</span>
-                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.player)}</span>
-              </li>
-              <li className="flex justify-between gap-4">
-                <span className="text-[var(--muted)]">Retro kit</span>
-                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.retro)}</span>
-              </li>
-              <li className="flex justify-between gap-4">
-                <span className="text-[var(--muted)]">Custom name/no.</span>
-                <span className="font-medium text-[var(--foreground)] tabular-nums">+{formatPrice(PRICING.customNameNumber)}</span>
-              </li>
-              <li className="flex justify-between gap-4">
-                <span className="text-[var(--muted)]">Arm badge</span>
-                <span className="font-medium text-[var(--foreground)] tabular-nums">{formatPrice(PRICING.badgePrice)}</span>
-              </li>
-            </ul>
+            </div>
+            <a
+              href="mailto:support@footxi.com"
+              className="mt-4 inline-flex items-center gap-2 text-[13px] font-medium text-[#1a1d24] hover:underline"
+            >
+              <Mail className="h-4 w-4 shrink-0" aria-hidden />
+              support@footxi.com
+            </a>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-[color:var(--border)]">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-[11px] text-[var(--muted)]">&copy; {new Date().getFullYear()} FootXI. All rights reserved.</p>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[11px] text-[var(--muted)]">
-              <span>Bulk: 3–6 kits 5% off</span>
-              <span>7–15 kits 10% off</span>
-            </div>
-          </div>
-          <nav
-            className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-[var(--muted)]"
-            aria-label="Legal"
-          >
-            <Link href="/contact" className="hover:text-[var(--foreground)] transition-colors">
-              Privacy & terms
-            </Link>
-            <span className="hidden sm:inline text-[var(--border)]" aria-hidden>
-              |
-            </span>
-            <Link href="/contact" className="hover:text-[var(--foreground)] transition-colors">
-              Contact & support
-            </Link>
-          </nav>
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-8 text-center sm:flex-row sm:text-left">
+          <p className="text-[11px] text-[#5c6370]">&copy; {new Date().getFullYear()} FootXI. All rights reserved.</p>
         </div>
       </div>
     </footer>

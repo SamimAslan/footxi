@@ -3,12 +3,13 @@
 import { useCartStore } from "@/store/cart";
 import { PRICING, getKitVersionDisplayLabel } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
+import EmptyCartSuggestions from "@/components/EmptyCartSuggestions";
+import TrustRow from "@/components/TrustRow";
 import Link from "next/link";
 import {
   Trash2,
   Minus,
   Plus,
-  ShoppingBag,
   ArrowLeft,
   Truck,
   Tag,
@@ -38,28 +39,7 @@ export default function CartPage() {
   const discountAmount = (subtotal * discount) / 100;
 
   if (items.length === 0) {
-    return (
-      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-md rounded-2xl border border-[color:var(--border)] bg-[var(--surface)] px-8 py-10 text-center shadow-lg shadow-black/10">
-          <div className="w-16 h-16 rounded-2xl bg-[var(--surface-muted)] border border-[color:var(--border)] flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag className="w-7 h-7 text-[var(--muted)]" aria-hidden />
-          </div>
-          <h1 className="font-display text-2xl font-bold text-[var(--foreground)] mb-2">
-            Your cart is empty
-          </h1>
-          <p className="text-sm text-[var(--muted)] leading-relaxed mb-8">
-            Browse the store and add kits — sizes and options stay saved here until checkout.
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-brand-green text-white font-semibold rounded-xl hover:opacity-95 transition-opacity shadow-glow-mint"
-          >
-            <ArrowLeft className="w-4 h-4 shrink-0" aria-hidden />
-            Browse kits
-          </Link>
-        </div>
-      </div>
-    );
+    return <EmptyCartSuggestions />;
   }
 
   return (
@@ -285,6 +265,10 @@ export default function CartPage() {
                 </a>{" "}
                 for any questions
               </p>
+
+              <div className="mt-6 border-t border-[color:var(--border)] pt-6">
+                <TrustRow compact className="border-0 bg-transparent py-0" />
+              </div>
             </div>
           </div>
         </div>

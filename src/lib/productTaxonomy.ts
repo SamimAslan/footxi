@@ -127,7 +127,20 @@ export const INTERNATIONAL_COUNTRY_REGEX = new RegExp(
   "i"
 );
 
+/**
+ * University / college club kits — not national teams, even if a country appears in the listing
+ * (e.g. "Universidad de Chile", "University of …").
+ */
+export const UNIVERSITY_CLUB_REGEX =
+  /\b(universidad|universities|university|université|universite|universitaria|universitario|università|college)\b/i;
+
+export function isUniversityClubProduct(rawCategory: string, team: string, productName: string): boolean {
+  const source = `${rawCategory} ${team} ${productName}`;
+  return UNIVERSITY_CLUB_REGEX.test(source);
+}
+
 export function isInternationalTeamProduct(rawCategory: string, team: string, productName: string): boolean {
+  if (isUniversityClubProduct(rawCategory, team, productName)) return false;
   const source = `${normalizeToken(rawCategory)} ${normalizeToken(team)} ${normalizeToken(productName)}`;
   return INTERNATIONAL_MARKER_REGEX.test(source) || INTERNATIONAL_COUNTRY_REGEX.test(source);
 }
@@ -157,6 +170,35 @@ export function inferShopCategoryFromText(name: string, rawCategory?: string): k
 
 export function getLeagueAliasSlugs(slug: string): string[] {
   return LEAGUE_ALIAS_MAP[slug] || [slug];
+}
+
+/**
+ * All `leagueSlug` values that represent football kits for the "Jersey" hub
+ * (big-5 + Süper Lig + international + others + fan-made + retro + kids, with CSV aliases).
+ */
+const FOOTBALL_JERSEY_HUB_LEAGUE_KEYS = [
+  "la-liga",
+  "serie-a",
+  "ligue-1",
+  "bundesliga",
+  "premier-league",
+  "super-lig",
+  "international-teams",
+  "others",
+  "fan-made",
+  "retro-kits",
+  "kids",
+] as const;
+
+export function getFootballJerseyHubLeagueSlugs(): string[] {
+  const out = new Set<string>();
+  for (const key of FOOTBALL_JERSEY_HUB_LEAGUE_KEYS) {
+    for (const s of getLeagueAliasSlugs(key)) {
+      out.add(s);
+    }
+  }
+  out.add("jersey");
+  return Array.from(out);
 }
 
 export function isTurkishTeam(team: string): boolean {

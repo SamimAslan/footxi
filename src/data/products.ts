@@ -340,9 +340,20 @@ export function getBasePrice(kitType: Product["kitType"]): number {
  * Fans vs player vs retro for pricing and UI. Listing title/team are checked for
  * "fans" / "player" when the product is not retro; otherwise DB kitType is used.
  */
+/** F1 / Formula 1 listings are always treated as player version (not fans). */
+const F1_KIT_REGEX = /f1|formula\s*1|formula one/i;
+
+export function isF1Product(product: Pick<Product, "name" | "team" | "league">): boolean {
+  const s = `${product.name || ""} ${product.team || ""} ${product.league || ""}`;
+  return F1_KIT_REGEX.test(s);
+}
+
 export function getEffectiveKitType(product: Product): Product["kitType"] {
   if (product.type === "retro" || product.kitType === "retro") {
     return "retro";
+  }
+  if (isF1Product(product)) {
+    return "player";
   }
   const haystack = `${product.name || ""} ${product.team || ""}`.toLowerCase();
   if (/\bplayer\b/.test(haystack)) return "player";
