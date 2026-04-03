@@ -137,17 +137,18 @@ const CATEGORY_ICONS: Record<(typeof HOMEPAGE_CATEGORIES)[number]["slug"], Lucid
   "fan-made": Palette,
 };
 
+/** Monochrome (B&W) tile wells — subtle angle variants only */
 const CATEGORY_TILE_STYLE: Record<(typeof HOMEPAGE_CATEGORIES)[number]["slug"], string> = {
-  jersey: "from-zinc-200 via-stone-100 to-zinc-50",
-  windbreaker: "from-slate-300 via-slate-200 to-zinc-100",
-  jackets: "from-neutral-300 via-stone-200 to-zinc-50",
-  hoody: "from-zinc-300 via-neutral-200 to-stone-50",
-  tracksuit: "from-stone-300 via-zinc-200 to-neutral-50",
-  kids: "from-amber-100/90 via-orange-50 to-stone-50",
-  "nba-nfl": "from-orange-200/80 via-amber-100 to-zinc-50",
-  f1: "from-red-200/70 via-zinc-200 to-zinc-50",
-  "retro-kits": "from-amber-200/60 via-yellow-50 to-stone-50",
-  "fan-made": "from-emerald-200/50 via-teal-50 to-zinc-50",
+  jersey: "from-white via-zinc-400 to-zinc-950",
+  windbreaker: "from-zinc-50 via-zinc-500 to-neutral-950",
+  jackets: "from-neutral-100 via-zinc-500 to-zinc-950",
+  hoody: "from-white via-neutral-500 to-zinc-950",
+  tracksuit: "from-zinc-100 via-neutral-400 to-zinc-950",
+  kids: "from-zinc-50 via-zinc-400 to-neutral-950",
+  "nba-nfl": "from-white via-zinc-500 to-neutral-950",
+  f1: "from-zinc-100 via-zinc-600 to-zinc-950",
+  "retro-kits": "from-neutral-50 via-zinc-400 to-zinc-950",
+  "fan-made": "from-white via-zinc-400 to-neutral-950",
 };
 
 /** Pinned featured jerseys (exact DB product name / listing title). */
@@ -593,7 +594,7 @@ export default function MarketplaceHomepage() {
         />
       </section>
 
-      <div className="home-storefront">
+      <div>
         <HomeTrustBand />
 
         {/* Shop by intent */}

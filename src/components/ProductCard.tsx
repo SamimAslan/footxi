@@ -48,18 +48,18 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${productId}`}
-      className="group block rounded-2xl bg-[var(--surface)] border border-[color:var(--border)] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_18px_44px_-12px_rgba(0,0,0,0.5)] hover:border-[color-mix(in_srgb,var(--brand-green)_30%,transparent)] hover:-translate-y-1 transition-all duration-300 ease-out"
+      className="group block rounded-2xl bg-[var(--surface)] border border-[color:var(--border)] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_44px_-12px_rgba(0,0,0,0.1)] hover:border-[color-mix(in_srgb,var(--brand-green)_30%,transparent)] hover:-translate-y-1 transition-all duration-300 ease-out"
     >
       {/* Image stage */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-[#141c28] via-[#0e131c] to-[#06080f]">
+      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-white via-zinc-400 to-zinc-950">
         <div
           className="absolute inset-0 opacity-[0.55] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 85% 70% at 50% 38%, rgba(47, 93, 64, 0.09) 0%, transparent 65%)",
+              "radial-gradient(ellipse 80% 65% at 50% 36%, rgba(255,255,255,0.45) 0%, transparent 62%)",
           }}
         />
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
 
         {product.image && product.image.startsWith("http") ? (
           <>
@@ -67,7 +67,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <img
                 src={product.image}
                 alt={product.name}
-                className={`max-w-[92%] max-h-[92%] w-auto h-auto object-contain transition-all duration-700 ease-out drop-shadow-[0_12px_32px_rgba(0,0,0,0.45)] group-hover:drop-shadow-[0_18px_48px_rgba(0,0,0,0.55)] scale-[1.02] group-hover:scale-[1.07] ${
+                className={`max-w-[92%] max-h-[92%] w-auto h-auto object-contain transition-all duration-700 ease-out drop-shadow-[0_12px_32px_rgba(0,0,0,0.12)] group-hover:drop-shadow-[0_18px_48px_rgba(0,0,0,0.18)] scale-[1.02] group-hover:scale-[1.07] ${
                   product.backImage ? "group-hover:opacity-0" : ""
                 }`}
               />
@@ -77,7 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <img
                   src={product.backImage}
                   alt={`${product.name} back`}
-                  className="max-w-[92%] max-h-[92%] w-auto h-auto object-contain opacity-0 group-hover:opacity-100 scale-[1.02] group-hover:scale-[1.07] transition-all duration-700 ease-out drop-shadow-[0_12px_32px_rgba(0,0,0,0.45)] group-hover:drop-shadow-[0_18px_48px_rgba(0,0,0,0.55)]"
+                  className="max-w-[92%] max-h-[92%] w-auto h-auto object-contain opacity-0 group-hover:opacity-100 scale-[1.02] group-hover:scale-[1.07] transition-all duration-700 ease-out drop-shadow-[0_12px_32px_rgba(0,0,0,0.12)] group-hover:drop-shadow-[0_18px_48px_rgba(0,0,0,0.18)]"
                 />
               </div>
             )}
@@ -85,13 +85,13 @@ export default function ProductCard({ product }: ProductCardProps) {
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
             <div
-              className="absolute inset-0 opacity-50"
+              className="absolute inset-0 opacity-40"
               style={{
                 background:
-                  "radial-gradient(circle at 50% 45%, rgba(34, 86, 45, 0.08) 0%, transparent 55%)",
+                  "radial-gradient(circle at 50% 42%, rgba(255,255,255,0.2) 0%, transparent 55%)",
               }}
             />
-            <span className="relative font-display text-4xl sm:text-5xl font-bold tracking-tight text-white/20">
+            <span className="relative font-display text-4xl sm:text-5xl font-bold tracking-tight text-white/35">
               {displayTeam.substring(0, 3).toUpperCase()}
             </span>
           </div>
@@ -105,7 +105,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </span>
           )}
           {effectiveKit === "player" && (
-            <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-zinc-800/95 text-zinc-200 border border-[color:var(--border)] shadow-sm tracking-[0.12em] backdrop-blur-sm">
+            <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-white/90 text-zinc-900 border border-white/50 shadow-sm tracking-[0.12em] backdrop-blur-sm">
               Player
             </span>
           )}
@@ -124,7 +124,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative p-4 sm:p-5 bg-[var(--surface)] border-t border-[color:var(--border)]">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h3 className="font-display text-[15px] sm:text-base font-semibold text-[var(--foreground)] tracking-tight leading-snug line-clamp-2 group-hover:text-white transition-colors duration-300">
+            <h3 className="font-display text-[15px] sm:text-base font-semibold text-[var(--foreground)] tracking-tight leading-snug line-clamp-2 group-hover:text-brand-green transition-colors duration-300">
               {displayTeam}
             </h3>
             {product.league ? (
@@ -137,7 +137,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </p>
           </div>
           <span
-            className="flex-shrink-0 mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--border)] bg-[var(--surface-muted)]/60 text-white opacity-40 translate-x-0 supports-[hover:hover]:opacity-0 supports-[hover:hover]:translate-x-1 supports-[hover:hover]:group-hover:opacity-100 supports-[hover:hover]:group-hover:translate-x-0 transition-all duration-300"
+            className="flex-shrink-0 mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--border)] bg-[var(--surface-muted)]/60 text-[var(--foreground)] opacity-40 translate-x-0 supports-[hover:hover]:opacity-0 supports-[hover:hover]:translate-x-1 supports-[hover:hover]:group-hover:opacity-100 supports-[hover:hover]:group-hover:translate-x-0 transition-all duration-300"
             aria-hidden
           >
             <ArrowRight className="w-4 h-4" strokeWidth={2.25} />
@@ -151,7 +151,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <p className="mt-3 flex items-center gap-1.5 text-[10px] text-[var(--muted)] tracking-[0.06em]">
-          <Truck className="w-3.5 h-3.5 shrink-0 text-white/70" strokeWidth={2} />
+          <Truck className="w-3.5 h-3.5 shrink-0 text-[var(--muted)]" strokeWidth={2} />
           <span className="uppercase font-medium">Est. delivery</span>
           <span className="font-normal normal-case tracking-normal">{estimatedDelivery}</span>
         </p>

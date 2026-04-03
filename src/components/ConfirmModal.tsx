@@ -10,12 +10,29 @@ interface ConfirmModalProps {
   confirmLabel?: string;
   cancelLabel?: string;
   variant?: "danger" | "warning" | "default";
+  /** Admin modals render in a dark shell; storefront uses light. */
+  appearance?: "light" | "dark";
   loading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-const variantStyles = {
+const variantStylesLight = {
+  danger: {
+    icon: "bg-red-500/10 text-red-600",
+    button: "bg-red-500 hover:bg-red-600 text-white",
+  },
+  warning: {
+    icon: "bg-brand-green/15 text-brand-green",
+    button: "bg-brand-green hover:bg-brand-green-dark text-white",
+  },
+  default: {
+    icon: "bg-blue-500/10 text-blue-600",
+    button: "bg-zinc-800 hover:bg-zinc-700 text-white",
+  },
+};
+
+const variantStylesDark = {
   danger: {
     icon: "bg-red-500/10 text-red-400",
     button: "bg-red-500 hover:bg-red-600 text-white",
@@ -37,11 +54,13 @@ export default function ConfirmModal({
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
   variant = "danger",
+  appearance = "light",
   loading = false,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const variantStyles = appearance === "dark" ? variantStylesDark : variantStylesLight;
   const style = variantStyles[variant];
 
   useEffect(() => {
@@ -61,22 +80,40 @@ export default function ConfirmModal({
       onClick={(e) => {
         if (e.target === overlayRef.current && !loading) onCancel();
       }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-150"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4 animate-in fade-in duration-150"
     >
-      <div className="w-full max-w-sm bg-[#141417] border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150">
+      <div
+        className={`w-full max-w-sm rounded-2xl border shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150 ${
+          appearance === "dark"
+            ? "bg-[#141417] border-white/[0.08]"
+            : "bg-[var(--surface)] border-[color:var(--border)]"
+        }`}
+      >
         <div className="p-6">
           <div className="flex items-start gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${style.icon}`}>
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-base font-semibold text-white">{title}</h3>
-              <p className="text-sm text-zinc-400 mt-1 leading-relaxed">{message}</p>
+              <h3
+                className={`text-base font-semibold ${appearance === "dark" ? "text-white" : "text-[var(--foreground)]"}`}
+              >
+                {title}
+              </h3>
+              <p
+                className={`text-sm mt-1 leading-relaxed ${appearance === "dark" ? "text-zinc-400" : "text-[var(--muted)]"}`}
+              >
+                {message}
+              </p>
             </div>
             <button
               onClick={onCancel}
               disabled={loading}
-              className="p-1 text-zinc-600 hover:text-zinc-300 transition-colors flex-shrink-0 disabled:opacity-50"
+              className={`p-1 transition-colors flex-shrink-0 disabled:opacity-50 ${
+                appearance === "dark"
+                  ? "text-zinc-600 hover:text-zinc-300"
+                  : "text-zinc-400 hover:text-[var(--foreground)]"
+              }`}
             >
               <X className="w-4 h-4" />
             </button>
@@ -87,7 +124,11 @@ export default function ConfirmModal({
           <button
             onClick={onCancel}
             disabled={loading}
-            className="flex-1 px-4 py-2.5 text-sm font-medium rounded-xl bg-zinc-800/80 border border-white/[0.06] text-zinc-300 hover:text-white hover:bg-zinc-700/80 transition-all disabled:opacity-50"
+            className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-xl border transition-all disabled:opacity-50 ${
+              appearance === "dark"
+                ? "bg-zinc-800/80 border-white/[0.06] text-zinc-300 hover:text-white hover:bg-zinc-700/80"
+                : "bg-[var(--surface-muted)] border-[color:var(--border)] text-[var(--foreground)] hover:bg-zinc-200/80"
+            }`}
           >
             {cancelLabel}
           </button>

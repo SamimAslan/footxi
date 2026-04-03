@@ -56,7 +56,7 @@ export default function CheckoutPage() {
   if (status === "loading") {
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-white animate-spin" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-green" />
       </div>
     );
   }
@@ -196,7 +196,7 @@ export default function CheckoutPage() {
                 1
               </div>
               <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-white" />
+                <MapPin className="w-4 h-4 text-brand-green" />
                 Shipping Address
               </h2>
             </div>
@@ -306,7 +306,7 @@ export default function CheckoutPage() {
                   2
                 </div>
                 <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-white" />
+                  <CreditCard className="w-4 h-4 text-brand-green" />
                   Payment
                 </h2>
               </div>

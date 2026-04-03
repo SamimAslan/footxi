@@ -64,7 +64,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50" aria-label="Main">
       {/* Tier 1 — utility only */}
-      <div className="border-b border-white/[0.06] bg-[var(--brand-top-bar)] text-white/80">
+      <div className="border-b border-white/[0.06] bg-[#0c0f0d] text-white/80">
         <div className="mx-auto flex max-w-[1600px] flex-col gap-2 px-4 py-2 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] font-medium uppercase tracking-[0.14em] sm:justify-start">
             <CurrencySelector variant="onDark" />
@@ -85,7 +85,7 @@ export default function Navbar() {
       </div>
 
       {/* Tier 2 — logo · categories · search · account · cart */}
-      <div className="relative border-b border-[color:var(--border)] bg-gradient-to-b from-[#151a18] to-[#0e1210]">
+      <div className="relative border-b border-white/[0.06] bg-gradient-to-b from-[#151a18] to-[#0e1210]">
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
           aria-hidden
@@ -213,7 +213,7 @@ export default function Navbar() {
                           setAccountOpen(false);
                           signOut({ callbackUrl: "/" });
                         }}
-                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-[12px] text-red-400 hover:bg-red-950/40"
+                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-[12px] text-red-600 hover:bg-red-50"
                       >
                         <LogOut className="h-3.5 w-3.5" />
                         Sign out
@@ -264,12 +264,12 @@ export default function Navbar() {
       {mobileOpen && (
         <div
           id="mobile-nav-panel"
-          className="border-t border-[color:var(--border)] bg-[var(--surface)] px-4 py-4 shadow-lg lg:hidden"
+          className="border-t border-white/10 bg-[#13161c] px-4 py-4 shadow-lg lg:hidden"
           role="dialog"
           aria-label="Menu and search"
         >
-          <form onSubmit={submitMobileSearch} className="mb-4 flex flex-col gap-2 border-b border-[color:var(--border)] pb-4">
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted)]">Search</label>
+          <form onSubmit={submitMobileSearch} className="mb-4 flex flex-col gap-2 border-b border-white/[0.08] pb-4">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-white/50">Search</label>
             <div className="flex gap-2">
               <input
                 value={mobileQuery}
@@ -277,7 +277,7 @@ export default function Navbar() {
                 placeholder="Club, season, retro, league…"
                 aria-label="Search products"
                 autoComplete="off"
-                className="site-search-input min-w-0 flex-1 rounded-xl border border-[color:var(--border)] bg-[var(--background)] px-3 py-2.5 text-[15px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[color:var(--border)] focus:outline-none"
+                className="site-search-input min-w-0 flex-1 rounded-xl border border-white/12 bg-black/35 px-3 py-2.5 text-[15px] text-white placeholder:text-white/40 focus:border-white/20 focus:outline-none"
               />
               <button
                 type="submit"
@@ -287,24 +287,24 @@ export default function Navbar() {
               </button>
             </div>
           </form>
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[var(--muted)]">Shop</p>
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-white/50">Shop</p>
           <nav className="grid grid-cols-2 gap-2" aria-label="Mobile categories">
             {PRIMARY_NAV.map((item) => (
               <Link
                 key={item.slug}
                 href={`/league/${item.slug}`}
                 onClick={() => setMobileOpen(false)}
-                className={`rounded-xl border border-[color:var(--border)] px-3 py-3 text-center text-[11px] font-bold uppercase tracking-wide transition ${
+                className={`rounded-xl border px-3 py-3 text-center text-[11px] font-bold uppercase tracking-wide transition ${
                   navActive(item.slug)
                     ? "border-brand-green/40 bg-brand-green/15 text-white"
-                    : "bg-[var(--surface-muted)] text-[var(--foreground)] hover:border-white/10"
+                    : "border-white/[0.08] bg-white/[0.04] text-white/90 hover:border-white/15"
                 }`}
               >
                 {item.label}
               </Link>
             ))}
           </nav>
-          <div className="mt-4 flex flex-col gap-2 border-t border-[color:var(--border)] pt-4">
+          <div className="mt-4 flex flex-col gap-2 border-t border-white/[0.08] pt-4">
             <Link
               href={status === "authenticated" ? "/account" : "/auth/login"}
               onClick={() => setMobileOpen(false)}
@@ -312,7 +312,7 @@ export default function Navbar() {
             >
               {status === "authenticated" ? "My account" : "Sign in"}
             </Link>
-            <Link href="/contact" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-[var(--muted)]">
+            <Link href="/contact" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-white/60">
               Help &amp; contact
             </Link>
           </div>

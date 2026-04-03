@@ -117,7 +117,7 @@ export default function OrderDetailPage() {
   if (authStatus === "loading" || loading) {
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-white animate-spin" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-green" />
       </div>
     );
   }
@@ -133,7 +133,7 @@ export default function OrderDetailPage() {
           <p className="text-[var(--muted)] mb-6">{error}</p>
           <Link
             href="/account"
-            className="inline-flex items-center gap-2 text-sm text-white hover:text-white/90"
+            className="inline-flex items-center gap-2 text-sm font-medium text-brand-green hover:underline"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to account
@@ -199,7 +199,7 @@ export default function OrderDetailPage() {
                       <div
                         className={`w-10 h-10 flex items-center justify-center border transition-all ${
                           isCurrent
-                            ? "bg-brand-green/20 border-brand-green text-white"
+                            ? "bg-brand-green/15 border-brand-green text-brand-green"
                             : isActive
                             ? "bg-green-500/10 border-green-500/30 text-green-400"
                             : "bg-[var(--surface-muted)] border-[color:var(--border)] text-[var(--muted)]"
@@ -293,7 +293,7 @@ export default function OrderDetailPage() {
                         {item.badges.map((b, j) => (
                           <span
                             key={j}
-                            className="text-[9px] px-1.5 py-0.5 bg-brand-green/10 text-white"
+                            className="text-[9px] px-1.5 py-0.5 bg-brand-green/10 text-brand-green"
                           >
                             {b.name}
                           </span>

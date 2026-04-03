@@ -358,6 +358,7 @@ function AdminOrdersContent() {
         message={confirmModal.message}
         confirmLabel={confirmModal.confirmLabel}
         variant="danger"
+        appearance="dark"
         loading={deleting}
         onConfirm={confirmModal.onConfirm}
         onCancel={() => setConfirmModal((prev) => ({ ...prev, open: false }))}

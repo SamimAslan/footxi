@@ -47,7 +47,7 @@ function DropdownFilter({
           disabled ? "cursor-not-allowed opacity-45" : ""
         } ${
           value !== "all"
-            ? "border-brand-green/35 text-white bg-brand-green/10"
+            ? "border-brand-green/35 text-[var(--foreground)] bg-brand-green/10"
             : "border-[color:var(--border)] text-[var(--muted)] hover:border-brand-green/25 hover:text-[var(--foreground)]"
         }`}
       >
@@ -70,8 +70,8 @@ function DropdownFilter({
               }}
               className={`w-full text-left px-4 py-2.5 text-[12px] transition-all duration-200 ${
                 value === opt.value
-                  ? "text-white bg-brand-green/10"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-white/[0.04]"
+                  ? "text-[var(--foreground)] bg-brand-green/10"
+                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-zinc-100"
               }`}
             >
               {opt.label}
@@ -147,7 +147,7 @@ export default function LeaguePage() {
           <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
             League not found
           </h1>
-          <Link href="/" className="text-white text-sm hover:underline">
+          <Link href="/" className="text-sm font-medium text-brand-green hover:underline">
             Go back home
           </Link>
         </div>
@@ -161,7 +161,7 @@ export default function LeaguePage() {
       <div className="relative bg-[var(--background)] border-b border-[color:var(--border)] overflow-hidden">
         {/* Background text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
-          <span className="font-display text-[12vw] sm:text-[10vw] font-bold text-white/[0.04] whitespace-nowrap tracking-[-0.03em]">
+          <span className="font-display text-[12vw] sm:text-[10vw] font-bold text-black/[0.04] whitespace-nowrap tracking-[-0.03em]">
             {league.name.toUpperCase()}
           </span>
         </div>
@@ -249,7 +249,7 @@ export default function LeaguePage() {
                 setSelectedType("all");
                 setPage(1);
               }}
-              className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-medium text-white hover:text-white/90 transition-colors duration-300 tracking-wide"
+              className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-medium text-[var(--foreground)] hover:text-brand-green transition-colors duration-300 tracking-wide"
             >
               <X className="w-3 h-3" />
               Clear filters
@@ -292,7 +292,7 @@ export default function LeaguePage() {
               </Link>
               <Link
                 href="/contact"
-                className="text-sm font-medium text-[var(--muted)] underline-offset-4 hover:text-white hover:underline"
+                className="text-sm font-medium text-[var(--muted)] underline-offset-4 hover:text-brand-green hover:underline"
               >
                 Contact support
               </Link>

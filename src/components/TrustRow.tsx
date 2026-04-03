@@ -26,7 +26,7 @@ export default function TrustRow({ compact, className }: { compact?: boolean; cl
       <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-center sm:gap-8 sm:px-6 lg:gap-12 lg:px-10">
         {DEFAULT_ITEMS.map(({ icon: Icon, title, body }) => (
           <div key={title} className="flex gap-3 sm:max-w-[220px]">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--background)]/80 text-white/90">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[color:var(--border)] bg-[var(--surface-muted)]/80 text-brand-green">
               <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden />
             </div>
             <div>

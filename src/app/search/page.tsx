@@ -226,7 +226,7 @@ function SearchContent() {
           <PLPGridSkeleton count={8} />
         ) : loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-6 w-6 animate-spin text-white" />
+            <Loader2 className="h-6 w-6 animate-spin text-brand-green" />
           </div>
         ) : normalizedQuery.length < 2 ? (
           <div

@@ -513,6 +513,7 @@ export default function AdminOrderDetailPage() {
         message={confirmModal.message}
         confirmLabel={confirmModal.confirmLabel}
         variant={confirmModal.variant}
+        appearance="dark"
         loading={updating}
         onConfirm={confirmModal.onConfirm}
         onCancel={() => setConfirmModal((prev) => ({ ...prev, open: false }))}

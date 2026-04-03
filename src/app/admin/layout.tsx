@@ -84,9 +84,9 @@ export default function AdminLayout({
     session?.user?.role !== "admin"
   ) {
     return (
-      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+      <div className="admin-theme min-h-screen bg-[var(--background)] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-white animate-spin" />
+          <Loader2 className="w-8 h-8 text-[var(--foreground)] animate-spin" />
           <span className="text-xs text-[var(--muted)] tracking-wider uppercase">Loading admin...</span>
         </div>
       </div>
@@ -96,7 +96,7 @@ export default function AdminLayout({
   const breadcrumbs = getBreadcrumb(pathname);
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="admin-theme min-h-screen bg-[var(--background)]">
       {/* ===== SIDEBAR (Desktop) ===== */}
       <aside
         className={`fixed top-[var(--site-header-height)] left-0 z-40 h-[calc(100vh-var(--site-header-height))] bg-[var(--surface)] border-r border-[color:var(--border)] transition-all duration-300 ease-in-out hidden lg:flex flex-col ${

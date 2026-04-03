@@ -74,7 +74,7 @@ export default function CartPage() {
               >
                 <div className="flex gap-4">
                   {/* Mini image */}
-                  <div className="w-20 h-20 flex-shrink-0 bg-[var(--surface-muted)] rounded-lg overflow-hidden">
+                  <div className="w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg bg-gradient-to-b from-zinc-200 to-zinc-800">
                     {item.product.image && item.product.image.startsWith("http") ? (
                       <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
                     ) : (
@@ -110,7 +110,7 @@ export default function CartPage() {
                       {item.selectedBadges.map((badge) => (
                         <span
                           key={badge.name}
-                          className="px-2 py-0.5 text-[10px] bg-brand-green/15 text-white rounded-full"
+                          className="px-2 py-0.5 text-[10px] bg-brand-green/15 text-brand-green rounded-full"
                         >
                           {badge.name}
                         </span>
@@ -237,7 +237,7 @@ export default function CartPage() {
               {/* Discount info */}
               {discount === 0 && totalItems < PRICING.discount.tier1.min && (
                 <div className="mt-4 p-3 bg-brand-green/5 border border-brand-green/15 rounded-lg">
-                  <p className="text-xs text-white/80">
+                  <p className="text-xs text-[var(--muted)]">
                     Add {PRICING.discount.tier1.min - totalItems} more{" "}
                     {PRICING.discount.tier1.min - totalItems === 1
                       ? "kit"
@@ -259,7 +259,7 @@ export default function CartPage() {
                 Contact us at{" "}
                 <a
                   href="mailto:support@footxi.com"
-                  className="text-white/60 hover:text-white"
+                  className="text-brand-green hover:underline"
                 >
                   support@footxi.com
                 </a>{" "}

@@ -27,7 +27,7 @@ export default function ContactPage() {
         <div className="text-center mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">
             Get in{" "}
-            <span className="text-white">Touch</span>
+            <span className="text-brand-green">Touch</span>
           </h1>
           <p className="mt-3 text-[var(--muted)] max-w-md mx-auto">
             Have a question about an order or need help? We&apos;re here to help.
@@ -40,13 +40,13 @@ export default function ContactPage() {
             <div className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-lg bg-brand-green/10 flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-white" />
+                  <Mail className="w-5 h-5 text-brand-green" />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-[var(--foreground)]">Email</h3>
                   <a
                     href="mailto:support@footxi.com"
-                    className="text-sm text-white hover:text-white/90 transition-colors"
+                    className="text-sm text-brand-green hover:underline transition-colors"
                   >
                     support@footxi.com
                   </a>
@@ -57,7 +57,7 @@ export default function ContactPage() {
             <div className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-lg bg-brand-green/10 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-white" />
+                  <Clock className="w-5 h-5 text-brand-green" />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-[var(--foreground)]">
@@ -73,7 +73,7 @@ export default function ContactPage() {
             <div className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-lg bg-brand-green/10 flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-white" />
+                  <MessageSquare className="w-5 h-5 text-brand-green" />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-[var(--foreground)]">
@@ -139,7 +139,7 @@ export default function ContactPage() {
                         message: "",
                       });
                     }}
-                    className="mt-6 text-sm text-white hover:text-white/90 transition-colors"
+                    className="mt-6 text-sm font-medium text-brand-green hover:underline transition-colors"
                   >
                     Send another message
                   </button>

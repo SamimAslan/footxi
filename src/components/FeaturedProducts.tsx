@@ -49,8 +49,8 @@ export default function FeaturedProducts() {
           <div className="flex items-end justify-between mb-12">
             <div>
               <div className="flex items-center gap-3 mb-5">
-                <div className="h-px w-14 bg-white/40" />
-                <span className="text-[11px] font-semibold tracking-[0.3em] text-white uppercase">
+                <div className="h-px w-14 bg-zinc-300" />
+                <span className="text-[11px] font-semibold tracking-[0.3em] text-brand-green uppercase">
                   Trending Now
                 </span>
               </div>
@@ -62,7 +62,7 @@ export default function FeaturedProducts() {
             </div>
             <Link
               href="/league/fan-made"
-              className="hidden sm:inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[var(--muted)] hover:text-white transition-colors duration-300 uppercase"
+              className="hidden sm:inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[var(--muted)] hover:text-brand-green transition-colors duration-300 uppercase"
             >
               View all
               <ArrowRight className="w-3.5 h-3.5" />
@@ -80,7 +80,7 @@ export default function FeaturedProducts() {
           <div className="mt-12 text-center sm:hidden">
             <Link
               href="/league/fan-made"
-              className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-white uppercase"
+              className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-brand-green uppercase"
             >
               View all kits
               <ArrowRight className="w-3.5 h-3.5" />

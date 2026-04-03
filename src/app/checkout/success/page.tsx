@@ -53,7 +53,7 @@ function SuccessContent() {
 
         <div className="bg-[var(--surface)] border border-[color:var(--border)] p-6 mb-8 text-left">
           <h2 className="text-sm font-semibold text-[var(--foreground)] mb-4 flex items-center gap-2">
-            <Package className="w-4 h-4 text-white" />
+            <Package className="w-4 h-4 text-brand-green" />
             What happens next?
           </h2>
           <div className="space-y-3 text-sm text-[var(--muted)]">

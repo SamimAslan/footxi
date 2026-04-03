@@ -65,7 +65,7 @@ export default function ProductPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-        <Loader2 className="w-8 h-8 text-white animate-spin" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-green" />
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function ProductPage() {
           <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
             Product not found
           </h1>
-          <Link href="/" className="text-sm font-semibold text-white hover:text-white/90 hover:underline">
+          <Link href="/" className="text-sm font-semibold text-brand-green hover:underline">
             Go back home
           </Link>
         </div>
@@ -132,13 +132,13 @@ export default function ProductPage() {
       <div className="bg-[var(--surface-muted)]/80 border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
           <div className="flex items-center gap-2 text-[11px] sm:text-xs text-[var(--muted)] flex-wrap uppercase tracking-[0.06em] font-medium">
-            <Link href="/" className="hover:text-white transition-colors">
+            <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
               Home
             </Link>
             <ChevronRight className="w-3 h-3 shrink-0 opacity-50" />
             <Link
               href={`/league/${product.leagueSlug}`}
-              className="hover:text-white transition-colors"
+              className="hover:text-[var(--foreground)] transition-colors"
             >
               {product.league}
             </Link>
@@ -154,9 +154,21 @@ export default function ProductPage() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image */}
           <div className="relative">
-            <div className="aspect-square bg-[var(--surface-muted)] rounded-xl border border-[color:var(--border)] shadow-sm overflow-hidden flex items-center justify-center">
+            <div className="relative aspect-square overflow-hidden rounded-xl border border-[color:var(--border)] shadow-sm bg-gradient-to-b from-white via-zinc-400 to-zinc-950 flex items-center justify-center">
+              <div
+                className="pointer-events-none absolute inset-0 opacity-[0.5]"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 80% 65% at 50% 36%, rgba(255,255,255,0.45) 0%, transparent 62%)",
+                }}
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/45 via-black/10 to-transparent"
+                aria-hidden
+              />
               {hasRealImage ? (
-                <div className="w-full h-full p-8 sm:p-10 flex items-center justify-center">
+                <div className="relative z-[1] flex h-full w-full items-center justify-center p-8 sm:p-10">
                   <img
                     src={currentImage}
                     alt={product.name}
@@ -164,18 +176,18 @@ export default function ProductPage() {
                   />
                 </div>
               ) : (
-                <svg viewBox="0 0 120 150" className="w-56 h-72 opacity-90">
+                <svg viewBox="0 0 120 150" className="relative z-[1] w-56 h-72 opacity-90">
                   <path
                     d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z"
-                    className="fill-slate-200"
-                    stroke="rgba(34, 86, 45, 0.12)"
+                    className="fill-white/40"
+                    stroke="rgba(255,255,255,0.25)"
                     strokeWidth="1.5"
                   />
                   <text
                     x="60"
                     y="75"
                     textAnchor="middle"
-                    className="fill-black/20 text-[8px]"
+                    className="fill-white/35 text-[8px]"
                   >
                     {product.team.toUpperCase()}
                   </text>
@@ -183,7 +195,7 @@ export default function ProductPage() {
                     x="60"
                     y="100"
                     textAnchor="middle"
-                    className="fill-black/20 text-[7px]"
+                    className="fill-white/30 text-[7px]"
                   >
                     {product.type.toUpperCase()}
                   </text>
@@ -191,14 +203,14 @@ export default function ProductPage() {
               )}
 
               {/* Badges */}
-              <div className="absolute top-4 left-4 flex flex-col gap-2">
+              <div className="absolute top-4 left-4 z-[2] flex flex-col gap-2">
                 {effectiveKitType === "retro" && (
                   <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-green/12 text-[var(--foreground)] rounded-md">
                     Retro
                   </span>
                 )}
                 {effectiveKitType === "player" && (
-                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-[var(--surface-muted)] text-[var(--foreground)] border border-[color:var(--border)] rounded-md">
+                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-white/90 text-zinc-900 border border-white/50 rounded-md backdrop-blur-sm">
                     Player
                   </span>
                 )}
@@ -224,7 +236,7 @@ export default function ProductPage() {
                   <img
                     src={product.image}
                     alt="Front"
-                    className="w-full h-full object-contain p-1 bg-[var(--surface-muted)]"
+                    className="h-full w-full bg-gradient-to-b from-zinc-200 to-zinc-800 object-contain p-1"
                   />
                 </button>
                 <button
@@ -238,7 +250,7 @@ export default function ProductPage() {
                   <img
                     src={product.backImage}
                     alt="Back"
-                    className="w-full h-full object-contain p-1 bg-[var(--surface-muted)]"
+                    className="h-full w-full bg-gradient-to-b from-zinc-200 to-zinc-800 object-contain p-1"
                   />
                 </button>
               </div>
@@ -249,7 +261,7 @@ export default function ProductPage() {
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <span className="text-[11px] font-bold text-white uppercase tracking-[0.12em]">
+                <span className="text-[11px] font-bold text-brand-green uppercase tracking-[0.12em]">
                   {product.league}
                 </span>
                 <span className="text-[var(--muted)]">&bull;</span>
@@ -267,7 +279,7 @@ export default function ProductPage() {
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-white">
+              <span className="text-3xl font-bold text-[var(--foreground)]">
                 {formatPrice(totalPrice())}
               </span>
               {(hasCustom || selectedBadges.length > 0 || quantity > 1) && (
@@ -293,7 +305,7 @@ export default function ProductPage() {
                     className={`w-12 h-12 rounded-full text-sm font-bold transition-all ${
                       selectedSize === size
                         ? "bg-brand-green text-white shadow-glow-mint"
-                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-brand-green/40 hover:text-white"
+                        : "bg-[var(--surface)] text-[var(--muted)] border border-[color:var(--border)] hover:border-brand-green/40 hover:text-[var(--foreground)]"
                     }`}
                   >
                     {size}
@@ -311,7 +323,7 @@ export default function ProductPage() {
                 <button
                   type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-white transition-colors"
+                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-[var(--foreground)] transition-colors"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
@@ -321,7 +333,7 @@ export default function ProductPage() {
                 <button
                   type="button"
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-white transition-colors"
+                  className="w-10 h-10 rounded-full bg-[var(--surface)] border border-[color:var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-brand-green/40 hover:text-[var(--foreground)] transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -354,11 +366,11 @@ export default function ProductPage() {
                       >
                         <span className="flex items-center gap-2">
                           {isSelected && (
-                            <Check className="w-4 h-4 text-white shrink-0" />
+                            <Check className="w-4 h-4 text-brand-green shrink-0" />
                           )}
                           {badge.name}
                         </span>
-                        <span className={isSelected ? "text-white font-semibold" : ""}>
+                        <span className={isSelected ? "text-[var(--foreground)] font-semibold" : ""}>
                           +{formatPrice(badge.price)}
                         </span>
                       </button>
@@ -379,10 +391,10 @@ export default function ProductPage() {
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  {hasCustom && <Check className="w-4 h-4 text-white shrink-0" />}
+                  {hasCustom && <Check className="w-4 h-4 text-brand-green shrink-0" />}
                   Custom name & number
                 </span>
-                <span className={hasCustom ? "text-white font-semibold" : ""}>
+                <span className={hasCustom ? "text-[var(--foreground)] font-semibold" : ""}>
                   +{formatPrice(PRICING.customNameNumber)}
                 </span>
               </button>
@@ -446,7 +458,7 @@ export default function ProductPage() {
               <button
                 type="button"
                 onClick={() => router.push("/cart")}
-                className="w-full py-3 rounded-full font-semibold text-sm border-2 border-brand-green text-white hover:bg-brand-green hover:text-white transition-colors"
+                className="w-full py-3 rounded-full font-semibold text-sm border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors"
               >
                 View cart
               </button>
@@ -455,7 +467,7 @@ export default function ProductPage() {
             {/* Trust signals — decision point */}
             <div className="grid gap-3 rounded-xl border border-[color:var(--border)] bg-[var(--surface-muted)]/40 px-4 py-4 sm:grid-cols-2">
               <div className="flex gap-2 text-[11px] leading-snug text-[var(--muted)]">
-                <Truck className="mt-0.5 h-4 w-4 shrink-0 text-white/80" aria-hidden />
+                <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" aria-hidden />
                 <span>
                   Est. delivery{" "}
                   <span className="font-medium text-[var(--foreground)]">{PRICING.cargo.standard.days} days</span>{" "}
@@ -463,11 +475,11 @@ export default function ProductPage() {
                 </span>
               </div>
               <div className="flex gap-2 text-[11px] leading-snug text-[var(--muted)]">
-                <Lock className="mt-0.5 h-4 w-4 shrink-0 text-white/80" aria-hidden />
+                <Lock className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" aria-hidden />
                 <span>Secure checkout — encrypted payment.</span>
               </div>
               <div className="flex gap-2 text-[11px] leading-snug text-[var(--muted)] sm:col-span-2">
-                <Shield className="mt-0.5 h-4 w-4 shrink-0 text-white/80" aria-hidden />
+                <Shield className="mt-0.5 h-4 w-4 shrink-0 text-brand-green" aria-hidden />
                 <span>
                   Bulk savings: {PRICING.discount.tier1.min}–{PRICING.discount.tier1.max} kits{" "}
                   {PRICING.discount.tier1.percent}% off; {PRICING.discount.tier2.min}+ kits{" "}
