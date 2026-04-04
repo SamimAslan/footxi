@@ -2,6 +2,7 @@
 
 import { useCartStore } from "@/store/cart";
 import { PRICING, getKitVersionDisplayLabel } from "@/data/products";
+import { getHomepageListingTitle } from "@/lib/homepageListingTitle";
 import { useCurrency } from "@/context/CurrencyContext";
 import EmptyCartSuggestions from "@/components/EmptyCartSuggestions";
 import TrustRow from "@/components/TrustRow";
@@ -67,16 +68,18 @@ export default function CartPage() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            {items.map((item, index) => (
+            {items.map((item, index) => {
+              const lineTitle = getHomepageListingTitle(item.product);
+              return (
               <div
                 key={index}
                 className="bg-[var(--surface)] border border-[color:var(--border)] rounded-xl p-4 sm:p-6"
               >
                 <div className="flex gap-4">
                   {/* Mini image */}
-                  <div className="w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg bg-gradient-to-b from-zinc-200 to-zinc-800">
+                  <div className="w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg bg-white">
                     {item.product.image && item.product.image.startsWith("http") ? (
-                      <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                      <img src={item.product.image} alt={lineTitle} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <svg viewBox="0 0 120 150" className="w-12 h-14 opacity-60">
@@ -90,8 +93,8 @@ export default function CartPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h3 className="text-sm font-medium text-[var(--foreground)] truncate">
-                          {item.product.name}
+                        <h3 className="text-sm font-medium text-[var(--foreground)] line-clamp-2">
+                          {lineTitle}
                         </h3>
                         <p className="text-xs text-[var(--muted)] mt-0.5">
                           {getKitVersionDisplayLabel(item.product)} &middot; Size {item.size}
@@ -152,7 +155,8 @@ export default function CartPage() {
                   </div>
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
 
           {/* Order Summary */}

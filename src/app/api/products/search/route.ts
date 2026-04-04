@@ -6,7 +6,24 @@ function escapeRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** Split query into tokens; each token must appear in `name` (AND). No league/team-only matches. */
+/** Turkey national team: "turkey", "türkiye", "turkiye" must match the same products (name or team). */
+const TURKEY_TOKEN = /^(turkey|türkiye|turkiye)$/i;
+const TURKEY_NAME_TEAM_REGEX = /(turkey|türkiye|turkiye)/i;
+
+function tokenToSearchClause(token: string): Record<string, unknown> {
+  const t = token.trim();
+  if (!t) return { _id: null };
+
+  if (TURKEY_TOKEN.test(t)) {
+    return {
+      $or: [{ name: TURKEY_NAME_TEAM_REGEX }, { team: TURKEY_NAME_TEAM_REGEX }],
+    };
+  }
+
+  return { name: { $regex: escapeRegex(t), $options: "i" } };
+}
+
+/** Split query into tokens; each token must match (AND). Turkey synonyms unified. */
 function buildNameSearchFilter(q: string): Record<string, unknown> {
   const tokens = q
     .trim()
@@ -18,11 +35,12 @@ function buildNameSearchFilter(q: string): Record<string, unknown> {
     return { _id: null }; // impossible match
   }
 
-  const nameClauses = tokens.map((token) => ({
-    name: { $regex: escapeRegex(token), $options: "i" },
-  }));
+  const clauses = tokens.map((token) => tokenToSearchClause(token));
+  if (clauses.some((c) => "_id" in c && c._id === null)) {
+    return { _id: null };
+  }
 
-  return { $and: nameClauses };
+  return { $and: clauses };
 }
 
 export async function GET(req: NextRequest) {

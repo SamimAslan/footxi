@@ -254,7 +254,13 @@ export function buildExtraCategories(
   shopCategory: keyof typeof SHOP_CATEGORY_META
 ): string[] {
   const extras = new Set<string>([shopCategory]);
-  if (kitType === "fans" && leagueSlug !== "fan-made") {
+  // Fan-made aisle is football-only; do not tag NBA/NFL or non-jersey shop rows.
+  if (
+    kitType === "fans" &&
+    leagueSlug !== "fan-made" &&
+    shopCategory !== "nba-nfl" &&
+    (shopCategory === "jersey" || shopCategory === "kids")
+  ) {
     extras.add("fan-made");
   }
   return Array.from(extras);

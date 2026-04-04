@@ -154,19 +154,7 @@ export default function ProductPage() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image */}
           <div className="relative">
-            <div className="relative aspect-square overflow-hidden rounded-xl border border-[color:var(--border)] shadow-sm bg-gradient-to-b from-white via-zinc-400 to-zinc-950 flex items-center justify-center">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-[0.5]"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 80% 65% at 50% 36%, rgba(255,255,255,0.45) 0%, transparent 62%)",
-                }}
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/45 via-black/10 to-transparent"
-                aria-hidden
-              />
+            <div className="relative aspect-square overflow-hidden rounded-xl border border-[color:var(--border)] shadow-sm bg-white flex items-center justify-center">
               {hasRealImage ? (
                 <div className="relative z-[1] flex h-full w-full items-center justify-center p-8 sm:p-10">
                   <img
@@ -179,15 +167,15 @@ export default function ProductPage() {
                 <svg viewBox="0 0 120 150" className="relative z-[1] w-56 h-72 opacity-90">
                   <path
                     d="M30,10 L10,30 L10,50 L25,45 L25,140 L95,140 L95,45 L110,50 L110,30 L90,10 L75,20 L45,20 Z"
-                    className="fill-white/40"
-                    stroke="rgba(255,255,255,0.25)"
+                    className="fill-zinc-200"
+                    stroke="rgba(26, 29, 36, 0.12)"
                     strokeWidth="1.5"
                   />
                   <text
                     x="60"
                     y="75"
                     textAnchor="middle"
-                    className="fill-white/35 text-[8px]"
+                    className="fill-zinc-400 text-[8px]"
                   >
                     {product.team.toUpperCase()}
                   </text>
@@ -195,7 +183,7 @@ export default function ProductPage() {
                     x="60"
                     y="100"
                     textAnchor="middle"
-                    className="fill-white/30 text-[7px]"
+                    className="fill-zinc-400 text-[7px]"
                   >
                     {product.type.toUpperCase()}
                   </text>
@@ -236,7 +224,7 @@ export default function ProductPage() {
                   <img
                     src={product.image}
                     alt="Front"
-                    className="h-full w-full bg-gradient-to-b from-zinc-200 to-zinc-800 object-contain p-1"
+                    className="h-full w-full bg-white object-contain p-1"
                   />
                 </button>
                 <button
@@ -250,7 +238,7 @@ export default function ProductPage() {
                   <img
                     src={product.backImage}
                     alt="Back"
-                    className="h-full w-full bg-gradient-to-b from-zinc-200 to-zinc-800 object-contain p-1"
+                    className="h-full w-full bg-white object-contain p-1"
                   />
                 </button>
               </div>

@@ -48,10 +48,27 @@ export async function GET(req: NextRequest) {
     const filter: Record<string, unknown> = { isActive: true };
     if (league) {
       if (league === "fan-made") {
-        filter.$or = [
-          { leagueSlug: { $in: getLeagueAliasSlugs("fan-made") } },
-          { extraCategories: "fan-made" },
-          { kitType: "fans" },
+        // Same inventory idea as before, but never NBA/NFL/F1 or non-football shop rows.
+        filter.$and = [
+          {
+            $or: [
+              { leagueSlug: { $in: getLeagueAliasSlugs("fan-made") } },
+              { extraCategories: "fan-made" },
+              { kitType: "fans" },
+            ],
+          },
+          {
+            $nor: [
+              { name: { $regex: F1_TITLE_REGEX } },
+              { team: { $regex: F1_TITLE_REGEX } },
+              { league: { $regex: F1_TITLE_REGEX } },
+              { name: { $regex: NBA_NFL_REGEX } },
+              { team: { $regex: NBA_NFL_REGEX } },
+              { league: { $regex: NBA_NFL_REGEX } },
+              { shopCategory: { $in: ["nba-nfl", "windbreaker", "tracksuit", "jackets", "hoody"] } },
+              { leagueSlug: { $in: [...NON_FOOTBALL_KIT_LEAGUE_SLUGS] } },
+            ],
+          },
         ];
       } else if (league === "retro-kits") {
         filter.kitType = "retro";

@@ -137,18 +137,18 @@ const CATEGORY_ICONS: Record<(typeof HOMEPAGE_CATEGORIES)[number]["slug"], Lucid
   "fan-made": Palette,
 };
 
-/** Monochrome (B&W) tile wells — subtle angle variants only */
+/** Category tile image wells — plain white */
 const CATEGORY_TILE_STYLE: Record<(typeof HOMEPAGE_CATEGORIES)[number]["slug"], string> = {
-  jersey: "from-white via-zinc-400 to-zinc-950",
-  windbreaker: "from-zinc-50 via-zinc-500 to-neutral-950",
-  jackets: "from-neutral-100 via-zinc-500 to-zinc-950",
-  hoody: "from-white via-neutral-500 to-zinc-950",
-  tracksuit: "from-zinc-100 via-neutral-400 to-zinc-950",
-  kids: "from-zinc-50 via-zinc-400 to-neutral-950",
-  "nba-nfl": "from-white via-zinc-500 to-neutral-950",
-  f1: "from-zinc-100 via-zinc-600 to-zinc-950",
-  "retro-kits": "from-neutral-50 via-zinc-400 to-zinc-950",
-  "fan-made": "from-white via-zinc-400 to-neutral-950",
+  jersey: "bg-white",
+  windbreaker: "bg-white",
+  jackets: "bg-white",
+  hoody: "bg-white",
+  tracksuit: "bg-white",
+  kids: "bg-white",
+  "nba-nfl": "bg-white",
+  f1: "bg-white",
+  "retro-kits": "bg-white",
+  "fan-made": "bg-white",
 };
 
 /** Pinned featured jerseys (exact DB product name / listing title). */
@@ -511,8 +511,8 @@ export default function MarketplaceHomepage() {
 
   return (
     <div className="bg-[var(--background)]">
-      {/* Hero — muted accents */}
-      <section className="relative w-full min-h-[min(58vh,520px)] sm:min-h-[min(62vh,580px)] lg:min-h-[min(64vh,640px)] overflow-hidden">
+      {/* Hero — flush under fixed navbar (no cream strip above); text clears nav via inner padding */}
+      <section className="relative -mt-[var(--site-header-height)] w-full min-h-[min(58vh,520px)] sm:min-h-[min(62vh,580px)] lg:min-h-[min(64vh,640px)] overflow-hidden">
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-36 bg-gradient-to-t from-[#07080a] via-[#0c0e12]/95 to-transparent sm:h-40"
           aria-hidden
@@ -540,7 +540,7 @@ export default function MarketplaceHomepage() {
             }}
             aria-hidden
           />
-          <div className="relative z-10 min-h-[min(58vh,520px)] sm:min-h-[min(62vh,580px)] lg:min-h-[min(64vh,640px)] max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 flex flex-col justify-center items-start py-20 sm:py-24">
+          <div className="relative z-10 min-h-[min(58vh,520px)] sm:min-h-[min(62vh,580px)] lg:min-h-[min(64vh,640px)] max-w-[1600px] mx-auto flex flex-col justify-center items-start px-4 pb-20 pt-[calc(var(--site-header-height)+2.5rem)] sm:px-8 sm:pb-24 sm:pt-[calc(var(--site-header-height)+3rem)] lg:px-12">
             <p className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-white/55 font-semibold">
               <span className="h-px w-6 bg-white/35" aria-hidden />
               {HERO_SLIDES[bannerIndex].eyebrow}
@@ -755,7 +755,7 @@ export default function MarketplaceHomepage() {
                     className="group flex flex-col overflow-hidden rounded-[22px] border border-[var(--store-border)] bg-[var(--store-surface)] shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                   >
                     <div
-                      className={`relative flex aspect-[5/3] items-center justify-center bg-gradient-to-br ${grad} overflow-hidden`}
+                      className={`relative flex aspect-[5/3] items-center justify-center ${grad} overflow-hidden`}
                     >
                       <Icon
                         className="h-14 w-14 text-[#1a1d24]/25 transition-transform duration-300 group-hover:scale-110"

@@ -19,7 +19,10 @@
 }
 
 :root {
-  --site-header-height: 112px;
+  /* iOS / notched devices: env() needs viewport-fit=cover on meta viewport */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --site-header-inner: 112px;
+  --site-header-height: calc(var(--site-header-inner) + var(--safe-area-top));
   --brand-green: #2f5d40;
   --brand-green-dark: #244832;
   --brand-green-hover: #3a6f4d;
@@ -57,7 +60,7 @@
 @media (max-width: 639px) {
   :root {
     /* Utility may wrap on small screens */
-    --site-header-height: 128px;
+    --site-header-inner: 128px;
   }
 }
 

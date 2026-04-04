@@ -10,7 +10,7 @@ import {
   getEffectiveKitType,
 } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
-import { getDisplayTeamName } from "@/lib/productDisplay";
+import { getHomepageListingTitle } from "@/lib/homepageListingTitle";
 
 interface ProductCardProps {
   product: Product;
@@ -42,7 +42,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { formatPrice } = useCurrency();
   const productId = getProductId(product);
   const estimatedDelivery = getEstimatedDeliveryWindow();
-  const displayTeam = getDisplayTeamName(product);
+  const listingTitle = getHomepageListingTitle(product);
+  const initials = (listingTitle.replace(/[^a-zA-Z0-9]/g, "").slice(0, 3) || "KIT").toUpperCase();
   const effectiveKit = getEffectiveKitType(product);
 
   return (
@@ -51,16 +52,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       className="group block rounded-2xl bg-[var(--surface)] border border-[color:var(--border)] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_44px_-12px_rgba(0,0,0,0.1)] hover:border-[color-mix(in_srgb,var(--brand-green)_30%,transparent)] hover:-translate-y-1 transition-all duration-300 ease-out"
     >
       {/* Image stage */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-white via-zinc-400 to-zinc-950">
-        <div
-          className="absolute inset-0 opacity-[0.55] pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 65% at 50% 36%, rgba(255,255,255,0.45) 0%, transparent 62%)",
-          }}
-        />
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
-
+      <div className="relative aspect-[3/4] overflow-hidden bg-white">
         {product.image && product.image.startsWith("http") ? (
           <>
             <div className="absolute inset-0 flex items-center justify-center p-5 sm:p-6">
@@ -84,15 +76,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           </>
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-            <div
-              className="absolute inset-0 opacity-40"
-              style={{
-                background:
-                  "radial-gradient(circle at 50% 42%, rgba(255,255,255,0.2) 0%, transparent 55%)",
-              }}
-            />
-            <span className="relative font-display text-4xl sm:text-5xl font-bold tracking-tight text-white/35">
-              {displayTeam.substring(0, 3).toUpperCase()}
+            <span className="relative font-display text-4xl sm:text-5xl font-bold tracking-tight text-zinc-300">
+              {initials}
             </span>
           </div>
         )}
@@ -124,8 +109,8 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative p-4 sm:p-5 bg-[var(--surface)] border-t border-[color:var(--border)]">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h3 className="font-display text-[15px] sm:text-base font-semibold text-[var(--foreground)] tracking-tight leading-snug line-clamp-2 group-hover:text-brand-green transition-colors duration-300">
-              {displayTeam}
+            <h3 className="font-display text-[15px] sm:text-base font-semibold text-[var(--foreground)] tracking-tight leading-snug line-clamp-3 group-hover:text-brand-green transition-colors duration-300">
+              {listingTitle}
             </h3>
             {product.league ? (
               <p className="text-[10px] text-[var(--muted)] mt-1 tracking-wide line-clamp-1">

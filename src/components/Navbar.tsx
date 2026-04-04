@@ -28,11 +28,55 @@ export default function Navbar() {
   const [query, setQuery] = useState("");
   const [mobileQuery, setMobileQuery] = useState("");
   const [accountOpen, setAccountOpen] = useState(false);
+  const [mobileNavCollapsed, setMobileNavCollapsed] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  /** Mobile: hide bar on scroll down, show on scroll up; safe-area strip stays solid (separate layer). */
+  useEffect(() => {
+    const onScroll = () => {
+      if (typeof window === "undefined") return;
+      if (window.innerWidth >= 1024) {
+        setMobileNavCollapsed(false);
+        lastScrollY.current = window.scrollY;
+        return;
+      }
+      if (mobileOpen) {
+        lastScrollY.current = window.scrollY;
+        return;
+      }
+      const y = window.scrollY;
+      const delta = y - lastScrollY.current;
+      lastScrollY.current = y;
+      if (y < 24) {
+        setMobileNavCollapsed(false);
+        return;
+      }
+      if (delta > 10) setMobileNavCollapsed(true);
+      else if (delta < -10) setMobileNavCollapsed(false);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    lastScrollY.current = typeof window !== "undefined" ? window.scrollY : 0;
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [mobileOpen]);
 
   useEffect(() => {
     function handleOutsideClick(e: MouseEvent) {
@@ -62,7 +106,18 @@ export default function Navbar() {
   const navActive = (slug: string) => pathname === `/league/${slug}`;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50" aria-label="Main">
+    <>
+      {/* Opaque fill for status bar / notch — always solid, never shows page bleed-through */}
+      <div
+        className="pointer-events-none fixed inset-x-0 top-0 z-[55] bg-[#0c0f0d] h-[var(--safe-area-top)] min-h-0"
+        aria-hidden
+      />
+      <nav
+        className={`fixed inset-x-0 top-[var(--safe-area-top)] z-50 transition-transform duration-300 ease-out will-change-transform motion-reduce:transition-none ${
+          mobileNavCollapsed ? "max-lg:-translate-y-full lg:translate-y-0" : "translate-y-0"
+        }`}
+        aria-label="Main"
+      >
       {/* Tier 1 — utility only */}
       <div className="border-b border-white/[0.06] bg-[#0c0f0d] text-white/80">
         <div className="mx-auto flex max-w-[1600px] flex-col gap-2 px-4 py-2 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
@@ -248,7 +303,13 @@ export default function Navbar() {
 
               <button
                 type="button"
-                onClick={() => setMobileOpen((v) => !v)}
+                onClick={() => {
+                  setMobileOpen((open) => {
+                    const next = !open;
+                    if (next) setMobileNavCollapsed(false);
+                    return next;
+                  });
+                }}
                 className="rounded-md p-2 text-white/90 hover:bg-white/10 lg:hidden"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileOpen}
@@ -260,64 +321,80 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+    </nav>
 
+      {/* Full-screen mobile menu — outside nav so header translate/half-height doesn’t clip it */}
       {mobileOpen && (
         <div
           id="mobile-nav-panel"
-          className="border-t border-white/10 bg-[#13161c] px-4 py-4 shadow-lg lg:hidden"
+          className="fixed inset-0 z-[100] flex min-h-[100dvh] flex-col bg-[#13161c] lg:hidden"
           role="dialog"
+          aria-modal="true"
           aria-label="Menu and search"
         >
-          <form onSubmit={submitMobileSearch} className="mb-4 flex flex-col gap-2 border-b border-white/[0.08] pb-4">
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-white/50">Search</label>
-            <div className="flex gap-2">
-              <input
-                value={mobileQuery}
-                onChange={(e) => setMobileQuery(e.target.value)}
-                placeholder="Club, season, retro, league…"
-                aria-label="Search products"
-                autoComplete="off"
-                className="site-search-input min-w-0 flex-1 rounded-xl border border-white/12 bg-black/35 px-3 py-2.5 text-[15px] text-white placeholder:text-white/40 focus:border-white/20 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="shrink-0 rounded-xl bg-brand-green px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-white"
-              >
-                Go
-              </button>
-            </div>
-          </form>
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-white/50">Shop</p>
-          <nav className="grid grid-cols-2 gap-2" aria-label="Mobile categories">
-            {PRIMARY_NAV.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/league/${item.slug}`}
-                onClick={() => setMobileOpen(false)}
-                className={`rounded-xl border px-3 py-3 text-center text-[11px] font-bold uppercase tracking-wide transition ${
-                  navActive(item.slug)
-                    ? "border-brand-green/40 bg-brand-green/15 text-white"
-                    : "border-white/[0.08] bg-white/[0.04] text-white/90 hover:border-white/15"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-4 flex flex-col gap-2 border-t border-white/[0.08] pt-4">
-            <Link
-              href={status === "authenticated" ? "/account" : "/auth/login"}
+          <div className="flex shrink-0 items-center justify-between border-b border-white/10 bg-[#0e1115] px-4 py-3 pt-[max(0.75rem,var(--safe-area-top))]">
+            <span className="text-[15px] font-semibold tracking-tight text-white">Menu</span>
+            <button
+              type="button"
               onClick={() => setMobileOpen(false)}
-              className="py-2 text-sm font-medium text-white"
+              className="rounded-lg p-2.5 text-white hover:bg-white/10"
+              aria-label="Close menu"
             >
-              {status === "authenticated" ? "My account" : "Sign in"}
-            </Link>
-            <Link href="/contact" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-white/60">
-              Help &amp; contact
-            </Link>
+              <X className="h-6 w-6" strokeWidth={2} />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-4 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]">
+            <form onSubmit={submitMobileSearch} className="mb-6 flex flex-col gap-2 border-b border-white/[0.08] pb-6">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-white/50">Search</label>
+              <div className="flex gap-2">
+                <input
+                  value={mobileQuery}
+                  onChange={(e) => setMobileQuery(e.target.value)}
+                  placeholder="Club, season, retro, league…"
+                  aria-label="Search products"
+                  autoComplete="off"
+                  className="site-search-input min-w-0 flex-1 rounded-xl border border-white/12 bg-black/35 px-3 py-2.5 text-[15px] text-white placeholder:text-white/40 focus:border-white/20 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="shrink-0 rounded-xl bg-brand-green px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-white"
+                >
+                  Go
+                </button>
+              </div>
+            </form>
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-white/50">Shop</p>
+            <nav className="grid grid-cols-2 gap-2" aria-label="Mobile categories">
+              {PRIMARY_NAV.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/league/${item.slug}`}
+                  onClick={() => setMobileOpen(false)}
+                  className={`rounded-xl border px-3 py-3.5 text-center text-[11px] font-bold uppercase tracking-wide transition ${
+                    navActive(item.slug)
+                      ? "border-brand-green/40 bg-brand-green/15 text-white"
+                      : "border-white/[0.08] bg-white/[0.04] text-white/90 hover:border-white/15"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="mt-6 flex flex-col gap-2 border-t border-white/[0.08] pt-6">
+              <Link
+                href={status === "authenticated" ? "/account" : "/auth/login"}
+                onClick={() => setMobileOpen(false)}
+                className="py-2.5 text-[15px] font-medium text-white"
+              >
+                {status === "authenticated" ? "My account" : "Sign in"}
+              </Link>
+              <Link href="/contact" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] text-white/75">
+                Help &amp; contact
+              </Link>
+            </div>
           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 }

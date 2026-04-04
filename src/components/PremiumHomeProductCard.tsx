@@ -44,20 +44,8 @@ export default function PremiumHomeProductCard({
       className="group flex h-full flex-col overflow-hidden rounded-[22px] border border-[var(--store-border)] bg-[var(--store-surface)] shadow-[0_4px_24px_rgba(26,29,36,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_-12px_rgba(26,29,36,0.12)]"
     >
       <div
-        className={`relative flex items-center justify-center bg-gradient-to-br from-white via-zinc-500 to-zinc-950 ${large ? "aspect-[4/3] sm:aspect-[16/10]" : "aspect-[3/4]"}`}
+        className={`relative flex items-center justify-center bg-white ${large ? "aspect-[4/3] sm:aspect-[16/10]" : "aspect-[3/4]"}`}
       >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-50"
-          style={{
-            background:
-              "radial-gradient(ellipse 75% 65% at 45% 38%, rgba(255,255,255,0.5) 0%, transparent 65%)",
-          }}
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/40 to-transparent"
-          aria-hidden
-        />
         {product.image && product.image.startsWith("http") ? (
           <img
             src={product.image}

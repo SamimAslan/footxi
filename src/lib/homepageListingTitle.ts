@@ -6,6 +6,8 @@ import { getDisplayTeamName } from "@/lib/productDisplay";
  */
 export function getHomepageListingTitle(product: Product): string {
   let t = (product.name || "")
+    /* Supplier CSV sometimes leaves empty “()” at the start of the title */
+    .replace(/^(\(\s*\)\s*)+/g, "")
     .replace(/\b1[:.]?1\b/gi, "")
     .replace(/\bquality\b/gi, "")
     .replace(/\b(fans?|player)\s+1:1\b/gi, "")
