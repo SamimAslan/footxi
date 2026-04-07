@@ -1,3 +1,5 @@
+import { hasModernSeasonInName } from "@/lib/seasonYear";
+
 export interface Badge {
   name: string;
   price: number;
@@ -349,7 +351,10 @@ export function isF1Product(product: Pick<Product, "name" | "team" | "league">):
 }
 
 export function getEffectiveKitType(product: Product): Product["kitType"] {
-  if (product.type === "retro" || product.kitType === "retro") {
+  if (
+    (product.type === "retro" || product.kitType === "retro") &&
+    !hasModernSeasonInName(product.name || "")
+  ) {
     return "retro";
   }
   if (isF1Product(product)) {

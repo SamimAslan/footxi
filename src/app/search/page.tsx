@@ -12,6 +12,7 @@ const TRENDING_QUERIES = [
   { label: "Brazil", q: "brazil" },
   { label: "Japan", q: "japan" },
   { label: "Retro Barcelona", q: "barcelona retro" },
+  { label: "Tracksuits", q: "tracksuit" },
   { label: "Milan", q: "milan" },
   { label: "France national", q: "france" },
   { label: "Premier League", q: "premier" },
@@ -144,9 +145,11 @@ function SearchContent() {
             Find your kit
           </h1>
           <p className="mt-2 text-sm text-[var(--muted)] max-w-2xl">
-            Matches the <span className="text-[var(--foreground)] font-medium">product title</span> only
-            (listing text). Use several words together — e.g. <span className="italic">france pink</span> or{" "}
-            <span className="italic">2008 barcelona retro</span> — all words must appear in the title.
+            Each word must match somewhere on the product:{" "}
+            <span className="text-[var(--foreground)] font-medium">title, team, league, brand, or category</span>
+            . Typing <span className="italic">track suit</span>, <span className="italic">eşofman</span>, or{" "}
+            <span className="italic">tracksuit</span> all converge on tracksuit rows. With Fans / Player selected,
+            tracksuits and similar outerwear still show when your search mentions them.
           </p>
         </div>
 

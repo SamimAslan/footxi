@@ -9,6 +9,7 @@ import {
   inferShopCategoryFromText,
   mapLeagueByRawCategory,
 } from "@/lib/productTaxonomy";
+import { hasModernSeasonInName } from "@/lib/seasonYear";
 
 type CsvRow = {
   product_name?: string;
@@ -67,7 +68,7 @@ function slugify(value: string): string {
 
 function inferType(name: string): "home" | "away" | "third" | "retro" {
   const n = name.toLowerCase();
-  if (n.includes("retro")) return "retro";
+  if (n.includes("retro") && !hasModernSeasonInName(name)) return "retro";
   if (n.includes("away")) return "away";
   if (n.includes("third")) return "third";
   return "home";
@@ -111,7 +112,7 @@ function inferPriceOverride(name: string, type: "home" | "away" | "third" | "ret
   if (n.includes("hoody") || n.includes("hoodie")) return 35;
   if (n.includes("kids") || n.includes("kid")) return 25;
   if (n.includes("nba") || n.includes("nfl")) return 30;
-  if (type === "retro" || n.includes("retro")) return 33;
+  if (type === "retro" || (n.includes("retro") && !hasModernSeasonInName(name))) return 33;
   if (n.includes("player")) return 30;
   if (n.includes("fan")) return 25;
 

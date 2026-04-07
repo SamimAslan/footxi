@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
+import { MODERN_SEASON_IN_NAME_PATTERN } from "@/lib/seasonYear";
+import {
+  normalizeSearchQueryForProducts,
+  queryIntentIncludesOuterwear,
+  OUTERWEAR_SHOP_CATEGORIES,
+} from "@/lib/searchQuery";
 
 function escapeRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -20,7 +26,19 @@ function tokenToSearchClause(token: string): Record<string, unknown> {
     };
   }
 
-  return { name: { $regex: escapeRegex(t), $options: "i" } };
+  const escaped = escapeRegex(t);
+  /** Title-only search missed many rows (e.g. "jacket" lives in shopCategory, not always in name). */
+  return {
+    $or: [
+      { name: { $regex: escaped, $options: "i" } },
+      { team: { $regex: escaped, $options: "i" } },
+      { league: { $regex: escaped, $options: "i" } },
+      { leagueSlug: { $regex: escaped, $options: "i" } },
+      { brand: { $regex: escaped, $options: "i" } },
+      { shopCategory: { $regex: escaped, $options: "i" } },
+      { extraCategories: { $regex: escaped, $options: "i" } },
+    ],
+  };
 }
 
 /** Split query into tokens; each token must match (AND). Turkey synonyms unified. */
@@ -46,7 +64,7 @@ function buildNameSearchFilter(q: string): Record<string, unknown> {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const q = searchParams.get("q") || "";
+    const q = normalizeSearchQueryForProducts(searchParams.get("q") || "");
     const pageParam = parseInt(searchParams.get("page") || "1", 10);
     const paginated = searchParams.get("paginated") === "true" || searchParams.has("page");
     const page = Number.isFinite(pageParam) ? Math.max(1, pageParam) : 1;
@@ -68,7 +86,44 @@ export async function GET(req: NextRequest) {
     const andClauses: Record<string, unknown>[] = [{ isActive: true }, buildNameSearchFilter(q)];
 
     if (kitType && ["fans", "player", "retro"].includes(kitType)) {
-      andClauses.push({ kitType });
+      if (kitType === "retro") {
+        // DB kitType "retro" OR legacy type "retro", OR title says "retro" (often correct while kitType stayed fans).
+        // Still exclude modern-season titles (18/19 … 26/27) via shared pattern.
+        const notModernSeasonInName = {
+          name: { $not: { $regex: MODERN_SEASON_IN_NAME_PATTERN, $options: "i" } },
+        };
+        andClauses.push({
+          $or: [
+            {
+              $and: [
+                { $or: [{ kitType: "retro" }, { type: "retro" }] },
+                notModernSeasonInName,
+              ],
+            },
+            {
+              $and: [{ name: { $regex: "\\bretro\\b", $options: "i" } }, notModernSeasonInName],
+            },
+          ],
+        });
+      } else if (
+        (kitType === "fans" || kitType === "player") &&
+        queryIntentIncludesOuterwear(q)
+      ) {
+        // Tracksuits / jackets / hoodies etc. are often stored as kitType "fans" even when the user picks Player — don't hide them.
+        andClauses.push({
+          $or: [
+            {
+              $and: [
+                { kitType },
+                { shopCategory: { $nin: [...OUTERWEAR_SHOP_CATEGORIES] } },
+              ],
+            },
+            { shopCategory: { $in: [...OUTERWEAR_SHOP_CATEGORIES] } },
+          ],
+        });
+      } else {
+        andClauses.push({ kitType });
+      }
     }
     if (newOnly) {
       andClauses.push({ isNewArrival: true });

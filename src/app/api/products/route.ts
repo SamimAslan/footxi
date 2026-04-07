@@ -11,6 +11,7 @@ import {
   isTurkishTeam,
   UNIVERSITY_CLUB_REGEX,
 } from "@/lib/productTaxonomy";
+import { MODERN_SEASON_IN_NAME_PATTERN } from "@/lib/seasonYear";
 
 const F1_TITLE_REGEX = /f1|formula\s*1|formula one/i;
 const NBA_NFL_REGEX = /\bnba\b|\bnfl\b/i;
@@ -71,7 +72,10 @@ export async function GET(req: NextRequest) {
           },
         ];
       } else if (league === "retro-kits") {
-        filter.kitType = "retro";
+        filter.$and = [
+          { kitType: "retro" },
+          { name: { $not: { $regex: MODERN_SEASON_IN_NAME_PATTERN, $options: "i" } } },
+        ];
       } else if (league === "international-teams") {
         const internationalOr = [
           { leagueSlug: { $in: getLeagueAliasSlugs("international-teams") } },
