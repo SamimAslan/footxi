@@ -36,6 +36,17 @@ import PremiumHomeProductCard from "@/components/PremiumHomeProductCard";
  */
 const HERO_SLIDES = [
   {
+    eyebrow: "World Cup · international kits",
+    title: "Where legends meet the next chapter",
+    subtitle:
+      "From Messi to icons on the wall — the tournament energy, the national colours, the shirts fans remember forever. Step into 2026/27 international drops.",
+    cta: "Shop 2026/27 national teams",
+    image: "/hero/hero-world-cup-legends.png",
+    imageAlt: "International football legends and World Cup era kits — Adidas campaign",
+    href: "/world-cup",
+    imagePosition: "object-center",
+  },
+  {
     eyebrow: "Serie A · derby energy",
     title: "Milan & Inter — kits built for the big nights",
     subtitle:
@@ -165,6 +176,7 @@ const SHOP_INTENT_LINKS = [
   { label: "All kits", href: "/league/jersey" },
   { label: "Retro kits", href: "/league/retro-kits" },
   { label: "New arrivals", href: "/search?q=kit&new=1" },
+  { label: "2026/27 national teams", href: "/world-cup" },
   { label: "National teams", href: "/league/international-teams" },
   { label: "Fan made", href: "/league/fan-made" },
   { label: "Kids", href: "/league/kids" },

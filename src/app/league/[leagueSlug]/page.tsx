@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { getLeagueBySlug, Product } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
@@ -85,8 +85,11 @@ function DropdownFilter({
 
 export default function LeaguePage() {
   const params = useParams();
+  const router = useRouter();
+  const urlSearch = useSearchParams();
   const leagueSlug = params.leagueSlug as string;
   const league = getLeagueBySlug(leagueSlug);
+  const nameContains = urlSearch.get("nameContains")?.trim() ?? "";
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -109,6 +112,7 @@ export default function LeaguePage() {
         });
         if (selectedTeam !== "all") params.set("team", selectedTeam);
         if (selectedType !== "all") params.set("kitType", selectedType);
+        if (nameContains) params.set("nameContains", nameContains);
         const res = await fetch(`/api/products?${params.toString()}`);
         if (res.ok) {
           const data = await res.json();
@@ -123,11 +127,11 @@ export default function LeaguePage() {
       }
     }
     fetchProducts();
-  }, [leagueSlug, selectedTeam, selectedType, sortBy, page]);
+  }, [leagueSlug, selectedTeam, selectedType, sortBy, page, nameContains]);
 
   useEffect(() => {
     setPage(1);
-  }, [selectedTeam, selectedType, sortBy, leagueSlug]);
+  }, [selectedTeam, selectedType, sortBy, leagueSlug, nameContains]);
 
   const teamsFromProducts = useMemo(() => {
     const teams = new Set((league?.teams || []).concat(products.map((p) => p.team)));
@@ -138,7 +142,18 @@ export default function LeaguePage() {
     teamsFromProducts.length > 0 ? teamsFromProducts : league?.teams || [];
 
   const activeFilterCount =
-    (selectedTeam !== "all" ? 1 : 0) + (selectedType !== "all" ? 1 : 0);
+    (selectedTeam !== "all" ? 1 : 0) +
+    (selectedType !== "all" ? 1 : 0) +
+    (nameContains ? 1 : 0);
+
+  const clearLeagueFilters = () => {
+    setSelectedTeam("all");
+    setSelectedType("all");
+    setPage(1);
+    if (nameContains) {
+      router.replace(`/league/${leagueSlug}`);
+    }
+  };
 
   if (!league) {
     return (
@@ -182,6 +197,13 @@ export default function LeaguePage() {
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-[var(--foreground)] tracking-[-0.03em]">
             {league.name}
           </h1>
+          {nameContains ? (
+            <p className="mt-3 max-w-2xl text-sm text-[var(--muted)]">
+              Showing listings whose title contains{" "}
+              <span className="font-medium text-[var(--foreground)]">{nameContains}</span> — national team
+              jerseys for the current international cycle.
+            </p>
+          ) : null}
           <div className="mt-3 flex min-h-[1.25rem] flex-wrap items-center gap-3">
             <span className="text-[13px] text-[var(--muted)]">{league.country}</span>
             {loading ? (
@@ -244,11 +266,7 @@ export default function LeaguePage() {
           {activeFilterCount > 0 && (
             <button
               type="button"
-              onClick={() => {
-                setSelectedTeam("all");
-                setSelectedType("all");
-                setPage(1);
-              }}
+              onClick={clearLeagueFilters}
               className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-medium text-[var(--foreground)] hover:text-brand-green transition-colors duration-300 tracking-wide"
             >
               <X className="w-3 h-3" />
@@ -275,11 +293,7 @@ export default function LeaguePage() {
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedTeam("all");
-                  setSelectedType("all");
-                  setPage(1);
-                }}
+                onClick={clearLeagueFilters}
                 className="rounded-full bg-brand-green px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white"
               >
                 Clear filters
